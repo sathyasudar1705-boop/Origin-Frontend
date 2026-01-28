@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OriginX | Seeker Sign Up</title>
+    <link rel="stylesheet" href="../css/auth.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;850&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+    <div class="auth-container">
+        <button class="close-btn" onclick="location.href='../index.html'">&times;</button>
+
+        <div style="display: flex; justify-content: center; margin-bottom: 2rem;">
+            <div
+                style="background: var(--accent); color: white; width: 48px; height: 48px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 1.5rem; box-shadow: 0 8px 16px rgba(37, 99, 235, 0.2);">
+                O</div>
+        </div>
+
+        <div class="auth-header">
+            <h2>Create Account</h2>
+            <p>Join us to find your dream job</p>
+        </div>
+
+        <form class="register-form" onsubmit="registerUser(event)">
+            <div class="input-group">
+                <label for="name">Full Name</label>
+                <input type="text" id="fullName" name="name" placeholder="John Doe" required>
+            </div>
+
+            <div class="input-group">
+                <label for="email">Email Address</label>
+                <input type="email" id="email" name="email" placeholder="john@example.com" required>
+            </div>
+
+            <!-- Hidden role input, default to job_seeker for now -->
+            <input type="hidden" id="role" value="job seeker">
+
+            <div class="input-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" placeholder="Create a password" required>
+            </div>
+
+            <div class="input-group">
+                <label for="confirm-password">Confirm Password</label>
+                <input type="password" id="confirm-password" name="confirm_password" placeholder="Confirm your password"
+                    required>
+            </div>
+
+            <button type="submit" class="auth-btn">Sign Up</button>
+        </form>
+
+        <div class="auth-footer">
+            <p>Already have an account? <a href="user_login.html">Login</a></p>
+        </div>
+    </div>
+
+    <script src="../js/config.js"></script>
+    <script src="../js/auth.js"></script>
+
+</body>
+
+</html>

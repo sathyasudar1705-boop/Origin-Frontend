@@ -1,0 +1,468 @@
+:root {
+    --primary: #0f172a;
+    --accent: #2563eb;
+    --accent-hover: #ff6b00;
+    --text-primary: #1e293b;
+    --text-secondary: #64748b;
+    --bg-gray: #f8fafc;
+    --border-color: #e2e8f0;
+    --card-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+}
+
+body {
+    margin: 0;
+    font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background-color: var(--bg-gray);
+    color: var(--text-primary);
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+/* Professional Navbar */
+.navbar {
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    padding: 1rem 10%;
+    display: flex;
+    align-items: center;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 1.5rem;
+    font-weight: 850;
+    color: var(--primary);
+    text-decoration: none;
+    letter-spacing: -0.02em;
+}
+
+.logo-icon {
+    background: var(--accent);
+    color: white;
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.25rem;
+}
+
+.nav-links {
+    margin-left: 4rem;
+    display: flex;
+    gap: 2.5rem;
+}
+
+.nav-links a {
+    text-decoration: none;
+    color: var(--text-secondary);
+    font-size: 0.9375rem;
+    font-weight: 600;
+    transition: all 0.2s ease;
+    position: relative;
+}
+
+.nav-links a:hover,
+.nav-links a.active {
+    color: var(--accent);
+}
+
+.nav-links a.active::after {
+    content: '';
+    position: absolute;
+    bottom: -1.75rem;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: var(--accent);
+}
+
+.user-profile {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+/* Global Professional Buttons */
+.profile,
+.apply-btn,
+.logout-btn,
+.btn-primary,
+.btn-edit,
+.post-btn {
+    text-decoration: none;
+    font-weight: 700;
+    padding: 0.75rem 1.5rem;
+    border-radius: 10px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    cursor: pointer;
+    font-size: 0.875rem;
+    border: none;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    justify-content: center;
+}
+
+.profile {
+    color: var(--primary);
+    background: white;
+    border: 1.5px solid var(--border-color);
+}
+
+.profile:hover {
+    border-color: var(--accent-hover);
+    color: var(--accent-hover);
+    background: #fff7ed;
+    transform: translateY(-2px);
+}
+
+.btn-primary,
+.post-btn {
+    background: var(--accent);
+    color: white;
+    box-shadow: 0 4px 14px rgba(37, 99, 235, 0.2);
+}
+
+.btn-primary:hover,
+.post-btn:hover {
+    background: var(--accent-hover);
+    box-shadow: 0 6px 20px rgba(255, 107, 0, 0.3);
+    transform: translateY(-2px);
+}
+
+.logout-btn {
+    background: transparent;
+    color: #ef4444;
+    border: 1.5px solid #fee2e2;
+}
+
+.logout-btn:hover {
+    background: #fef2f2;
+    border-color: #ef4444;
+    transform: translateY(-2px);
+    color: #ef4444;
+    /* Keep red text for logout but orange is user's request, maybe orange tint? Let's stick to user request for "all buttons" */
+}
+
+/* Specific request: "all buttons hover orange" */
+.btn-edit:hover,
+.logout-btn:hover {
+    background: #fff7ed;
+    border-color: var(--accent-hover);
+    color: var(--accent-hover);
+}
+
+.btn-delete {
+    background: #fee2e2;
+    color: #ef4444;
+    border: 1.5px solid #fee2e2;
+}
+
+.btn-delete:hover {
+    background: #fef2f2;
+    border-color: #ef4444;
+    transform: translateY(-2px);
+}
+
+/* Layout */
+.dashboard-main {
+    max-width: 1400px;
+    margin: 3rem auto;
+    padding: 0 10%;
+    flex: 1;
+}
+
+.dashboard-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 3rem;
+}
+
+.dashboard-header h1 {
+    font-size: 2rem;
+    font-weight: 850;
+    margin: 0;
+    color: var(--primary);
+    letter-spacing: -0.02em;
+}
+
+/* Stats */
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+    margin-bottom: 3rem;
+}
+
+.stat-card {
+    background: white;
+    padding: 2rem;
+    border-radius: 20px;
+    box-shadow: var(--card-shadow);
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    border: 1px solid var(--border-color);
+    transition: transform 0.3s ease;
+}
+
+.stat-card:hover {
+    transform: translateY(-5px);
+}
+
+.stat-icon {
+    width: 56px;
+    height: 56px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+}
+
+.blue {
+    background: #eff6ff;
+    color: #2563eb;
+}
+
+.green {
+    background: #f0fdf4;
+    color: #16a34a;
+}
+
+.orange {
+    background: #fff7ed;
+    color: #ea580c;
+}
+
+/* Grid Dashboard */
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: 1.5fr 1fr;
+    gap: 2rem;
+}
+
+.section-container {
+    background: white;
+    border-radius: 20px;
+    padding: 2.5rem;
+    box-shadow: var(--card-shadow);
+    border: 1px solid var(--border-color);
+}
+
+.section-header {
+    margin-bottom: 2rem;
+    border-bottom: 1.5px solid var(--border-color);
+    padding-bottom: 1rem;
+}
+
+.section-header h2 {
+    font-size: 1.25rem;
+    font-weight: 800;
+    color: var(--primary);
+}
+
+/* Job Cards & App Items */
+.job-card,
+.app-item {
+    background: white;
+    border: 1px solid var(--border-color);
+    padding: 1.5rem;
+    border-radius: 16px;
+    margin-bottom: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: all 0.2s ease;
+}
+
+.job-card:hover,
+.app-item:hover {
+    border-color: var(--accent);
+    background: var(--bg-gray);
+}
+
+.job-type-pill {
+    padding: 0.25rem 0.75rem;
+    border-radius: 20px;
+    font-size: 0.7rem;
+    font-weight: 800;
+    text-transform: uppercase;
+}
+
+.pill-ft {
+    background: #eff6ff;
+    color: #2563eb;
+}
+
+.pill-pt {
+    background: #fdf2f8;
+    color: #db2777;
+}
+
+.app-avatar {
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    background: #f1f5f9;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    color: var(--text-secondary);
+}
+
+.status-badge {
+    padding: 0.25rem 0.75rem;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 700;
+}
+
+.status-applied {
+    background: #f1f5f9;
+    color: var(--text-secondary);
+}
+
+.status-approved {
+    background: #f0fdf4;
+    color: #16a34a;
+}
+
+.status-rejected {
+    background: #fef2f2;
+    color: #dc2626;
+}
+
+
+/* Footer */
+.main-footer {
+    background-color: #1a1a1a;
+    color: #888;
+    padding: 3rem 0;
+    margin-top: 5rem;
+}
+
+.footer-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    padding: 0 10%;
+    gap: 2rem;
+}
+
+.footer-container .logo {
+    color: white;
+    font-size: 1.5rem;
+    margin-bottom: 0;
+}
+
+.footer-divider {
+    width: 1px;
+    height: 60px;
+    background-color: #333;
+    margin: 0;
+}
+
+.footer-info {
+    flex-grow: 1;
+}
+
+.footer-nav {
+    display: flex;
+    margin-bottom: 0.75rem;
+    gap: 0;
+}
+
+.footer-nav a {
+    color: #888;
+    text-decoration: none;
+    margin-right: 1.5rem;
+    font-size: 0.875rem;
+    transition: color 0.3s;
+    font-weight: normal;
+}
+
+.footer-nav a:hover {
+    color: #ffffff;
+}
+
+.copyright {
+    font-size: 0.8125rem;
+    margin: 0;
+    color: #888;
+}
+
+.footer-social {
+    text-align: right;
+}
+
+.support-email {
+    font-size: 0.8125rem;
+    margin: 0;
+    color: #888;
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+    .navbar {
+        padding: 1rem 5%;
+    }
+
+    .dashboard-main {
+        padding: 0 5%;
+    }
+
+    .dashboard-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 768px) {
+    .stats-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .dashboard-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+    }
+
+    .footer-container {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1.5rem;
+    }
+
+    .footer-divider {
+        display: none;
+    }
+
+    .footer-info {
+        width: 100%;
+    }
+
+    .footer-nav {
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 0;
+    }
+
+    .footer-social {
+        text-align: left;
+    }
+}

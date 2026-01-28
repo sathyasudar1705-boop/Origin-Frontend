@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OriginX | Employer Sign Up</title>
+    <link rel="stylesheet" href="../css/auth.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;850&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <div class="auth-container">
+        <button class="close-btn" onclick="location.href='../index.html'">&times;</button>
+
+        <div style="display: flex; justify-content: center; margin-bottom: 2rem;">
+            <div
+                style="background: var(--accent); color: white; width: 48px; height: 48px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 1.5rem; box-shadow: 0 8px 16px rgba(37, 99, 235, 0.2);">
+                O</div>
+        </div>
+        <div class="auth-header">
+            <h2>Hiring for your Company?</h2>
+            <p>Create an employer account to post jobs</p>
+        </div>
+
+        <form class="register-form" onsubmit="registerCompany(event)">
+            <div class="input-group">
+                <label>Company Name</label>
+                <input type="text" id="companyName" placeholder="OriginX Corp" required>
+            </div>
+            <div class="input-group">
+                <label>Industry Location</label>
+                <input type="text" id="companyLocation" placeholder="Remote, New York, etc." required>
+            </div>
+            <div class="input-group">
+                <label>Full Name (HR/Owner)</label>
+                <input type="text" id="fullName" placeholder="John Doe" required>
+            </div>
+            <div class="input-group">
+                <label>Business Email</label>
+                <input type="email" id="email" placeholder="hr@company.com" required>
+            </div>
+            <div class="input-group">
+                <label>Password</label>
+                <input type="password" id="password" placeholder="Min. 8 characters" required>
+            </div>
+            <button type="submit" class="auth-btn">Register Company</button>
+        </form>
+
+        <div class="auth-footer">
+            <p>Already have an account? <a href="company_login.html">Employer Login</a></p>
+        </div>
+    </div>
+
+    <script src="../js/config.js"></script>
+    <script src="../js/auth.js"></script>
+</body>
+
+</html>

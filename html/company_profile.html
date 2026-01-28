@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Company Profile | OriginX Business</title>
+    <link rel="stylesheet" href="../css/profile.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <header class="navbar">
+        <a href="company_dashboard.html" class="logo">
+            <div class="logo-icon">O</div>
+            <span>OriginX Business</span>
+        </a>
+        <nav class="nav-links">
+            <a href="company_dashboard.html">Dashboard</a>
+            <a href="#">Manage Jobs</a>
+            <a href="company_applications.html">Applications</a>
+        </nav>
+        <div class="user-profile">
+            <a href="company_profile.html" class="profile">Profile</a>
+            <a href="../index.html" class="logout-btn">Logout</a>
+        </div>
+    </header>
+
+    <main class="profile-container profile-grid">
+        <div class="left-column">
+            <div class="profile-card">
+                <div class="card-header" style="justify-content: space-between; display: flex; align-items: center;">
+                    <div style="display: flex; align-items: center; gap: 15px;">
+                        <div class="header-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round" class="lucide lucide-building-2">
+                                <path d="M6 22V4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v18Z" />
+                                <path d="M6 18H4a2 2 0 0 1-2-2v-2a2 2 0 0 1 2-2h2" />
+                                <path d="M18 18h2a2 2 0 0 0 2-2v-2a2 2 0 0 0-2-2h-2" />
+                                <path d="M10 8h4" />
+                                <path d="M10 12h4" />
+                                <path d="M10 16h4" />
+                            </svg>
+                        </div>
+                        <div>
+                            <h2 id="displayCompName">Company Profile</h2>
+                            <p id="profileStatus">Manage your business brand and contact details</p>
+                        </div>
+                    </div>
+                    <button type="button" id="editToggleBtn" class="edit-btn-pro">Edit Profile</button>
+                </div>
+
+                <form id="companyProfileForm" class="view-mode">
+
+                    <div class="section-card">
+                        <h3><i class="icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
+                                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round" class="lucide lucide-info">
+                                    <circle cx="12" cy="12" r="10" />
+                                    <path d="M12 16v-4" />
+                                    <path d="M12 8h.01" />
+                                </svg>
+                            </i> Business Information</h3>
+                        <div class="input-grid-pro">
+                            <div class="input-group-pro">
+                                <label>Company Name</label>
+                                <input type="text" id="compName" required readonly>
+                            </div>
+                            <div class="input-group-pro">
+                                <label>Industry</label>
+                                <input type="text" id="compIndustry" placeholder="e.g. Technology" readonly>
+                            </div>
+                            <div class="input-group-pro">
+                                <label>Website</label>
+                                <input type="url" id="compWebsite" placeholder="https://..." readonly>
+                            </div>
+                            <div class="input-group-pro">
+                                <label>Location</label>
+                                <input type="text" id="compLocation" placeholder="e.g. London, UK" readonly>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="section-card">
+                        <h3><i class="icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
+                                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round" class="lucide lucide-phone">
+                                    <path
+                                        d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
+                                </svg>
+                            </i> Contact Details</h3>
+                        <div class="input-grid-pro">
+                            <div class="input-group-pro">
+                                <label>Business Email</label>
+                                <input type="email" id="compEmail" required readonly>
+                            </div>
+                            <div class="input-group-pro">
+                                <label>Phone Number</label>
+                                <input type="text" id="compPhone" placeholder="Not provided" readonly>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="section-card">
+                        <h3><i class="icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
+                                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round" class="lucide lucide-file-text">
+                                    <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z" />
+                                    <polyline points="14 2 14 8 20 8" />
+                                    <line x1="16" y1="13" x2="8" y2="13" />
+                                    <line x1="16" y1="17" x2="8" y2="17" />
+                                    <polyline points="10 9 9 9 8 9" />
+                                </svg>
+                            </i> About Company</h3>
+                        <div class="input-group-pro">
+                            <textarea id="compDesc" rows="6" placeholder="Describe your company mission..."
+                                readonly></textarea>
+                        </div>
+                    </div>
+
+                    <div class="form-actions-pro">
+                        <button type="submit" class="save-btn-pro">Save Changes</button>
+                        <button type="button" id="cancelEditBtn" class="cancel-btn-pro">Discard Changes</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div class="right-column">
+            <div class="sidebar-card tips-card">
+                <h4><i class="icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                            class="lucide lucide-lightbulb">
+                            <path
+                                d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5" />
+                            <path d="M9 18h6" />
+                            <path d="M10 22h4" />
+                        </svg>
+                    </i> Branding Tips</h4>
+                <ul>
+                    <li><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                            class="lucide lucide-check-circle-2"
+                            style="display: inline; vertical-align: middle; margin-right: 5px;">
+                            <circle cx="12" cy="12" r="10" />
+                            <path d="m9 12 2 2 4-4" />
+                        </svg> A complete profile attracts 50% more candidates.</li>
+                    <li><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                            class="lucide lucide-check-circle-2"
+                            style="display: inline; vertical-align: middle; margin-right: 5px;">
+                            <circle cx="12" cy="12" r="10" />
+                            <path d="m9 12 2 2 4-4" />
+                        </svg> Link your actual website to build trust.</li>
+                    <li><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                            class="lucide lucide-check-circle-2"
+                            style="display: inline; vertical-align: middle; margin-right: 5px;">
+                            <circle cx="12" cy="12" r="10" />
+                            <path d="m9 12 2 2 4-4" />
+                        </svg> Describe your company culture to find better matches.</li>
+                </ul>
+            </div>
+
+            <div class="sidebar-card progress-card">
+                <h4><i class="icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                            class="lucide lucide-trending-up">
+                            <polyline points="23 6 13.5 15.5 8.5 10.5 1 18" />
+                            <polyline points="17 6 23 6 23 12" />
+                        </svg>
+                    </i> Profile Strength</h4>
+                <div class="progress-bar-container">
+                    <div class="progress-bar" id="profileProgress" style="width: 60%;"></div>
+                </div>
+                <p style="font-size: 12px; color: var(--text-muted); margin-top: 10px;">Candidates love seeing detailed
+                    business info!</p>
+            </div>
+        </div>
+    </main>
+
+    <footer class="main-footer">
+        <div class="footer-container">
+            <div class="logo">
+                <div class="logo-icon">O</div><span>OriginX</span>
+            </div>
+            <div class="footer-divider"></div>
+            <div class="footer-info">
+                <nav class="footer-nav">
+                    <a href="company_dashboard.html">Dashboard</a>
+                    <a href="company_profile.html">Profile</a>
+                </nav>
+                <p class="copyright">© 2026 Origin X Business.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="../js/config.js"></script>
+    <script src="../js/company_profile.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OriginX - Update Profile</title>
+
+    <!-- FIXED PATH -->
+    <link rel="stylesheet" href="../css/profile.css">
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+    <header class="navbar">
+        <a href="dashboard.html" class="logo">
+            <div class="logo-icon">O</div>
+            <span>OriginX</span>
+        </a>
+
+        <nav class="nav-links">
+            <!-- FIXED LINKS -->
+            <a href="dashboard.html" class="dashboard">Dashboard</a>
+            <a href="jobs.html" class="dashboard">Search Jobs</a>
+            <a href="part_time_jobs.html" class="dashboard">Part Time Jobs</a>
+        </nav>
+
+        <div class="user-profile">
+            <a href="profile.html" class="profile">Profile</a>
+            <a href="../index.html" class="logout-btn">Logout</a>
+        </div>
+    </header>
+
+    <main class="profile-container profile-grid">
+        <div class="left-column">
+            <div class="profile-card">
+                <div class="card-header" style="justify-content: space-between; display: flex; align-items: center;">
+                    <div style="display: flex; align-items: center; gap: 15px;">
+                        <div class="profile-pic-container">
+                            <img src="https://ui-avatars.com/api/?name=User&background=eff6ff&color=2563eb"
+                                alt="Profile Picture" id="profilePic">
+                            <label for="profilePicInput" class="upload-overlay">
+                                <span>📷</span>
+                            </label>
+                            <input type="file" id="profilePicInput" accept="image/*" style="display: none;">
+                        </div>
+                        <div>
+                            <h2>Professional Profile</h2>
+                            <p id="profileStatus">View and manage your career presence</p>
+                        </div>
+                    </div>
+                    <button type="button" id="editToggleBtn" class="edit-btn-pro">Edit Profile</button>
+                </div>
+
+                <form id="profileForm" class="view-mode">
+
+
+                    <div class="section-card">
+                        <h3><i class="icon">📧</i> Basic Information</h3>
+                        <div class="input-grid-pro">
+                            <div class="input-group-pro">
+                                <label>Full Name</label>
+                                <input type="text" id="profileFullName" placeholder="Your Name" required readonly>
+                            </div>
+                            <div class="input-group-pro">
+                                <label>Email Address</label>
+                                <input type="email" id="profileEmail" placeholder="Your Email" required readonly>
+                            </div>
+                            <div class="input-group-pro">
+                                <label>Phone Number</label>
+                                <input type="text" id="profilePhone" placeholder="Not provided" readonly>
+                            </div>
+                            <div class="input-group-pro">
+                                <label>Location</label>
+                                <input type="text" id="profileLocation" placeholder="Not provided" readonly>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="section-card">
+                        <h3><i class="icon">💼</i> Professional Details</h3>
+                        <div class="input-grid-pro">
+                            <div class="input-group-pro">
+                                <label>Desired Job Role</label>
+                                <input type="text" id="profileDesiredJob" placeholder="e.g. Frontend Developer"
+                                    readonly>
+                            </div>
+                            <div class="input-group-pro">
+                                <label>Years of Experience</label>
+                                <input type="text" id="profileExperience" placeholder="e.g. 2 years" readonly>
+                            </div>
+                        </div>
+                        <div class="input-group-pro" style="margin-top:20px;">
+                            <label>Skills & Expertise</label>
+                            <textarea id="profileSkills" rows="3" placeholder="React, Node.js, Design Systems..."
+                                readonly></textarea>
+                        </div>
+                    </div>
+
+                    <div class="form-actions-pro">
+                        <button type="submit" class="save-btn-pro">Save Changes</button>
+                        <button type="button" id="cancelEditBtn" class="cancel-btn-pro">Discard Changes</button>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+
+        <div class="right-column">
+            <div class="sidebar-card tips-card">
+                <h4><i class="icon">💡</i> Success Tips</h4>
+                <ul>
+                    <li>✅ Add a professional photo to increase profile views by 40%</li>
+                    <li>✅ List 5+ skills to match more job opportunities</li>
+                    <li>✅ Highlight your unique value in your details</li>
+                </ul>
+            </div>
+
+            <div class="sidebar-card progress-card">
+                <h4><i class="icon">📈</i> Profile Strength</h4>
+                <div class="progress-bar-container">
+                    <div class="progress-bar" style="width: 75%;"></div>
+                </div>
+                <p style="font-size: 12px; color: var(--text-muted); margin-top: 10px;">Your profile is looking great!
+                    Complete your skills to reach 100%.</p>
+            </div>
+        </div>
+    </main>
+
+    <script src="../js/config.js"></script>
+    <script src="../js/profile.js"></script>
+
+    <footer class="main-footer">
+        <div class="footer-container">
+            <div class="logo">
+                <div class="logo-icon">O</div>
+                <span>OriginX</span>
+            </div>
+
+            <div class="footer-divider"></div>
+
+            <div class="footer-info">
+                <nav class="footer-nav">
+                    <!-- FIXED -->
+                    <a href="dashboard.html">Dashboard</a>
+                    <a href="jobs.html">Jobs</a>
+                    <a href="profile.html">Profile</a>
+                    <a href="../index.html">Log out</a>
+                </nav>
+                <p class="copyright">© 2026 Origin X. All rights reserved.</p>
+            </div>
+
+            <div class="footer-social">
+                <p class="support-email">Support: OriginX@gmail.com</p>
+            </div>
+        </div>
+    </footer>
+
+</body>
+
+</html>

@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>OriginX - Post Part-Time Job</title>
+
+  <!-- ✅ Fixed CSS path -->
+  <link rel="stylesheet" href="../css/post_part.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+  <!-- ================= NAVBAR ================= -->
+  <header class="navbar">
+    <div class="logo">
+      <div class="logo-icon">O</div>
+      <span>OriginX</span>
+    </div>
+
+    <nav class="nav-links">
+      <a href="companies_dash.html" class="dashboard">Dashboard</a>
+      <a href="new_com.html" class="dashboard">Post New Job</a>
+      <a href="../../html/company_applications.html" class="dashboard">Applications</a>
+    </nav>
+
+    <div class="user-profile">
+      <a href="com_profile.html" class="profile">Profile</a>
+      <a href="../../index.html" class="logout-btn">Logout</a>
+    </div>
+  </header>
+
+  <!-- ================= MAIN ================= -->
+  <main class="form-container">
+    <div class="form-card">
+      <div class="form-header">
+        <div class="header-icon-purple">
+          <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+            class="lucide lucide-clock">
+            <circle cx="12" cy="12" r="10" />
+            <polyline points="12 6 12 12 16 14" />
+          </svg>
+        </div>
+        <div>
+          <h2>Post a Part-Time Job</h2>
+          <p>Find talented professionals for flexible roles</p>
+        </div>
+      </div>
+
+      <form id="postPartTimeForm">
+
+        <!-- ===== BASIC INFO ===== -->
+        <div class="section">
+          <h3>Basic Information</h3>
+          <div class="input-group">
+            <label>Job Title *</label>
+            <input type="text" placeholder="e.g., Part-Time Content Writer" required>
+          </div>
+
+          <div class="row">
+            <div class="input-group flex-1">
+              <label>Department</label>
+              <input type="text" placeholder="e.g., Marketing">
+            </div>
+            <div class="input-group flex-1">
+              <label>Job Type *</label>
+              <select required>
+                <option value="Remote">Remote</option>
+                <option value="On-site">On-site</option>
+                <option value="Hybrid">Hybrid</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="input-group flex-1">
+              <label>Location *</label>
+              <input type="text" placeholder="City, Country or Remote" required>
+            </div>
+            <div class="input-group flex-1">
+              <label>Hours Per Week *</label>
+              <select required>
+                <option value="" disabled selected>Select hours</option>
+                <option>10–15 hours</option>
+                <option>20–25 hours</option>
+                <option>Flexible</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- ===== SCHEDULE ===== -->
+        <div class="section">
+          <h3>Schedule</h3>
+          <div class="input-group">
+            <label>Work Schedule *</label>
+            <select required>
+              <option value="" disabled selected>Select schedule</option>
+              <option>Flexible hours</option>
+              <option>Fixed shifts</option>
+              <option>Weekend only</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- ===== COMPENSATION ===== -->
+        <div class="section">
+          <h3>Compensation</h3>
+          <div class="row">
+            <div class="input-group flex-1">
+              <label>Minimum Salary (₹/month) *</label>
+              <input type="text" placeholder="e.g., 15000" required>
+            </div>
+            <div class="input-group flex-1">
+              <label>Maximum Salary (₹/month) *</label>
+              <input type="text" placeholder="e.g., 25000" required>
+            </div>
+          </div>
+        </div>
+
+        <!-- ===== JOB DESCRIPTION ===== -->
+        <div class="section">
+          <h3>Job Description</h3>
+          <div class="input-group">
+            <textarea rows="5" placeholder="Describe the role, what the candidate will do, and why they should apply..."
+              required></textarea>
+          </div>
+        </div>
+
+        <!-- ===== RESPONSIBILITIES ===== -->
+        <div class="section">
+          <h3>Responsibilities</h3>
+          <div class="add-row">
+            <input type="text" placeholder="Add a responsibility">
+            <button type="button" class="btn-add">+ Add</button>
+          </div>
+        </div>
+
+        <!-- ===== REQUIREMENTS ===== -->
+        <div class="section">
+          <h3>Requirements</h3>
+          <div class="add-row">
+            <input type="text" placeholder="Add a requirement">
+            <button type="button" class="btn-add">+ Add</button>
+          </div>
+        </div>
+
+        <!-- ===== SKILLS ===== -->
+        <div class="section">
+          <h3>Required Skills</h3>
+          <div class="add-row">
+            <input type="text" placeholder="Add a skill">
+            <button type="button" class="btn-add">+ Add</button>
+          </div>
+        </div>
+
+        <!-- ===== BENEFITS ===== -->
+        <div class="section">
+          <h3>Benefits</h3>
+          <div class="add-row">
+            <input type="text" placeholder="Add a benefit">
+            <button type="button" class="btn-add">+ Add</button>
+          </div>
+        </div>
+
+        <!-- ===== FORM ACTIONS ===== -->
+        <div class="form-actions">
+          <button type="submit" class="btn-post">Post Part-Time Job</button>
+          <a href="companies_dash.html"><button type="button" class="btn-cancel">Cancel</button></a>
+        </div>
+
+      </form>
+    </div>
+
+    <!-- ===== TIPS CARD ===== -->
+    <div class="tips-card">
+      <h4>Part-Time Hiring Tips</h4>
+      <ul>
+        <li><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+            class="lucide lucide-check-circle-2" style="display: inline; vertical-align: middle; margin-right: 5px;">
+            <circle cx="12" cy="12" r="10" />
+            <path d="m9 12 2 2 4-4" />
+          </svg> Clearly specify working hours and schedule flexibility</li>
+        <li><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+            class="lucide lucide-check-circle-2" style="display: inline; vertical-align: middle; margin-right: 5px;">
+            <circle cx="12" cy="12" r="10" />
+            <path d="m9 12 2 2 4-4" />
+          </svg> Part-time roles attract students, freelancers, and career switchers</li>
+        <li><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+            class="lucide lucide-check-circle-2" style="display: inline; vertical-align: middle; margin-right: 5px;">
+            <circle cx="12" cy="12" r="10" />
+            <path d="m9 12 2 2 4-4" />
+          </svg> Mention if there's potential for full-time conversion</li>
+        <li><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+            class="lucide lucide-check-circle-2" style="display: inline; vertical-align: middle; margin-right: 5px;">
+            <circle cx="12" cy="12" r="10" />
+            <path d="m9 12 2 2 4-4" />
+          </svg> Be transparent about salary and benefits for part-time work</li>
+      </ul>
+    </div>
+
+  </main>
+</body>
+
+</html>

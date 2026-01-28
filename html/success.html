@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Application Submitted | OriginX</title>
+    <link rel="stylesheet" href="../css/apply.css">
+    <style>
+        .success-box {
+            background: white;
+            max-width: 600px;
+            margin: 100px auto;
+            padding: 40px;
+            border-radius: 16px;
+            text-align: center;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .success-icon {
+            font-size: 64px;
+            color: #22c55e;
+            margin-bottom: 20px;
+        }
+
+        .summary-card {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 20px;
+            margin: 30px 0;
+            text-align: left;
+        }
+
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            font-size: 15px;
+        }
+
+        .summary-label {
+            color: #64748b;
+        }
+
+        .summary-value {
+            font-weight: 600;
+            color: #1e293b;
+        }
+
+        .back-btn {
+            display: inline-block;
+            background: #1d63ff;
+            color: white;
+            padding: 12px 30px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="success-box">
+        <div class="success-icon">Check</div>
+        <h2>Application Submitted!</h2>
+        <p>Your application has been received. The company will review it shortly.</p>
+
+        <div class="summary-card" id="summaryCard">
+            <div class="summary-row">
+                <span class="summary-label">Applicant Name</span>
+                <span class="summary-value" id="resName">---</span>
+            </div>
+            <div class="summary-row">
+                <span class="summary-label">Applied for</span>
+                <span class="summary-value" id="resJob">---</span>
+            </div>
+            <div class="summary-row">
+                <span class="summary-label">Company</span>
+                <span class="summary-value" id="resCompany">---</span>
+            </div>
+            <div class="summary-row">
+                <span class="summary-label">Location</span>
+                <span class="summary-value" id="resLoc">---</span>
+            </div>
+        </div>
+
+        <a href="dashboard.html" class="back-btn">Go to Dashboard</a>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const summary = JSON.parse(localStorage.getItem("last_application"));
+            if (summary) {
+                document.getElementById("resName").textContent = summary.userName;
+                document.getElementById("resJob").textContent = summary.jobTitle;
+                document.getElementById("resCompany").textContent = summary.companyName;
+                document.getElementById("resLoc").textContent = summary.location;
+            }
+        });
+    </script>
+</body>
+
+</html>

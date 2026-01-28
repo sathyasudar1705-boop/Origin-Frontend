@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OriginX - Apply for Position</title>
+
+    <!-- FIXED CSS PATH -->
+    <link rel="stylesheet" href="../css/apply.css">
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+    <header class="navbar">
+        <a href="dashboard.html" class="logo">
+            <div class="logo-icon">O</div>
+            <span>OriginX</span>
+        </a>
+
+        <nav class="nav-links">
+            <!-- FIXED LINKS -->
+            <a href="dashboard.html" class="dashboard">Dashboard</a>
+            <a href="jobs.html" class="dashboard">Search Jobs</a>
+            <a href="part_time_jobs.html" class="dashboard">Part Time Jobs</a>
+        </nav>
+
+        <div class="user-profile">
+            <a href="profile.html" class="profile">Profile</a>
+            <!-- FIXED -->
+            <a href="../index.html" class="logout-btn">Logout</a>
+        </div>
+    </header>
+
+    <main class="apply-container">
+
+        <section class="job-summary-card" id="jobSummary">
+            <div class="job-header-row">
+                <h2 id="jobTitle">Loading Job...</h2>
+                <span class="badge blue" id="jobType">Full-time</span>
+            </div>
+            <p class="company-name" id="companyName">---</p>
+            <div class="job-meta" id="jobMeta">
+                <span id="jobLocation">---</span>
+                <span>•</span>
+                <span id="jobSalary">---</span>
+            </div>
+        </section>
+
+        <section class="application-form-card">
+            <div class="form-header">
+                <div class="icon-box">📄</div>
+                <div>
+                    <h3>Apply for this Position</h3>
+                    <p>Fill in your details to submit your application</p>
+                </div>
+            </div>
+
+            <form id="applyForm">
+                <div class="form-section">
+                    <h4>Personal Information</h4>
+                    <div class="input-grid">
+                        <div class="input-group">
+                            <label>Full Name *</label>
+                            <input type="text" id="applyFullName" placeholder="Your Name" required>
+                        </div>
+                        <div class="input-group">
+                            <label>Email Address *</label>
+                            <input type="email" id="applyEmail" placeholder="Your Email" required>
+                        </div>
+                        <div class="input-group">
+                            <label>Phone Number *</label>
+                            <input type="tel" id="applyPhone" placeholder="+91 00000 00000" required>
+                        </div>
+                        <div class="input-group">
+                            <label>Current Location *</label>
+                            <input type="text" id="applyLocation" placeholder="City, Country" required>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <h4>Professional Details</h4>
+                    <div class="input-grid">
+                        <div class="input-group">
+                            <label>Years of Experience *</label>
+                            <input type="text" id="applyExperience" placeholder="e.g., 3 years" required>
+                        </div>
+                        <div class="input-group">
+                            <label>Skills</label>
+                            <input type="text" id="applySkills" placeholder="e.g., Frontend, Backend">
+                        </div>
+                        <div class="input-group">
+                            <label>Expected Salary (LPA / Month) *</label>
+                            <input type="text" id="applySalary" placeholder="e.g., 12" required>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <h4>Resume & Documents</h4>
+                    <label class="field-label">Upload Resume URL *</label>
+                    <div class="upload-zone">
+                        <p>Paste Link (or mock upload)</p>
+                        <input type="text" id="resumeUrl" placeholder="Link to your resume" required
+                            style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 4px;">
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <button type="submit" class="submit-btn">Submit Application</button>
+                    <a href="dashboard.html" class="cancel-btn">Cancel</a>
+                </div>
+            </form>
+        </section>
+    </main>
+
+    <script src="../js/config.js"></script>
+    <script src="../js/apply.js"></script>
+
+</body>
+
+</html>

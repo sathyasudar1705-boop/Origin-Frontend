@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Applications | OriginX</title>
+    <link rel="stylesheet" href="../css/jobs.css">
+    <style>
+        .app-container {
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        .app-card {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 15px;
+            border: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: transform 0.2s;
+        }
+
+        .app-card:hover {
+            transform: translateX(5px);
+            border-color: var(--primary-blue);
+        }
+
+        .app-info h3 {
+            margin: 0;
+            font-size: 18px;
+            color: var(--text-dark);
+        }
+
+        .app-info p {
+            color: var(--text-muted);
+            margin: 5px 0;
+        }
+
+        .status-badge {
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .status-applied {
+            background: #eff6ff;
+            color: var(--primary-blue);
+        }
+
+        .status-shortlisted,
+        .status-approved {
+            background: #f0fdf4;
+            color: #16a34a;
+        }
+
+        .status-rejected {
+            background: #fef2f2;
+            color: #dc2626;
+        }
+    </style>
+</head>
+
+<body>
+    <header class="navbar">
+        <a href="dashboard.html" class="logo">
+            <div class="logo-icon">O</div>
+            <span>OriginX</span>
+        </a>
+        <nav class="nav-links">
+            <a href="dashboard.html">Dashboard</a>
+            <a href="jobs.html">Search Jobs</a>
+            <a href="part_time_jobs.html">Part Time Jobs</a>
+        </nav>
+        <div class="user-profile">
+            <a href="profile.html" class="profile">Profile</a>
+            <a href="../index.html" class="logout-btn">Logout</a>
+        </div>
+    </header>
+
+    <main class="app-container">
+        <h1>My Applications</h1>
+        <p style="color: var(--text-muted);">Track the status of your job applications</p>
+
+        <div id="applicationsList" style="margin-top: 30px;">
+            <p>Loading your applications...</p>
+        </div>
+    </main>
+
+    <div id="detailsModal" class="modal"
+        style="display:none; position:fixed; z-index:100; left:0; top:0; width:100%; height:100%; background:rgba(0,0,0,0.5); align-items:center; justify-content:center;">
+        <div class="modal-content"
+            style="background:white; padding:30px; border-radius:12px; max-width:600px; width:90%; position:relative;">
+            <span class="close-modal"
+                style="position:absolute; right:20px; top:15px; font-size:24px; cursor:pointer;">&times;</span>
+            <h2 id="modalJobTitle">Job Details</h2>
+            <p id="modalJobMeta"
+                style="color:var(--text-muted); margin-bottom:20px; display:flex; align-items:center; gap:6px;">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                    <circle cx="12" cy="10" r="3"></circle>
+                </svg>
+                Location • 📅 Date
+            </p>
+
+            <div style="border-top:1px solid #eee; padding-top:20px;">
+                <p><strong>Status:</strong> <span id="modalStatus" class="status-badge">Applied</span></p>
+                <div style="margin-top:15px;">
+                    <p><strong>Skills submitted:</strong></p>
+                    <p id="modalSkills" style="color:var(--text-muted);"></p>
+                </div>
+                <div style="margin-top:10px;">
+                    <p><strong>Experience:</strong></p>
+                    <p id="modalExp" style="color:var(--text-muted);"></p>
+                </div>
+                <div style="margin-top:10px;">
+                    <p><strong>Resume Link:</strong></p>
+                    <a id="modalResume" href="#" target="_blank" style="color:var(--primary-blue);">View Resume</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="../js/config.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", async () => {
+            const user = JSON.parse(localStorage.getItem("user"));
+            if (!user) { window.location.href = "user_login.html"; return; }
+
+            const list = document.getElementById("applicationsList");
+            const modal = document.getElementById("detailsModal");
+            const closeModal = document.querySelector(".close-modal");
+
+            closeModal.onclick = () => modal.style.display = "none";
+            window.onclick = (e) => { if (e.target == modal) modal.style.display = "none"; };
+
+            try {
+                const response = await fetch(`${API_BASE_URL}/applications/user/${user.id}`);
+                if (response.ok) {
+                    const apps = await response.json();
+                    if (apps.length === 0) {
+                        list.innerHTML = "<p>You haven't applied for any jobs yet.</p>";
+                        return;
+                    }
+
+                    list.innerHTML = "";
+                    apps.reverse().forEach(app => {
+                        const card = document.createElement("div");
+                        card.classList.add("app-card");
+                        card.style.cursor = "pointer";
+                        card.onclick = () => showDetails(app);
+
+                        card.innerHTML = `
+                            <div class="app-info">
+                                <h3>${app.job_title || 'Application ID: ' + (app.job_id || app.pt_job_id)}</h3>
+                                <p style="display:flex; align-items:center; gap:4px;">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                                        <circle cx="12" cy="10" r="3"></circle>
+                                    </svg>
+                                    ${app.job_location || 'N/A'}
+                                </p>
+                                <p>📅 Applied: ${app.created_at || new Date().toLocaleDateString()}</p>
+                            </div>
+                            <span class="status-badge status-${app.status.toLowerCase()}">${app.status}</span>
+                        `;
+                        list.appendChild(card);
+                    });
+
+                    // Check for app_id in URL from dashboard click
+                    const urlParams = new URLSearchParams(window.location.search);
+                    const specificId = urlParams.get('app_id');
+                    if (specificId) {
+                        const target = apps.find(a => a.id == specificId);
+                        if (target) showDetails(target);
+                    }
+                }
+            } catch (err) {
+                list.innerHTML = "<p>Error loading applications.</p>";
+            }
+
+            function showDetails(app) {
+                document.getElementById("modalJobTitle").textContent = app.job_title || "Application Details";
+                document.getElementById("modalJobMeta").innerHTML = `
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                        <circle cx="12" cy="10" r="3"></circle>
+                    </svg>
+                    ${app.job_location || 'N/A'} • 📅 ${app.created_at || 'Recently'}`;
+                const statusBadge = document.getElementById("modalStatus");
+                statusBadge.textContent = app.status;
+                statusBadge.className = `status-badge status-${app.status.toLowerCase()}`;
+
+                document.getElementById("modalSkills").textContent = app.skills || "Not specified";
+                document.getElementById("modalExp").textContent = app.experience || "Not specified";
+                document.getElementById("modalResume").href = app.resume_url || "#";
+
+                modal.style.display = "flex";
+            }
+        });
+    </script>
+</body>
+
+</html>

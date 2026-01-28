@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Company Dashboard | OriginX</title>
+    <link rel="stylesheet" href="../css/company_dashboard.css">
+</head>
+
+<body>
+    <header class="navbar">
+        <a href="company_dashboard.html" class="logo">
+            <div class="logo-icon">O</div>
+            <span>OriginX Business</span>
+        </a>
+        <nav class="nav-links">
+            <a href="company_dashboard.html" class="active">Dashboard</a>
+            <a href="#">Manage Jobs</a>
+            <a href="company_applications.html">Applications</a>
+        </nav>
+        <div class="user-profile">
+            <span id="companyNameDisplay" style="margin-right: 15px; font-weight: 600; color: var(--text-dark);">Company
+                Name</span>
+            <a href="company_profile.html" class="profile">Profile</a>
+            <a href="../index.html" class="logout-btn">Logout</a>
+        </div>
+    </header>
+
+    <main class="dashboard-main">
+        <div class="dashboard-header">
+            <h1 id="welcomeMsg">Welcome, Employer</h1>
+            <button id="openPostModal" class="btn-primary">Create New Job</button>
+        </div>
+
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-icon blue">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                        class="lucide lucide-folder-root">
+                        <path
+                            d="M4 20h16a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.93a2 2 0 0 1-1.66-.9l-.82-1.2A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13c0 1.1.9 2 2 2Z" />
+                        <circle cx="12" cy="13" r="2" />
+                    </svg>
+                </div>
+                <div class="stat-info">
+                    <h3 id="statJobs">0</h3>
+                    <p>Open Positions</p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon green">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                        class="lucide lucide-users">
+                        <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
+                        <circle cx="9" cy="7" r="4" />
+                        <path d="M22 21v-2a4 4 0 0 0-3-3.87" />
+                        <circle cx="19" cy="11" r="2" />
+                    </svg>
+                </div>
+                <div class="stat-info">
+                    <h3 id="statApps">0</h3>
+                    <p>Total Candidates</p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon orange">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                        class="lucide lucide-zap">
+                        <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
+                    </svg>
+                </div>
+                <div class="stat-info">
+                    <h3 id="statInterviews">0</h3>
+                    <p>Fast Matches</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="dashboard-grid">
+            <!-- Left Column: Job Management -->
+            <div class="left-col">
+                <div class="section-container">
+                    <div class="section-header">
+                        <h2>Published Job Listings</h2>
+                    </div>
+                    <div id="employerJobs">
+                        <p style="color:var(--text-muted);">Loading active listings...</p>
+                    </div>
+
+                    <h2 style="margin: 30px 0 20px; font-size: 18px;">Part-Time Opportunities</h2>
+                    <div id="employerPTJobs">
+                        <p style="color:var(--text-muted);">Loading part-time listings...</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Column: Recent Activity/Apps -->
+            <div class="right-col">
+                <div class="section-container">
+                    <div class="section-header">
+                        <h2>Recent Applications</h2>
+                    </div>
+                    <div id="companyApplications">
+                        <p style="color:var(--text-muted);">Loading candidates...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Post Job Modal -->
+    <div id="postJobModal" class="modal"
+        style="display:none; position:fixed; z-index:1001; left:0; top:0; width:100%; height:100%; background:rgba(0,0,0,0.5); align-items:center; justify-content:center;">
+        <div class="modal-content"
+            style="background:white; padding:30px; border-radius:12px; max-width:500px; width:90%;">
+            <h3>Post a New Job</h3>
+            <form id="postJobForm">
+                <div class="input-group" style="margin-bottom:15px;">
+                    <label>Job Type</label>
+                    <select id="jobType" style="width:100%; padding:10px; border:1px solid #ddd; border-radius:6px;">
+                        <option value="full-time">Full-time Job</option>
+                        <option value="part-time">Part-time Job</option>
+                    </select>
+                </div>
+                <div class="input-group" style="margin-bottom:15px;">
+                    <label>Job Title</label>
+                    <input type="text" id="jobTitle" required
+                        style="width:100%; padding:10px; border:1px solid #ddd; border-radius:6px;">
+                </div>
+                <div class="input-group" style="margin-bottom:15px;">
+                    <label>Location</label>
+                    <input type="text" id="jobLocation" required
+                        style="width:100%; padding:10px; border:1px solid #ddd; border-radius:6px;">
+                </div>
+                <div class="input-group" style="margin-bottom:15px;">
+                    <label>Salary Range</label>
+                    <input type="text" id="jobSalary" placeholder="e.g. 10-15 LPA"
+                        style="width:100%; padding:10px; border:1px solid #ddd; border-radius:6px;">
+                </div>
+                <div class="input-group" style="margin-bottom:15px;">
+                    <label>Skills (comma separated)</label>
+                    <input type="text" id="jobSkills" placeholder="React, Python..."
+                        style="width:100%; padding:10px; border:1px solid #ddd; border-radius:6px;">
+                </div>
+                <div class="input-group" style="margin-bottom:15px;">
+                    <label>Description</label>
+                    <textarea id="jobDesc" rows="4"
+                        style="width:100%; padding:10px; border:1px solid #ddd; border-radius:6px;"></textarea>
+                </div>
+                <div class="modal-actions" style="display:flex; gap:10px;">
+                    <button type="submit" class="post-btn" style="flex:1;">Submit Post</button>
+                    <button type="button" id="closeModal"
+                        style="padding:10px 20px; border:1px solid #ddd; border-radius:6px; cursor:pointer;">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <footer class="main-footer">
+        <div class="footer-container">
+            <div class="logo">
+                <div class="logo-icon">O</div><span>OriginX</span>
+            </div>
+            <div class="footer-divider"></div>
+            <div class="footer-info">
+                <nav class="footer-nav">
+                    <a href="company_dashboard.html">Dashboard</a>
+                    <a href="company_profile.html">Profile</a>
+                </nav>
+                <p class="copyright">© 2026 Origin X Business.</p>
+            </div>
+            <div class="footer-social">
+                <p class="support-email">Support: OriginX@gmail.com</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Application Detail Modal -->
+    <div id="appDetailModal" class="modal"
+        style="display:none; position:fixed; z-index:1001; left:0; top:0; width:100%; height:100%; background:rgba(0,0,0,0.5); align-items:center; justify-content:center;">
+        <div class="modal-content"
+            style="background:white; padding:30px; border-radius:12px; max-width:700px; width:90%; max-height: 90vh; overflow-y: auto;">
+            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 20px;">
+                <h3 id="detailCandidateName" style="margin: 0; font-size: 24px;">Candidate Name</h3>
+                <span id="detailStatusBadge" class="status-badge">Applied</span>
+            </div>
+
+            <div class="detail-grid" style="display: grid; grid-template-columns: 1fr 1.5fr; gap: 25px;">
+                <div class="sidebar-info">
+                    <p><strong>Email:</strong> <br> <span id="detailEmail">email@example.com</span></p>
+                    <p><strong>Phone:</strong> <br> <span id="detailPhone">+91 ...</span></p>
+                    <p><strong>Location:</strong> <br> <span id="detailLocation">City, State</span></p>
+                    <p><strong>Experience:</strong> <br> <span id="detailExperience">...</span></p>
+                    <p><strong>Expected Salary:</strong> <br> <span id="detailSalary">...</span></p>
+                </div>
+                <div class="main-info">
+                    <p><strong>Applied For:</strong> <br> <span id="detailJobTitle"
+                            style="font-weight: 600; color: var(--accent);">Job Title</span></p>
+                    <p><strong>Key Skills:</strong> <br> <span id="detailSkills">Skills list...</span></p>
+                    <p><strong>Resume Link:</strong> <br> <a id="detailResume" href="#" target="_blank"
+                            style="color: var(--accent); text-decoration: none; font-weight: 600;">View Resume
+                            Document</a></p>
+                </div>
+            </div>
+
+            <div class="modal-actions" id="modalActions"
+                style="display:flex; gap:12px; margin-top:30px; border-top: 1px solid var(--border-color); padding-top: 20px;">
+                <button id="approveBtn"
+                    style="flex:1; background:#22c55e; color:white; border:none; padding:12px; border-radius:8px; font-weight:700; cursor:pointer;">Approve
+                    Application</button>
+                <button id="rejectBtn"
+                    style="flex:1; background:#ef4444; color:white; border:none; padding:12px; border-radius:8px; font-weight:700; cursor:pointer;">Reject
+                    Application</button>
+                <button id="closeDetailModal"
+                    style="padding:12px 20px; border:1.5px solid var(--border-color); border-radius:8px; font-weight:600; cursor:pointer;">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="../js/config.js"></script>
+    <script src="../js/company_dashboard.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OriginX - Post a New Job</title>
+
+    <!-- Fixed CSS path like first file -->
+    <link rel="stylesheet" href="../css/new_com.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+    <header class="navbar">
+        <div class="logo">
+            <div class="logo-icon">O</div>
+            <span>OriginX</span>
+        </div>
+        <nav class="nav-links">
+            <a href="companies_dash.html" class="dashboard">Dashboard</a>
+            <a href="new_com.html" class="dashboard">Post New Job</a>
+            <a href="../../html/company_applications.html" class="dashboard">Applications</a>
+        </nav>
+        <div class="user-profile">
+            <a href="com_profile.html" class="profile">Profile</a>
+            <a href="../../index.html" class="logout-btn">Logout</a>
+        </div>
+    </header>
+
+    <main class="form-container">
+        <div class="form-card">
+            <div class="form-header">
+                <div class="header-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                        class="lucide lucide-briefcase">
+                        <rect width="20" height="14" x="2" y="7" rx="2" ry="2" />
+                        <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16" />
+                    </svg>
+                </div>
+                <div>
+                    <h2>Post a New Job</h2>
+                    <p>Fill in the details to create a job posting</p>
+                </div>
+            </div>
+
+            <form id="postJobForm">
+                <div class="form-section">
+                    <h3>Basic Information</h3>
+
+                    <div class="input-group">
+                        <label>Job Title *</label>
+                        <input type="text" placeholder="e.g., Senior Frontend Developer" required>
+                    </div>
+
+                    <div class="row">
+                        <div class="input-group flex-1">
+                            <label>Job Type *</label>
+                            <select required>
+                                <option value="Full-time">Full-time</option>
+                                <option value="Part-time">Part-time</option>
+                                <option value="Contract">Contract</option>
+                                <option value="Internship">Internship</option>
+                            </select>
+                        </div>
+                        <div class="input-group flex-1">
+                            <label>Location *</label>
+                            <input type="text" placeholder="e.g., Bangalore, India or Remote" required>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="input-group flex-1">
+                            <label>Min Salary (LPA) *</label>
+                            <input type="number" value="6" required>
+                        </div>
+                        <div class="input-group flex-1">
+                            <label>Max Salary (LPA) *</label>
+                            <input type="number" value="10" required>
+                        </div>
+                        <div class="input-group flex-1">
+                            <label>Experience Required *</label>
+                            <input type="text" placeholder="e.g., 2-5 years" required>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <h3>Job Description</h3>
+                    <div class="input-group">
+                        <textarea rows="6"
+                            placeholder="Describe the role, team, and what makes this opportunity great..."
+                            required></textarea>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <h3>Required Skills</h3>
+                    <div class="skills-input-row">
+                        <input type="text" id="skillInput" placeholder="Type a skill and press Enter or click Add">
+                        <button type="button" class="add-btn">Add</button>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <h3>Key Responsibilities</h3>
+                    <div class="list-item">
+                        <input type="text" placeholder="Enter a key responsibility">
+                        <button type="button" class="remove-btn">&times;</button>
+                    </div>
+                    <div class="list-item">
+                        <input type="text" placeholder="Enter a key responsibility">
+                        <button type="button" class="remove-btn">&times;</button>
+                    </div>
+                    <button type="button" class="text-add-btn">+ Add Responsibility</button>
+                </div>
+
+                <div class="form-section">
+                    <h3>Requirements</h3>
+                    <div class="list-item">
+                        <input type="text" placeholder="Enter a requirement">
+                        <button type="button" class="remove-btn">&times;</button>
+                    </div>
+                    <div class="list-item">
+                        <input type="text" placeholder="Enter a requirement">
+                        <button type="button" class="remove-btn">&times;</button>
+                    </div>
+                    <button type="button" class="text-add-btn">+ Add Requirement</button>
+                </div>
+
+                <div class="form-actions">
+                    <button type="submit" class="post-job-btn">Post Job</button>
+                    <a href="companies_dash.html"><button type="button" class="cancel-btn">Cancel</button></a>
+                </div>
+            </form>
+        </div>
+    </main>
+
+</body>
+
+</html>

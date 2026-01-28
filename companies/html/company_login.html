@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Employer Login | OriginX</title>
+    <!-- Adjusted path to reach the shared CSS -->
+    <link rel="stylesheet" href="../../css/auth.css">
+</head>
+
+<body>
+
+    <div class="auth-container">
+        <button class="close-btn" onclick="history.back()">&times;</button>
+
+        <div class="auth-header">
+            <h2>Employer Portal</h2>
+            <p>Login to manage your job postings</p>
+        </div>
+
+        <form class="login-form">
+            <div class="input-group">
+                <label for="email">Business Email</label>
+                <input type="email" id="email" name="email" placeholder="hr@company.com" required>
+            </div>
+
+            <div class="input-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" placeholder="Enter password" required>
+            </div>
+
+            <!-- Mock navigation to company dash -->
+            <a href="companies_dash.html" class="auth-btn"
+                style="text-decoration: none; display: block; text-align: center;">Login</a>
+        </form>
+
+        <div class="auth-footer">
+            <p>New to OriginX? <a href="new_com.html">Register Company</a></p>
+            <p><a href="../../index.html"
+                    style="font-size: 13px; color: #a0aec0; text-decoration: none; display: block; margin-top: 10px;">Back
+                    to Home</a></p>
+        </div>
+    </div>
+
+</body>
+
+</html>

@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Setup Company Profile | OriginX Business</title>
+    <link rel="stylesheet" href="../css/auth.css">
+    <style>
+        .setup-container {
+            max-width: 600px;
+            margin: 50px auto;
+            background: white;
+            padding: 40px;
+            border-radius: 16px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .setup-header {
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .setup-header h1 {
+            font-size: 28px;
+            color: #0f172a;
+            margin-bottom: 10px;
+        }
+
+        .setup-header p {
+            color: #64748b;
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        .input-group label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+
+        .input-group input,
+        .input-group textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            font-size: 15px;
+            outline: none;
+            transition: all 0.2s;
+        }
+
+        .input-group input:focus,
+        .input-group textarea:focus {
+            border-color: #1d4ed8;
+            box-shadow: 0 0 0 3px rgba(29, 78, 216, 0.1);
+        }
+
+        .primary-btn {
+            width: 100%;
+            background: #1d4ed8;
+            color: white;
+            padding: 14px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .primary-btn:hover {
+            background: #1e40af;
+        }
+    </style>
+</head>
+
+<body style="background-color: #f8fafc; font-family: 'Inter', sans-serif;">
+    <div class="setup-container">
+        <div class="setup-header">
+            <h1 id="welcomeTitle">Complete Your Company Profile</h1>
+            <p>Tell us more about your business to start hiring.</p>
+        </div>
+
+        <form id="setupCompanyForm">
+            <div class="input-group">
+                <label>Industry / Sector</label>
+                <input type="text" id="compIndustry" placeholder="e.g. Technology, Healthcare, Finance" required>
+            </div>
+
+            <div class="input-group">
+                <label>Company Website</label>
+                <input type="url" id="compWebsite" placeholder="https://www.yourcompany.com">
+            </div>
+
+            <div class="input-group">
+                <label>Contact Phone</label>
+                <input type="text" id="compPhone" placeholder="+1 (555) 000-0000">
+            </div>
+
+            <div class="input-group">
+                <label>Company Description</label>
+                <textarea id="compDesc" rows="5"
+                    placeholder="What does your company do? Describe your mission and culture..."></textarea>
+            </div>
+
+            <button type="submit" class="primary-btn">Finish Setup & Go to Dashboard</button>
+        </form>
+    </div>
+
+    <script src="../js/config.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const user = JSON.parse(localStorage.getItem("user"));
+            if (!user || user.role !== 'employer') {
+                window.location.href = "company_login.html";
+                return;
+            }
+            if (user.company && user.company.company_name) {
+                document.getElementById("welcomeTitle").textContent = `Setup ${user.company.company_name}`;
+            }
+
+            const form = document.getElementById("setupCompanyForm");
+            form.onsubmit = async (e) => {
+                e.preventDefault();
+
+                const companyId = user.company.id;
+                const data = {
+                    industry: document.getElementById("compIndustry").value,
+                    website: document.getElementById("compWebsite").value,
+                    phone: document.getElementById("compPhone").value,
+                    description: document.getElementById("compDesc").value
+                };
+
+                try {
+                    const response = await fetch(`${API_BASE_URL}/companies/${companyId}`, {
+                        method: "PUT",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify(data)
+                    });
+
+                    if (response.ok) {
+                        const updatedComp = await response.json();
+                        // Update local user object
+                        user.company = { ...user.company, ...updatedComp };
+                        localStorage.setItem("user", JSON.stringify(user));
+
+                        alert("Company profile completed!");
+                        window.location.href = "company_dashboard.html";
+                    } else {
+                        alert("Failed to update profile.");
+                    }
+                } catch (err) {
+                    console.error(err);
+                    alert("Something went wrong!");
+                }
+            };
+        });
+    </script>
+</body>
+
+</html>
