@@ -7,8 +7,38 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     // Resume Generation
     const resumeBtn = document.getElementById("createResumeBtn");
+    const resumeModal = document.getElementById("resumeOptionsModal");
+    const closeResumeModal = document.getElementById("closeResumeModal");
+    const confirmResumeBtn = document.getElementById("confirmGenerateResume");
+
     if (resumeBtn) {
-        resumeBtn.addEventListener("click", () => generateResume(user.id));
+        resumeBtn.addEventListener("click", () => {
+            resumeModal.style.display = "flex";
+        });
+    }
+
+    if (closeResumeModal) {
+        closeResumeModal.addEventListener("click", () => {
+            resumeModal.style.display = "none";
+        });
+    }
+
+    window.addEventListener("click", (e) => {
+        if (e.target === resumeModal) resumeModal.style.display = "none";
+    });
+
+    if (confirmResumeBtn) {
+        confirmResumeBtn.addEventListener("click", () => {
+            const template = document.querySelector('input[name="resumeTemplate"]:checked').value;
+            const options = {
+                template: template,
+                show_salary: document.getElementById("showSalary").checked,
+                show_location: document.getElementById("showLocation").checked,
+                show_department: document.getElementById("showDepartment").checked
+            };
+            generateResume(user.id, options);
+            resumeModal.style.display = "none";
+        });
     }
 
     // 1. Fetch and Display Jobs (Recommended)
@@ -18,20 +48,21 @@ document.addEventListener("DOMContentLoaded", async () => {
     await fetchUserApplications(user.id);
 });
 
-async function generateResume(userId) {
+async function generateResume(userId, options = {}) {
     const btn = document.getElementById("createResumeBtn");
     const originalText = btn.innerText;
     btn.innerText = "Generating...";
     btn.disabled = true;
 
     try {
-        const response = await fetch(`${API_BASE_URL}/users/${userId}/resume`);
+        const queryParams = new URLSearchParams(options).toString();
+        const response = await fetch(`${API_BASE_URL}/users/${userId}/resume?${queryParams}`);
         if (response.ok) {
             const blob = await response.blob();
             const url = window.URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.href = url;
-            a.download = `resume_user_${userId}.pdf`; // The content-disposition header usually handles this but good as fallback
+            a.download = `resume_${options.template || 'default'}.pdf`;
             document.body.appendChild(a);
             a.click();
             document.body.removeChild(a);

@@ -17,15 +17,19 @@ document.addEventListener("DOMContentLoaded", async () => {
     // Modal logic
     const modal = document.getElementById("postJobModal");
     const openBtn = document.getElementById("openPostModal");
+    const postJobNav = document.getElementById("postJobNav");
     const closeBtn = document.getElementById("closeModal");
     let editingJobId = null;
 
-    openBtn.onclick = () => {
+    const openModal = () => {
         editingJobId = null;
         postForm.reset();
         document.querySelector("#postJobModal h3").textContent = "Post a New Job";
         modal.style.display = "flex";
     };
+
+    openBtn.onclick = openModal;
+    if (postJobNav) postJobNav.onclick = (e) => { e.preventDefault(); openModal(); };
     closeBtn.onclick = () => modal.style.display = "none";
     window.onclick = (e) => { if (e.target == modal) modal.style.display = "none"; };
 

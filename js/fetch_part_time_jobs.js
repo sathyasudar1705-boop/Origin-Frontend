@@ -25,8 +25,9 @@ async function fetchPartTimeJobs(q = '', location = '') {
         }
 
         const url = new URL(`${API_BASE_URL}/part_time_jobs/`);
-        if (q) url.searchParams.append('q', q);
-        if (location) url.searchParams.append('location', location);
+        // Ensure q and location are strings to avoid [object Event] bug
+        if (typeof q === 'string' && q.trim()) url.searchParams.append('q', q);
+        if (typeof location === 'string' && location.trim()) url.searchParams.append('location', location);
 
         const response = await fetch(url);
         if (response.ok) {
@@ -34,8 +35,11 @@ async function fetchPartTimeJobs(q = '', location = '') {
 
             if (jobs.length === 0) {
                 jobsContainer.innerHTML = "<p>No results found.</p>";
+                updateJobCountDisplay(0);
                 return;
             }
+
+            updateJobCountDisplay(jobs.length);
 
             jobsContainer.innerHTML = "";
             jobs.forEach(job => {
@@ -99,8 +103,8 @@ function displayJobDetails(job) {
     const salaryDisplay = job.salary ? `₹${job.salary}` : "Not specified";
 
     const isApplied = userApplications.some(app => app.pt_job_id === job.id);
-    const applyBtnText = isApplied ? "Applied" : "Apply for this Job";
-    const applyBtnClass = isApplied ? "apply applied" : "apply";
+    const applyBtnText = "Apply for this Job";
+    const applyBtnClass = "apply";
 
     // Create tags HTML
     const skillsHtml = job.skills
@@ -138,7 +142,7 @@ function displayJobDetails(job) {
                 <li>Opportunity for growth</li>
             </ul>
 
-            <button class="${applyBtnClass}" onclick="${isApplied ? '' : `goToApplyPage(${job.id}, 'part-time')`}">
+            <button class="${applyBtnClass}" onclick="goToApplyPage(${job.id}, 'part-time')">
                 ${applyBtnText}
             </button>
         </div>
@@ -156,5 +160,9 @@ function goToApplyPage(jobId, type) {
     window.location.href = `apply.html?${param}`;
 }
 
-// Load jobs when page loads
-document.addEventListener("DOMContentLoaded", fetchPartTimeJobs);
+function updateJobCountDisplay(count) {
+    const infoText = document.querySelector(".results-info strong");
+    if (infoText) {
+        infoText.textContent = `${count} part-time job${count !== 1 ? 's' : ''}`;
+    }
+}

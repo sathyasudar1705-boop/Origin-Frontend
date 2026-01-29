@@ -10,13 +10,22 @@
         rel="stylesheet">
 </head>
 
-<body>
+<body style="display: flex; flex-direction: column; min-height: 100vh; margin: 0;">
 
     <header class="navbar">
         <a href="index.html" class="logo">
             <div class="logo-icon">O</div>
             <span>OriginX</span>
         </a>
+        <nav class="nav-links">
+            <a href="#features">Features</a>
+            <a href="#how-it-works">How It Works</a>
+            <a href="#stats">About</a>
+        </nav>
+        <div class="nav-actions">
+            <a href="html/user_login.html" class="nav-login">Sign In</a>
+            <a href="html/user_register.html" class="nav-signup">Get Started</a>
+        </div>
     </header>
 
     <section class="hero">
@@ -38,7 +47,7 @@
         </div>
     </section>
 
-    <section class="features-section">
+    <section class="features-section" id="features">
         <h2>Why Choose OriginX?</h2>
 
         <div class="features-grid">
@@ -62,6 +71,206 @@
         </div>
     </section>
 
+    <section class="how-it-works" id="how-it-works">
+        <div class="section-container">
+            <h2>How It Works</h2>
+            <p class="section-subtitle">Get started in three simple steps</p>
+
+            <div class="steps-grid">
+                <div class="step-card">
+                    <div class="step-number">01</div>
+                    <h3>Create Your Profile</h3>
+                    <p>Sign up and build your professional profile with your skills, experience, and preferences.</p>
+                </div>
+
+                <div class="step-card">
+                    <div class="step-number">02</div>
+                    <h3>Discover Opportunities</h3>
+                    <p>Browse through thousands of job listings from top companies matching your expertise.</p>
+                </div>
+
+                <div class="step-card">
+                    <div class="step-number">03</div>
+                    <h3>Apply & Connect</h3>
+                    <p>Submit applications with one click and track your progress in real-time.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="stats-section" id="stats">
+        <div class="section-container">
+            <h2 id="statsHeading">Our Platform Statistics</h2>
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <div class="stat-number" id="statUsers">...</div>
+                    <div class="stat-label">Active Job Seekers</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" id="statCompanies">...</div>
+                    <div class="stat-label">Hiring Companies</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" id="statJobs">...</div>
+                    <div class="stat-label">Jobs Posted</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" id="statApplications">...</div>
+                    <div class="stat-label">Total Applications</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="cta-section">
+        <div class="cta-content">
+            <h2>Ready to Take Your Career to the Next Level?</h2>
+            <p>Join thousands of professionals who have found their dream jobs through OriginX</p>
+            <a href="html/user_register.html" class="cta-btn seeker-btn"
+                style="padding: 0.75rem 2rem; font-size: 1rem; display: inline-block; width: auto;">Get Started For
+                Free</a>
+        </div>
+    </section>
+
+    <footer class="main-footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <a href="index.html" class="footer-logo">
+                    <div class="logo-icon">O</div>
+                    <span>OriginX</span>
+                </a>
+                <p class="footer-description">Where talent meets opportunity. Connecting the world's best professionals
+                    with innovative companies.</p>
+            </div>
+
+            <div class="footer-section">
+                <h4>For Job Seekers</h4>
+                <ul>
+                    <li><a href="html/user_login.html">Browse Jobs</a></li>
+                    <li><a href="html/user_register.html">Create Profile</a></li>
+                    <li><a href="html/user_login.html">Track Applications</a></li>
+                    <li><a href="html/user_login.html">Career Resources</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-section">
+                <h4>For Employers</h4>
+                <ul>
+                    <li><a href="html/company_login.html">Post a Job</a></li>
+                    <li><a href="html/company_register.html">Create Company Account</a></li>
+                    <li><a href="html/company_login.html">Search Candidates</a></li>
+                    <li><a href="html/company_login.html">Pricing Plans</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-section">
+                <h4>Company</h4>
+                <ul>
+                    <li><a href="#stats">About Us</a></li>
+                    <li><a href="#features">Features</a></li>
+                    <li><a href="index.html">Contact</a></li>
+                    <li><a href="index.html">Privacy Policy</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <p class="copyright">© 2026 OriginX. All rights reserved.</p>
+            <div class="footer-social">
+                <a href="#" aria-label="LinkedIn">💼</a>
+                <a href="#" aria-label="Twitter">🐦</a>
+                <a href="#" aria-label="Facebook">📘</a>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/config.js"></script>
+    <script>
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Fetch and display real-time statistics
+        async function loadStats() {
+            try {
+                const response = await fetch(`${API_BASE_URL}/stats`);
+                if (response.ok) {
+                    const stats = await response.json();
+
+                    // Update heading based on user count
+                    const totalUsers = stats.users + stats.companies;
+                    const headingEl = document.getElementById('statsHeading');
+                    if (totalUsers >= 1000) {
+                        headingEl.textContent = 'Trusted by Thousands';
+                    } else if (totalUsers >= 100) {
+                        headingEl.textContent = 'Trusted by Hundreds';
+                    } else {
+                        headingEl.textContent = `Trusted by ${totalUsers}+ Professionals`;
+                    }
+
+                    // Animate numbers
+                    animateValue('statUsers', 0, stats.users, 2000);
+                    animateValue('statCompanies', 0, stats.companies, 2000);
+                    animateValue('statJobs', 0, stats.jobs, 2000);
+                    animateValue('statApplications', 0, stats.applications, 2000);
+                } else {
+                    // Fallback to placeholder values if API fails
+                    document.getElementById('statsHeading').textContent = 'Our Platform Statistics';
+                    document.getElementById('statUsers').textContent = '100+';
+                    document.getElementById('statCompanies').textContent = '50+';
+                    document.getElementById('statJobs').textContent = '200+';
+                    document.getElementById('statApplications').textContent = '500+';
+                }
+            } catch (error) {
+                console.error('Error loading stats:', error);
+                // Fallback values
+                document.getElementById('statsHeading').textContent = 'Our Platform Statistics';
+                document.getElementById('statUsers').textContent = '100+';
+                document.getElementById('statCompanies').textContent = '50+';
+                document.getElementById('statJobs').textContent = '200+';
+                document.getElementById('statApplications').textContent = '500+';
+            }
+        }
+
+        // Animate number counting effect
+        function animateValue(id, start, end, duration) {
+            const element = document.getElementById(id);
+            if (!element) return;
+
+            const range = end - start;
+            const increment = range / (duration / 16); // 60fps
+            let current = start;
+
+            const timer = setInterval(() => {
+                current += increment;
+                if ((increment > 0 && current >= end) || (increment < 0 && current <= end)) {
+                    current = end;
+                    clearInterval(timer);
+                }
+
+                // Format number with suffix
+                const displayValue = Math.floor(current);
+                if (displayValue >= 1000) {
+                    element.textContent = (displayValue / 1000).toFixed(1) + 'K+';
+                } else {
+                    element.textContent = displayValue + '+';
+                }
+            }, 16);
+        }
+
+        // Load stats when page loads
+        document.addEventListener('DOMContentLoaded', loadStats);
+    </script>
 
 </body>
 

@@ -12,7 +12,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
 
-<body>
+<body style="display: flex; flex-direction: column; min-height: 100vh; margin: 0;">
 
     <header class="navbar">
         <a href="dashboard.html" class="logo">
@@ -116,6 +116,32 @@
             </form>
         </section>
     </main>
+
+    <footer class="main-footer" style="background-color: #1a1a1a; color: #888; padding: 3rem 0; margin-top: auto;">
+        <div class="footer-container"
+            style="max-width: 1200px; margin: 0 auto; display: flex; align-items: center; padding: 0 2rem; gap: 2rem;">
+            <a href="dashboard.html" class="logo"
+                style="display: flex; align-items: center; gap: 12px; font-size: 1.5rem; font-weight: 850; color: white; text-decoration: none;">
+                <div class="logo-icon"
+                    style="background: var(--accent); color: white; width: 32px; height: 32px; border-radius: 8px; display: flex; justify-content: center; align-items: center; font-size: 1.25rem;">
+                    O</div>
+                <span>OriginX</span>
+            </a>
+            <div class="footer-divider" style="width: 1px; height: 60px; background-color: #333;"></div>
+            <div class="footer-info">
+                <nav class="footer-nav">
+                    <a href="dashboard.html"
+                        style="color: #888; text-decoration: none; margin-right: 1.5rem; font-size: 0.875rem;">Dashboard</a>
+                    <a href="jobs.html"
+                        style="color: #888; text-decoration: none; margin-right: 1.5rem; font-size: 0.875rem;">Jobs</a>
+                    <a href="profile.html"
+                        style="color: #888; text-decoration: none; margin-right: 1.5rem; font-size: 0.875rem;">Profile</a>
+                </nav>
+                <p class="copyright" style="font-size: 0.8125rem; margin: 0; color: #888;">© 2026 Origin X. All rights
+                    reserved.</p>
+            </div>
+        </div>
+    </footer>
 
     <script src="../js/config.js"></script>
     <script src="../js/apply.js"></script>

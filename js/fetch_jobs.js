@@ -117,8 +117,8 @@ function displayJobDetails(job) {
         (job.type === 'Part-time' && app.pt_job_id === job.id)
     );
 
-    const applyBtnText = isApplied ? "Applied" : "Apply for this Job";
-    const applyBtnClass = isApplied ? "apply applied" : "apply";
+    const applyBtnText = "Apply for this Job";
+    const applyBtnClass = "apply"; // Keep it neutral blue/primary
 
     // Skills mapping
     const skills = job.type === 'Full-time' ? (job.skills_required || "") : (job.skills || "");
@@ -148,7 +148,7 @@ function displayJobDetails(job) {
             </div>
 
             <button class="${applyBtnClass}">
-                ${isApplied ? applyBtnText : `<a href="${applyUrl}">${applyBtnText}</a>`}
+                <a href="${applyUrl}">${applyBtnText}</a>
             </button>
         </div>
     `;

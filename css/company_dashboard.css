@@ -346,6 +346,11 @@ body {
     color: #dc2626;
 }
 
+.status-cancelled {
+    background: #f5f5f5;
+    color: #737373;
+}
+
 
 /* Footer */
 .main-footer {
