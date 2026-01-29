@@ -1,2 +1,2 @@
-console.log("Config loaded: http://localhost:8000");
-const API_BASE_URL = "http://localhost:8000";
+console.log("Config loaded: https://origin-backend-seven.vercel.app/");
+const API_BASE_URL = "https://origin-backend-seven.vercel.app/";
