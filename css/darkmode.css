@@ -1,0 +1,264 @@
+/**
+ * Shared Dark Mode CSS Variables
+ * Include this file in all pages for consistent dark mode theming
+ */
+
+:root {
+    /* Light Mode (Default) */
+    --primary: #0f172a;
+    --accent: #2563eb;
+    --accent-light: #60a5fa;
+    --text-primary: #1e293b;
+    --text-secondary: #64748b;
+    --bg-main: #ffffff;
+    --bg-alt: #f8fafc;
+    --card-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+    --btn-shadow: 0 4px 14px rgba(37, 99, 235, 0.2);
+    --navbar-bg: rgba(255, 255, 255, 0.95);
+    --navbar-border: #e2e8f0;
+    --card-bg: #ffffff;
+    --card-border: #e2e8f0;
+    --footer-bg: #1a1a1a;
+    --footer-text: #888888;
+    --input-bg: #ffffff;
+    --input-border: #e2e8f0;
+    --modal-bg: #ffffff;
+    --hover-bg: #f1f5f9;
+}
+
+/* Dark Mode Variables */
+body.dark-mode {
+    --primary: #f1f5f9;
+    --accent: #3b82f6;
+    --accent-light: #93c5fd;
+    --text-primary: #f1f5f9;
+    --text-secondary: #94a3b8;
+    --bg-main: #0f172a;
+    --bg-alt: #1e293b;
+    --card-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    --btn-shadow: 0 4px 14px rgba(59, 130, 246, 0.3);
+    --navbar-bg: rgba(15, 23, 42, 0.95);
+    --navbar-border: #334155;
+    --card-bg: #1e293b;
+    --card-border: #334155;
+    --footer-bg: #0a0f1a;
+    --footer-text: #94a3b8;
+    --input-bg: #1e293b;
+    --input-border: #334155;
+    --modal-bg: #1e293b;
+    --hover-bg: #334155;
+}
+
+/* Smooth theme transition */
+body,
+body * {
+    transition: background-color 0.3s ease,
+        color 0.3s ease,
+        border-color 0.3s ease,
+        box-shadow 0.3s ease;
+}
+
+/* Theme Toggle Button */
+.theme-toggle {
+    background: transparent;
+    border: 2px solid var(--navbar-border);
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.1rem;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    flex-shrink: 0;
+}
+
+.theme-toggle:hover {
+    border-color: var(--accent);
+    transform: scale(1.05);
+    box-shadow: 0 0 20px rgba(37, 99, 235, 0.2);
+}
+
+.theme-toggle .icon-sun,
+.theme-toggle .icon-moon {
+    position: absolute;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Light mode: show sun, hide moon */
+.icon-sun {
+    opacity: 1;
+    transform: rotate(0deg) scale(1);
+}
+
+.icon-moon {
+    opacity: 0;
+    transform: rotate(-90deg) scale(0.5);
+}
+
+/* Dark mode: show moon, hide sun */
+body.dark-mode .icon-sun {
+    opacity: 0;
+    transform: rotate(90deg) scale(0.5);
+}
+
+body.dark-mode .icon-moon {
+    opacity: 1;
+    transform: rotate(0deg) scale(1);
+}
+
+/* Dark mode body styles */
+body.dark-mode {
+    background-color: var(--bg-main);
+    color: var(--text-primary);
+}
+
+/* Navbar dark mode */
+body.dark-mode .navbar {
+    background: var(--navbar-bg);
+    border-bottom-color: var(--navbar-border);
+}
+
+/* Cards dark mode */
+body.dark-mode .stat-card,
+body.dark-mode .job-card,
+body.dark-mode .feature-card,
+body.dark-mode .application-card,
+body.dark-mode .profile-card {
+    background: var(--card-bg);
+    border-color: var(--card-border);
+}
+
+/* Input fields dark mode */
+body.dark-mode input,
+body.dark-mode textarea,
+body.dark-mode select {
+    background: var(--input-bg);
+    border-color: var(--input-border);
+    color: var(--text-primary);
+}
+
+body.dark-mode input::placeholder,
+body.dark-mode textarea::placeholder {
+    color: var(--text-secondary);
+}
+
+/* Modal dark mode */
+body.dark-mode .modal-content,
+body.dark-mode .auth-container {
+    background: var(--modal-bg);
+}
+
+/* Footer dark mode */
+body.dark-mode .main-footer {
+    background: var(--footer-bg);
+    color: var(--footer-text);
+}
+
+/* Links */
+body.dark-mode a {
+    color: var(--accent-light);
+}
+
+body.dark-mode .nav-links a,
+body.dark-mode .footer-nav a {
+    color: var(--text-secondary);
+}
+
+body.dark-mode .nav-links a:hover,
+body.dark-mode .footer-nav a:hover {
+    color: var(--accent-light);
+}
+
+/* Headings */
+body.dark-mode h1,
+body.dark-mode h2,
+body.dark-mode h3,
+body.dark-mode h4,
+body.dark-mode h5,
+body.dark-mode h6 {
+    color: var(--text-primary);
+}
+
+/* Search containers */
+body.dark-mode .search-container,
+body.dark-mode .search-inner {
+    background: var(--bg-alt);
+}
+
+body.dark-mode .input-with-icon {
+    background: var(--input-bg);
+    border-color: var(--input-border);
+}
+
+/* Job detail pane */
+body.dark-mode .job-detail-pane {
+    background: var(--card-bg);
+    border-color: var(--card-border);
+}
+
+/* Applications sidebar */
+body.dark-mode .applications-sidebar {
+    background: var(--card-bg);
+}
+
+/* Buttons - keep accent colors */
+body.dark-mode .apply-btn,
+body.dark-mode .auth-btn,
+body.dark-mode .submit-btn {
+    background: var(--accent);
+    color: white;
+}
+
+/* Logout button */
+body.dark-mode .logout-btn {
+    background: #dc2626;
+    color: white;
+}
+
+/* Badge styles */
+body.dark-mode .badge {
+    background: var(--bg-alt);
+}
+
+/* Skills tags */
+body.dark-mode .skills-tags span {
+    background: var(--bg-alt);
+    color: var(--text-primary);
+}
+
+/* Table styles */
+body.dark-mode table,
+body.dark-mode th,
+body.dark-mode td {
+    border-color: var(--card-border);
+}
+
+body.dark-mode th {
+    background: var(--bg-alt);
+}
+
+body.dark-mode tr:hover {
+    background: var(--hover-bg);
+}
+
+/* Scrollbar dark mode */
+body.dark-mode::-webkit-scrollbar {
+    width: 10px;
+}
+
+body.dark-mode::-webkit-scrollbar-track {
+    background: var(--bg-alt);
+}
+
+body.dark-mode::-webkit-scrollbar-thumb {
+    background: var(--navbar-border);
+    border-radius: 5px;
+}
+
+body.dark-mode::-webkit-scrollbar-thumb:hover {
+    background: var(--text-secondary);
+}
