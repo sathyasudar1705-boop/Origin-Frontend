@@ -4,32 +4,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>OriginX - Search Jobs</title>
-
-
+    <title>Search Jobs | OriginX</title>
     <link rel="stylesheet" href="../css/jobs.css">
-
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 </head>
 
 <body>
 
     <header class="navbar">
         <a href="dashboard.html" class="logo">
-            <div class="logo-icon">O</div>
-            <span>OriginX</span>
+            Origin<span>X</span>
         </a>
 
         <nav class="nav-links">
-            <!-- FIXED LINKS -->
             <a href="dashboard.html">Dashboard</a>
             <a href="jobs.html" class="active">Search Jobs</a>
-            <a href="part_time_jobs.html">Part Time Jobs</a>
+            <a href="part_time_jobs.html">Part Time</a>
+            <a href="saved_jobs.html">Saved</a>
         </nav>
 
         <div class="user-profile">
             <a href="profile.html" class="profile">Profile</a>
-            <!-- FIXED -->
             <a href="../index.html" class="logout-btn">Logout</a>
         </div>
     </header>
@@ -37,70 +32,56 @@
     <section class="search-container">
         <div class="search-inner">
             <div class="input-with-icon search-main">
-                <span class="icon">🔍</span>
-                <input type="text" placeholder="Search by job title, company, or skills...">
+                <span class="icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="11" cy="11" r="8"></circle>
+                        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                    </svg>
+                </span>
+                <input type="text" placeholder="Title, skills, or company">
             </div>
             <div class="input-with-icon location-input">
                 <span class="icon">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
-                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                         <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
                         <circle cx="12" cy="10" r="3"></circle>
                     </svg>
                 </span>
-                <input type="text" placeholder="Location">
+                <input type="text" placeholder="City or region">
             </div>
         </div>
     </section>
 
     <main class="search-layout">
         <aside class="job-list-pane jobs-container">
-            <!-- Jobs will be loaded here dynamically -->
+            <!-- Jobs loaded via JS -->
+            <p style="padding: 2rem; color: var(--text-secondary); text-align: center;">Searching for opportunities...
+            </p>
         </aside>
 
-        <section class="job-detail-pane">
+        <section id="jobDetailContainer" class="job-detail-pane">
             <div class="detail-header">
                 <div class="detail-title-row">
-                    <h2>Frontend Developer</h2>
-                    <span class="badge blue">Full-time</span>
+                    <h2 id="detailTitle">Select a job to view details</h2>
+                    <span id="detailBadge" class="badge blue">Select</span>
                 </div>
-                <p class="detail-company">TechCorp Solutions</p>
+                <p id="detailCompany" class="detail-company">Browse through the list on the left</p>
                 <div class="detail-meta">
-                    <span style="display: flex; align-items: center; gap: 4px;">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none"
-                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
-                            <circle cx="12" cy="10" r="3"></circle>
-                        </svg>
-                        Bangalore, India
-                    </span>
-                    <span>💰 ₹6-10 LPA</span>
-                    <span>💼 2-4 years</span>
-                    <span>🕒 Posted 2 days ago</span>
+                    <span id="detailLocation" style="display: flex; align-items: center; gap: 4px;"></span>
+                    <span id="detailSalary"></span>
+                    <span id="detailPosted"></span>
                 </div>
             </div>
 
             <div class="detail-body">
-                <h3>Job Description</h3>
-                <p>Looking for an experienced frontend developer to join our dynamic team.</p>
+                <h3>Select an entry</h3>
+                <p>Click on any job card from the results list to see more information about required skills and
+                    responsibilities.</p>
 
-                <h3>Required Skills</h3>
-                <div class="skills-tags">
-                    <span>React</span>
-                    <span>TypeScript</span>
-                    <span>Tailwind CSS</span>
-                </div>
-
-                <h3>Responsibilities</h3>
-                <ul>
-                    <li>Develop and maintain high-quality code</li>
-                    <li>Collaborate with cross-functional teams</li>
-                    <li>Participate in code reviews</li>
-                    <li>Architecture planning</li>
-                </ul>
-
-                <button class="apply">
-                    <a href="apply.html">Apply for this Job</a>
+                <button class="apply" id="applyBtnContainer" style="display: none;">
+                    <a href="apply.html" style="color: white; text-decoration: none;">Apply for this Job</a>
                 </button>
             </div>
         </section>
@@ -108,25 +89,11 @@
 
     <footer class="main-footer">
         <div class="footer-container">
-            <a href="dashboard.html" class="logo">
-                <div class="logo-icon">O</div>
-                <span>OriginX</span>
-            </a>
-
-            <div class="footer-divider"></div>
-
-            <div class="footer-info">
-                <nav class="footer-nav">
-                    <a href="dashboard.html">Dashboard</a>
-                    <a href="jobs.html">Jobs</a>
-                    <a href="profile.html">Profile</a>
-                    <a href="../index.html">Log out</a>
-                </nav>
-                <p class="copyright">© 2026 Origin X. All rights reserved.</p>
-            </div>
-
-            <div class="footer-social">
-                <p class="support-email">Support: OriginX@gmail.com</p>
+            <p class="copyright">© 2026 OriginX Hub. All rights reserved.</p>
+            <div class="footer-links">
+                <a href="#">Help Center</a>
+                <a href="#">Privacy Policy</a>
+                <a href="#">Terms of Service</a>
             </div>
         </div>
     </footer>

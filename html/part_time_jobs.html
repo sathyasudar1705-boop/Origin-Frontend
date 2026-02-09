@@ -4,146 +4,79 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>OriginX - Part-Time Jobs</title>
-
+    <title>Part-Time Jobs | OriginX</title>
     <link rel="stylesheet" href="../css/part_time_jobs.css">
-
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 </head>
 
 <body>
 
     <header class="navbar">
         <a href="dashboard.html" class="logo">
-            <div class="logo-icon">O</div>
-            <span>OriginX</span>
+            Origin<span>X</span>
         </a>
 
         <nav class="nav-links">
-            <!-- FIXED LINKS -->
-            <a href="dashboard.html" class="dashboard">Dashboard</a>
-            <a href="jobs.html" class="dashboard">Search Jobs</a>
-            <a href="part_time_jobs.html" class="dashboard">Part Time Jobs</a>
+            <a href="dashboard.html">Dashboard</a>
+            <a href="jobs.html">Search Jobs</a>
+            <a href="part_time_jobs.html" class="active">Part Time</a>
+            <a href="saved_jobs.html">Saved</a>
         </nav>
 
         <div class="user-profile">
             <a href="profile.html" class="profile">Profile</a>
-            <!-- FIXED -->
             <a href="../index.html" class="logout-btn">Logout</a>
         </div>
     </header>
 
-    <section class="blue-hero">
-        <div class="hero-content">
-            <h1>Part-Time Job Opportunities</h1>
-            <p>Flexible hours, great pay, perfect work-life balance</p>
-        </div>
-    </section>
-
-    <section class="search-section">
-        <div class="search-bar-container">
-            <div class="search-main">
-                <span class="icon">🔍</span>
-                <input type="text" placeholder="Search part-time jobs by title, company, or skills...">
-            </div>
-            <div class="location-input">
+    <section class="search-container">
+        <div class="search-inner">
+            <div class="input-with-icon search-main">
                 <span class="icon">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
-                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="11" cy="11" r="8"></circle>
+                        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                    </svg>
+                </span>
+                <input type="text" placeholder="Title, flex-role, or location">
+            </div>
+            <div class="input-with-icon location-input">
+                <span class="icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                         <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
                         <circle cx="12" cy="10" r="3"></circle>
                     </svg>
                 </span>
-                <input type="text" placeholder="Location">
+                <input type="text" placeholder="City or remote">
             </div>
         </div>
     </section>
 
-    <main class="job-layout">
-        <p class="results-info">Showing <strong>10 part-time jobs</strong></p>
+    <main class="search-layout">
+        <aside class="job-list-pane jobs-container">
+            <!-- Loaded via JS -->
+            <p style="padding: 2rem; color: var(--text-secondary); text-align: center;">Finding the best roles...
+            </p>
+        </aside>
 
-        <div class="split-pane">
-            <aside class="job-scroll-list">
-                <!-- Jobs will be loaded here dynamically -->
-            </aside>
-
-            <section class="job-details-view">
-                <div class="detail-header">
-                    <div class="detail-title-row">
-                        <h2>Content Writer</h2>
-                        <span class="badge-part-time">Part-Time</span>
-                    </div>
-                    <p class="detail-company">Digital Media Hub</p>
-                    <div class="detail-meta-row">
-                        <span style="display: flex; align-items: center; gap: 4px;">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24"
-                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                stroke-linejoin="round">
-                                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
-                                <circle cx="12" cy="10" r="3"></circle>
-                            </svg>
-                            Remote
-                        </span>
-                        <span>💰 ₹15,000-25,000/month</span>
-                        <span>🕒 20 hours/week</span>
-                        <span>💼 Flexible hours</span>
-                    </div>
-                </div>
-
-                <div class="detail-content">
-                    <h4>Job Description</h4>
-                    <p>Create engaging content for blogs, social media, and marketing materials.</p>
-
-                    <h4>Required Skills</h4>
-                    <div class="skill-pills">
-                        <span>Content Writing</span>
-                        <span>SEO</span>
-                        <span>Research</span>
-                    </div>
-
-                    <h4>Work Schedule</h4>
-                    <div class="schedule-box">
-                        <p><strong>Schedule:</strong> Flexible hours</p>
-                        <p><strong>Hours:</strong> 20 hours/week</p>
-                    </div>
-
-                    <h4>Benefits</h4>
-                    <ul>
-                        <li>Flexible working hours</li>
-                        <li>Work from home options</li>
-                        <li>Competitive pay</li>
-                        <li>Full-time conversion opportunity</li>
-                    </ul>
-
-                    <button class="apply">
-                        <a href="apply.html">Apply for this Job</a>
-                    </button>
-                </div>
-            </section>
-        </div>
+        <section class="job-detail-pane" id="ptJobDetailView">
+            <div class="empty-state">
+                <div class="empty-icon">📂</div>
+                <h3>Select a job to view details</h3>
+                <p>Browse the list on the left to find your next flexible role</p>
+            </div>
+        </section>
     </main>
 
     <footer class="main-footer">
         <div class="footer-container">
-            <a href="dashboard.html" class="logo">
-                <div class="logo-icon">O</div>
-                <span>OriginX</span>
-            </a>
-
-            <div class="footer-divider"></div>
-
-            <div class="footer-info">
-                <nav class="footer-nav">
-                    <a href="dashboard.html">Dashboard</a>
-                    <a href="jobs.html">Jobs</a>
-                    <a href="profile.html">Profile</a>
-                    <a href="../index.html">Log out</a>
-                </nav>
-                <p class="copyright">© 2026 Origin X. All rights reserved.</p>
-            </div>
-
-            <div class="footer-social">
-                <p class="support-email">Support: OriginX@gmail.com</p>
+            <p class="copyright">© 2026 OriginX Hub. All rights reserved.</p>
+            <div class="footer-links">
+                <a href="#">Help Center</a>
+                <a href="#">Privacy Policy</a>
+                <a href="#">Terms of Service</a>
             </div>
         </div>
     </footer>

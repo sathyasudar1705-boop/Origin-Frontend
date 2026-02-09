@@ -1,61 +1,75 @@
 :root {
-  --primary: #0f172a;
-  --accent: #2563eb;
-  --accent-hover: #ff6b00;
-  --text-primary: #1e293b;
-  --text-secondary: #64748b;
-  --bg-gray: #f8fafc;
-  --border-color: #e2e8f0;
-  --card-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+  --primary: #000000;
+  --accent: #0a66c2;
+  --accent-hover: #004182;
+  --accent-light: #e7f3ff;
+  --text-primary: rgba(0, 0, 0, 0.9);
+  --text-secondary: rgba(0, 0, 0, 0.6);
+  --bg-main: #f3f2f0;
+  --bg-surface: #ffffff;
+  --border-color: #e0e0e0;
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  --radius-md: 6px;
+  --radius-sm: 4px;
+  --font-main: -apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: var(--font-main);
 }
 
 body {
-  margin: 0;
-  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  background-color: var(--bg-gray);
+  background-color: var(--bg-main);
   color: var(--text-primary);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  line-height: 1.5;
 }
 
-/* Professional Navbar */
+/* Navbar Synchronized */
 .navbar {
-  background: rgba(255, 255, 255, 0.95);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  padding: 1rem 5%;
+  background: var(--bg-surface);
+  border-bottom: 1px solid var(--border-color);
+  padding: 0 8%;
   display: flex;
   align-items: center;
   position: sticky;
   top: 0;
   z-index: 1000;
-  border-bottom: 1px solid var(--border-color);
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  height: 64px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
 }
 
 .logo {
   display: flex;
   align-items: center;
   gap: 12px;
-  font-size: 1.5rem;
-  font-weight: 850;
-  color: var(--primary);
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: var(--accent);
   text-decoration: none;
-  letter-spacing: -0.02em;
+  margin-right: 3rem;
 }
 
 .logo-icon {
   background: var(--accent);
   color: white;
-  width: 32px;
-  height: 32px;
+  width: 36px;
+  height: 36px;
   border-radius: 8px;
   display: flex;
   justify-content: center;
   align-items: center;
   font-size: 1.25rem;
+  font-weight: 800;
 }
 
 .nav-links {
-  margin-left: 3rem;
   display: flex;
   gap: 2rem;
 }
@@ -65,7 +79,6 @@ body {
   color: var(--text-secondary);
   font-size: 0.9375rem;
   font-weight: 600;
-  transition: all 0.2s ease;
 }
 
 .nav-links a:hover {
@@ -76,192 +89,102 @@ body {
   margin-left: auto;
   display: flex;
   align-items: center;
-  gap: 1rem;
 }
 
-/* Professional Buttons */
-.profile,
-.logout-btn,
-.submit-btn,
-.cancel-btn {
-  text-decoration: none;
-  font-weight: 600;
-  padding: 0.5rem 1rem;
-  border-radius: 8px;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  cursor: pointer;
-  font-size: 0.8125rem;
-  border: none;
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  justify-content: center;
-}
-
-.profile {
-  color: var(--primary);
-  background: white;
-  border: 2px solid var(--border-color);
-}
-
-.profile:hover {
-  border-color: var(--accent-hover);
-  color: var(--accent-hover);
-  background: #fff7ed;
-  transform: translateY(-2px);
-}
-
-.submit-btn {
-  background: var(--accent);
-  color: white;
-  box-shadow: 0 4px 14px rgba(37, 99, 235, 0.2);
-  padding: 0.75rem 2rem;
-  font-size: 0.9375rem;
-}
-
-.submit-btn:hover {
-  background: var(--accent-hover);
-  box-shadow: 0 6px 20px rgba(255, 107, 0, 0.3);
-  transform: translateY(-2px);
-}
-
-.logout-btn {
-  background: transparent;
-  color: #ef4444;
-  border: 2px solid #fee2e2;
-}
-
-.logout-btn:hover {
-  background: #fff7ed;
-  border-color: var(--accent-hover);
-  color: var(--accent-hover);
-  transform: translateY(-2px);
-}
-
-.cancel-btn {
-  background: #f1f5f9;
-  color: var(--text-secondary);
-}
-
-.cancel-btn:hover {
-  background: #e2e8f0;
-  transform: translateY(-2px);
-}
-
-/* Application UI */
+/* Layout */
 .apply-container {
-  max-width: 900px;
-  margin: 2rem auto;
-  padding: 0 1.5rem 3rem;
+  max-width: 800px;
+  margin: 3rem auto;
+  padding: 0 1.5rem;
 }
 
-.job-summary-card {
-  background: white;
-  padding: 2rem;
-  border-radius: 16px;
-  box-shadow: var(--card-shadow);
+.job-summary-card,
+.application-form-card {
+  background: var(--bg-surface);
   border: 1px solid var(--border-color);
-  margin-bottom: 1.5rem;
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+  padding: 2.5rem;
+  margin-bottom: 2rem;
 }
 
+/* Job Summary */
 .job-header-row {
   display: flex;
+  justify-content: space-between;
   align-items: center;
-  gap: 1rem;
-  margin-bottom: 0.75rem;
+  margin-bottom: 0.5rem;
 }
 
 .job-header-row h2 {
   font-size: 1.5rem;
-  font-weight: 850;
-  margin: 0;
-  color: var(--primary);
-}
-
-.badge {
-  padding: 0.25rem 0.75rem;
-  border-radius: 6px;
-  font-size: 0.75rem;
   font-weight: 700;
-  text-transform: uppercase;
-}
-
-.badge.blue {
-  background: #eff6ff;
-  color: #2563eb;
+  color: var(--text-primary);
 }
 
 .company-name {
+  font-size: 1.125rem;
+  font-weight: 600;
   color: var(--text-secondary);
-  margin: 0.5rem 0;
-  font-size: 1rem;
-  font-weight: 500;
+  margin-bottom: 1rem;
 }
 
 .job-meta {
-  display: flex;
-  gap: 1rem;
   font-size: 0.875rem;
   color: var(--text-secondary);
+  display: flex;
+  gap: 0.75rem;
 }
 
-.application-form-card {
-  background: white;
-  padding: 2.5rem;
-  border-radius: 20px;
-  box-shadow: var(--card-shadow);
-  border: 1px solid var(--border-color);
-}
-
+/* Form Styles */
 .form-header {
   display: flex;
   align-items: center;
-  gap: 1rem;
+  gap: 1.25rem;
   margin-bottom: 2rem;
   padding-bottom: 1.5rem;
   border-bottom: 1px solid var(--border-color);
 }
 
 .icon-box {
-  background: #eff6ff;
-  color: #2563eb;
+  background: var(--accent-light);
+  color: var(--accent);
   width: 48px;
   height: 48px;
-  border-radius: 12px;
+  border-radius: 8px;
   display: flex;
-  align-items: center;
   justify-content: center;
+  align-items: center;
   font-size: 1.5rem;
 }
 
 .form-header h3 {
-  font-size: 1.25rem;
-  font-weight: 800;
-  margin: 0;
-  color: var(--primary);
+  font-size: 1.15rem;
+  font-weight: 700;
 }
 
 .form-header p {
-  margin: 0.25rem 0 0;
   font-size: 0.875rem;
   color: var(--text-secondary);
 }
 
 .form-section {
-  margin-bottom: 2rem;
+  margin-bottom: 2.5rem;
 }
 
 .form-section h4 {
-  font-size: 1rem;
+  font-size: 0.95rem;
   font-weight: 700;
-  margin: 0 0 1rem 0;
-  color: var(--primary);
+  margin-bottom: 1.25rem;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
 .input-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 1rem;
+  gap: 1.5rem;
 }
 
 .input-group {
@@ -271,65 +194,143 @@ body {
 }
 
 .input-group label {
-  font-size: 0.875rem;
+  font-size: 0.8125rem;
   font-weight: 600;
-  color: var(--text-primary);
+  color: var(--text-secondary);
 }
 
-.input-group input,
-.input-group textarea,
-.input-group select {
-  padding: 0.75rem;
-  border: 1.5px solid var(--border-color);
-  border-radius: 10px;
-  font-size: 0.9375rem;
+.input-group input {
+  padding: 0.75rem 1rem;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  font-size: 0.875rem;
   outline: none;
-  transition: border 0.2s;
-  background: white;
+  transition: all 0.2s;
+  background: #f8fafc;
 }
 
-.input-group input:focus,
-.input-group textarea:focus {
+.input-group input:focus {
   border-color: var(--accent);
+  background: white;
+  box-shadow: 0 0 0 1px var(--accent);
 }
 
-.input-group textarea {
-  resize: vertical;
-  min-height: 100px;
+.upload-zone {
+  padding: 2rem;
+  border: 2px dashed var(--border-color);
+  border-radius: var(--radius-md);
+  background: #f8fafc;
+  text-align: center;
 }
 
-.form-actions {
-  display: flex;
-  gap: 1rem;
-  margin-top: 2rem;
-  padding-top: 1.5rem;
+/* Buttons Synced */
+.profile,
+.logout-btn,
+.submit-btn,
+.cancel-btn {
+  padding: 0.75rem 2rem;
+  border-radius: 24px;
+  font-weight: 600;
+  font-size: 0.9375rem;
+  cursor: pointer;
+  transition: all 0.1s;
+  display: inline-flex;
+  align-items: center;
+  border: 1px solid transparent;
+  text-decoration: none;
+}
+
+.submit-btn {
+  background: var(--accent);
+  color: white;
+  border: none;
+}
+
+.submit-btn:hover {
+  background: var(--accent-hover);
+}
+
+.cancel-btn {
+  color: var(--text-secondary);
+  background: transparent;
+}
+
+.cancel-btn:hover {
+  background: #f8fafc;
+}
+
+.logout-btn {
+  color: var(--text-secondary);
+  padding: 0.5rem 1.25rem;
+}
+
+.logout-btn:hover {
+  background: rgba(0, 0, 0, 0.05);
+}
+
+/* Badge Synced */
+.badge {
+  padding: 0.25rem 0.65rem;
+  border-radius: 4px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.badge.blue {
+  background: #e7f3ff;
+  color: #0a66c2;
+}
+
+/* Footer Synced */
+.main-footer {
+  background: var(--bg-surface);
   border-top: 1px solid var(--border-color);
+  padding: 2rem 0;
+  margin-top: auto;
+}
+
+.footer-container {
+  max-width: 1128px;
+  margin: 0 auto;
+  padding: 0 8%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.8125rem;
+}
+
+.footer-links {
+  display: flex;
+  gap: 2rem;
+}
+
+.footer-links a {
+  color: var(--text-secondary);
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.footer-links a:hover {
+  color: var(--accent);
+  text-decoration: underline;
 }
 
 /* Responsive */
 @media (max-width: 768px) {
-  .navbar {
-    padding: 1rem 3%;
-  }
-
-  .nav-links {
-    display: none;
-  }
-
-  .apply-container {
-    padding: 0 1rem 2rem;
-  }
-
   .input-grid {
     grid-template-columns: 1fr;
   }
 
   .form-actions {
+    display: flex;
     flex-direction: column;
+    gap: 1rem;
   }
 
   .submit-btn,
   .cancel-btn {
     width: 100%;
+    justify-content: center;
   }
 }

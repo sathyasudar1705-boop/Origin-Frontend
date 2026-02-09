@@ -10,35 +10,47 @@
 </head>
 
 <body>
-    <div class="auth-container">
-        <button class="close-btn" onclick="location.href='../index.html'">&times;</button>
-
-        <a href="../index.html" style="text-decoration: none;">
-            <div style="display: flex; justify-content: center; margin-bottom: 2rem;">
-                <div
-                    style="background: var(--accent); color: white; width: 48px; height: 48px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 1.5rem; box-shadow: 0 8px 16px rgba(37, 99, 235, 0.2);">
-                    O</div>
+    <div class="split-container">
+        <!-- Branding Side -->
+        <div class="branding-side">
+            <div class="branding-content">
+                <div class="branding-logo">Origin<span>X</span> <span
+                        style="font-weight: 300; opacity: 0.8;">Hiring</span></div>
+                <h1 class="branding-title">Find your next star.</h1>
+                <p class="branding-subtitle">Post jobs, manage candidates, and build your world-class team with ease.
+                    OriginX Hiring is where talent meets opportunity.</p>
             </div>
-        </a>
-        <div class="auth-header">
-            <h2>Welcome Back, Employer</h2>
-            <p>Login to manage your job postings</p>
         </div>
 
-        <form class="login-form" onsubmit="loginUser(event, 'employer')">
-            <div class="input-group">
-                <label>Registered Business Email</label>
-                <input type="email" id="email" placeholder="hr@company.com" required>
-            </div>
-            <div class="input-group">
-                <label>Password</label>
-                <input type="password" id="password" placeholder="Enter your password" required>
-            </div>
-            <button type="submit" class="auth-btn">Employer Login</button>
-        </form>
+        <!-- Form Side -->
+        <div class="form-side">
+            <button class="close-btn" onclick="location.href='../index.html'">&times;</button>
 
-        <div class="auth-footer">
-            <p>New to OriginX? <a href="company_register.html">Create Company Account</a></p>
+            <div class="auth-container">
+                <a href="../index.html" class="mobile-logo">Origin<span>X</span> Hiring</a>
+
+                <div class="auth-header">
+                    <h2>Employer Login</h2>
+                    <p>Enter your business credentials to continue.</p>
+                </div>
+
+                <form class="login-form" onsubmit="loginUser(event, 'employer')">
+                    <div class="input-group">
+                        <label>Business Email</label>
+                        <input type="email" id="email" placeholder="Business Email" required>
+                    </div>
+                    <div class="input-group">
+                        <label>Password</label>
+                        <input type="password" id="password" placeholder="Password" required>
+                    </div>
+                    <button type="submit" class="auth-btn">Log in</button>
+                </form>
+
+                <div class="auth-footer">
+                    <p>Employer account needed? <a href="company_register.html">Create one
+                            now</a></p>
+                </div>
+            </div>
         </div>
     </div>
 

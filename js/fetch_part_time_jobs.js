@@ -13,7 +13,7 @@ async function fetchUserApplications(userId) {
 }
 
 async function fetchPartTimeJobs(q = '', location = '') {
-    const jobsContainer = document.querySelector(".job-scroll-list");
+    const jobsContainer = document.querySelector(".job-list-pane");
     if (!jobsContainer) return;
 
     jobsContainer.innerHTML = "<p>Loading part-time jobs...</p>";
@@ -44,22 +44,25 @@ async function fetchPartTimeJobs(q = '', location = '') {
             jobsContainer.innerHTML = "";
             jobs.forEach(job => {
                 const jobCard = document.createElement("div");
-                jobCard.classList.add("job-card");
+                jobCard.classList.add("job-item");
                 const salaryDisplay = job.salary ? `₹${job.salary}` : "Not specified";
 
+                const initial = job.company_name ? job.company_name.charAt(0) : 'J';
                 jobCard.innerHTML = `
-                    <div class="card-header">
-                        <h3>${job.title}</h3>
-                        <span class="badge-part-time">Part-Time</span>
-                    </div>
-                    <p class="company">${job.company_name}</p>
-                    <div class="card-meta">
-                        <span>📍 ${job.location}</span>
-                        <span>💰 ${salaryDisplay}</span>
+                    <div class="job-logo">${initial}</div>
+                    <div class="job-content">
+                        <h4>${job.title}</h4>
+                        <p class="company">${job.company_name}</p>
+                        <p class="location-line">${job.location} (Remote)</p>
+                        <div class="job-item-meta">
+                            <span>Part-Time</span>
+                            <span>•</span>
+                            <span>Actively hiring</span>
+                        </div>
                     </div>
                 `;
                 jobCard.onclick = () => {
-                    document.querySelectorAll('.job-card').forEach(c => c.classList.remove('active'));
+                    document.querySelectorAll('.job-item').forEach(c => c.classList.remove('active'));
                     jobCard.classList.add('active');
                     displayJobDetails(job);
                 };
@@ -111,40 +114,38 @@ function displayJobDetails(job) {
         ? job.skills.split(',').map(skill => `<span>${skill.trim()}</span>`).join('')
         : '<span>General</span>';
 
-    detailView.innerHTML = `
+    const detailPane = document.getElementById("ptJobDetailView");
+    if (!detailPane) return;
+
+    detailPane.innerHTML = `
         <div class="detail-header">
-            <div class="detail-title-row">
-                <h2>${job.title}</h2>
-                <span class="badge-part-time">Part-Time</span>
+            <h2>${job.title}</h2>
+            <div class="detail-company-line">
+                <a href="#">${job.company_name}</a> · ${job.location} · 2 days ago
             </div>
-            <p class="detail-company">${job.company_name}</p>
-            <div class="detail-meta-row">
-                <span>📍 ${job.location}</span>
-                <span>💰 ${salaryDisplay}</span>
-                <span>🕒 Part-Time</span>
+            
+            <div class="detail-meta">
+                <span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path></svg> Part-Time</span>
+                <span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="20" height="12" rx="2"></rect><circle cx="12" cy="12" r="2"></circle><path d="M6 12h.01M18 12h.01"></path></svg> ${salaryDisplay}</span>
+                <span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg> Skills: ${job.skills ? job.skills.split(',')[0] : 'General'} and more</span>
+            </div>
+
+            <div class="action-row">
+                <a href="apply.html?pt_job_id=${job.id}" class="apply">Apply Now</a>
+                <button class="btn-secondary" onclick="toggleSaveJob(${job.id}, 'Part-Time')" id="saveBtn-${job.id}">
+                    ${isJobSaved(job.id, 'Part-Time') ? 'Saved' : 'Save'}
+                </button>
             </div>
         </div>
 
-        <div class="detail-content">
-            <h4>Job Description</h4>
+        <div class="detail-body">
+            <h3>About the job</h3>
             <p>${job.description || "No description available."}</p>
 
-            <h4>Required Skills</h4>
-            <div class="skill-pills">
+            <h3>Required Skills</h3>
+            <div class="skills-tags">
                 ${skillsHtml}
             </div>
-
-            <h4>Benefits</h4>
-            <ul>
-                <li>Flexible working hours</li>
-                <li>Work from home options</li>
-                <li>Competitive pay</li>
-                <li>Opportunity for growth</li>
-            </ul>
-
-            <button class="${applyBtnClass}" onclick="goToApplyPage(${job.id}, 'part-time')">
-                ${applyBtnText}
-            </button>
         </div>
     `;
 }
@@ -159,6 +160,46 @@ function goToApplyPage(jobId, type) {
     const param = type === 'full-time' ? `job_id=${jobId}` : `pt_job_id=${jobId}`;
     window.location.href = `apply.html?${param}`;
 }
+
+function isJobSaved(jobId, type) {
+    const saved = JSON.parse(localStorage.getItem("saved_jobs") || "[]");
+    return saved.some(j => j.id === jobId && j.type === type);
+}
+
+function toggleSaveJob(jobId, type) {
+    let saved = JSON.parse(localStorage.getItem("saved_jobs") || "[]");
+    const index = saved.findIndex(j => j.id === jobId && j.type === type);
+
+    if (index > -1) {
+        saved.splice(index, 1);
+        alert("Job removed from saved list.");
+    } else {
+        const job = currentJob;
+        if (job) {
+            saved.push({
+                id: job.id,
+                title: job.title,
+                company_name: job.company_name || 'Enterprise Partner',
+                location: job.location,
+                type: 'Part-Time',
+                salary: job.salary
+            });
+            alert("Job saved successfully!");
+        }
+    }
+    localStorage.setItem("saved_jobs", JSON.stringify(saved));
+    const btn = document.getElementById(`saveBtn-${jobId}`);
+    if (btn) btn.textContent = isJobSaved(jobId, type) ? 'Saved' : 'Save';
+}
+
+let currentJob = null;
+
+// Wrap displayJobDetails to track currentJob
+const originalDisplayPTJobDetails = displayJobDetails;
+displayJobDetails = function (job) {
+    currentJob = job;
+    originalDisplayPTJobDetails(job);
+};
 
 function updateJobCountDisplay(count) {
     const infoText = document.querySelector(".results-info strong");

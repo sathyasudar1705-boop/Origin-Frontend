@@ -4,27 +4,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>OriginX - Update Profile</title>
-
-    <!-- FIXED PATH -->
+    <title>Profile | OriginX</title>
     <link rel="stylesheet" href="../css/profile.css">
-
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 </head>
 
 <body>
 
     <header class="navbar">
         <a href="dashboard.html" class="logo">
-            <div class="logo-icon">O</div>
-            <span>OriginX</span>
+            Origin<span>X</span>
         </a>
 
         <nav class="nav-links">
-            <!-- FIXED LINKS -->
-            <a href="dashboard.html" class="dashboard">Dashboard</a>
-            <a href="jobs.html" class="dashboard">Search Jobs</a>
-            <a href="part_time_jobs.html" class="dashboard">Part Time Jobs</a>
+            <a href="dashboard.html">Dashboard</a>
+            <a href="jobs.html">Search Jobs</a>
+            <a href="part_time_jobs.html">Part Time</a>
+            <a href="saved_jobs.html">Saved</a>
         </nav>
 
         <div class="user-profile">
@@ -33,40 +29,54 @@
         </div>
     </header>
 
-    <main class="profile-container profile-grid">
-        <div class="left-column">
+    <main class="profile-container">
+        <div class="left-col">
             <div class="profile-card">
-                <div class="card-header" style="justify-content: space-between; display: flex; align-items: center;">
-                    <div style="display: flex; align-items: center; gap: 15px;">
+                <div class="card-header" style="display: flex; justify-content: space-between; align-items: center;">
+                    <div style="display: flex; align-items: center; gap: 20px;">
                         <div class="profile-pic-container">
                             <img src="https://ui-avatars.com/api/?name=User&background=eff6ff&color=2563eb"
                                 alt="Profile Picture" id="profilePic">
                             <label for="profilePicInput" class="upload-overlay">
-                                <span>📷</span>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
+                                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round">
+                                    <path
+                                        d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z">
+                                    </path>
+                                    <circle cx="12" cy="13" r="4"></circle>
+                                </svg>
                             </label>
                             <input type="file" id="profilePicInput" accept="image/*" style="display: none;">
                         </div>
                         <div>
-                            <h2>Professional Profile</h2>
-                            <p id="profileStatus">View and manage your career presence</p>
+                            <h2 style="font-size: 1.25rem; font-weight: 700;">Professional Summary</h2>
+                            <p id="profileStatus" style="font-size: 0.8125rem; color: var(--text-secondary);">Manage
+                                your OriginX identity</p>
                         </div>
                     </div>
                     <button type="button" id="editToggleBtn" class="edit-btn-pro">Edit Profile</button>
                 </div>
 
                 <form id="profileForm" class="view-mode">
-
-
                     <div class="section-card">
-                        <h3><i class="icon">📧</i> Basic Information</h3>
+                        <h3>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round">
+                                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                                <circle cx="12" cy="7" r="4"></circle>
+                            </svg>
+                            Personal Information
+                        </h3>
                         <div class="input-grid-pro">
                             <div class="input-group-pro">
                                 <label>Full Name</label>
-                                <input type="text" id="profileFullName" placeholder="Your Name" required readonly>
+                                <input type="text" id="profileFullName" placeholder="Full Name" required readonly>
                             </div>
                             <div class="input-group-pro">
                                 <label>Email Address</label>
-                                <input type="email" id="profileEmail" placeholder="Your Email" required readonly>
+                                <input type="email" id="profileEmail" placeholder="Email Address" required readonly>
                             </div>
                             <div class="input-group-pro">
                                 <label>Phone Number</label>
@@ -80,84 +90,90 @@
                     </div>
 
                     <div class="section-card">
-                        <h3><i class="icon">💼</i> Professional Details</h3>
+                        <h3>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round">
+                                <rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect>
+                                <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path>
+                            </svg>
+                            Career Details
+                        </h3>
                         <div class="input-grid-pro">
                             <div class="input-group-pro">
-                                <label>Desired Job Role</label>
-                                <input type="text" id="profileDesiredJob" placeholder="e.g. Frontend Developer"
-                                    readonly>
+                                <label>Current Role / Expertise</label>
+                                <input type="text" id="profileDesiredJob" placeholder="e.g. Software Engineer" readonly>
                             </div>
                             <div class="input-group-pro">
-                                <label>Years of Experience</label>
-                                <input type="text" id="profileExperience" placeholder="e.g. 2 years" readonly>
+                                <label>Experience (Years)</label>
+                                <input type="text" id="profileExperience" placeholder="e.g. 3 years" readonly>
                             </div>
                         </div>
-                        <div class="input-group-pro" style="margin-top:20px;">
-                            <label>Skills & Expertise</label>
-                            <textarea id="profileSkills" rows="3" placeholder="React, Node.js, Design Systems..."
+                        <div class="input-group-pro" style="margin-top: 1.5rem;">
+                            <label>Technical Skills</label>
+                            <textarea id="profileSkills" rows="3" placeholder="React, Node.js, Python..."
                                 readonly></textarea>
                         </div>
                     </div>
 
                     <div class="form-actions-pro">
                         <button type="submit" class="save-btn-pro">Save Changes</button>
-                        <button type="button" id="cancelEditBtn" class="cancel-btn-pro">Discard Changes</button>
+                        <button type="button" id="cancelEditBtn" class="cancel-btn-pro">Discard</button>
                     </div>
-
                 </form>
             </div>
         </div>
 
-        <div class="right-column">
-            <div class="sidebar-card tips-card">
-                <h4><i class="icon">💡</i> Success Tips</h4>
-                <ul>
-                    <li>✅ Add a professional photo to increase profile views by 40%</li>
-                    <li>✅ List 5+ skills to match more job opportunities</li>
-                    <li>✅ Highlight your unique value in your details</li>
-                </ul>
-            </div>
-
-            <div class="sidebar-card progress-card">
-                <h4><i class="icon">📈</i> Profile Strength</h4>
+        <aside class="right-col">
+            <div class="sidebar-card">
+                <h4>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                        <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                    </svg>
+                    Profile Strength
+                </h4>
                 <div class="progress-bar-container">
                     <div class="progress-bar" style="width: 75%;"></div>
                 </div>
-                <p style="font-size: 12px; color: var(--text-muted); margin-top: 10px;">Your profile is looking great!
-                    Complete your skills to reach 100%.</p>
+                <p style="font-size: 0.8125rem; color: var(--text-secondary); margin-top: 1rem;">
+                    75% complete. Add your current location to reach All-Star status.
+                </p>
             </div>
-        </div>
-    </main>
 
-    <script src="../js/config.js"></script>
-    <script src="../js/profile.js"></script>
+            <div class="sidebar-card">
+                <h4>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <line x1="12" y1="16" x2="12" y2="12"></line>
+                        <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                    </svg>
+                    Quick Tips
+                </h4>
+                <ul>
+                    <li>✅ Professional photos get 14x more clicks.</li>
+                    <li>✅ Specific location helps local recruiters find you.</li>
+                    <li>✅ Highlighted skills appear in recommended job matches.</li>
+                </ul>
+            </div>
+        </aside>
+    </main>
 
     <footer class="main-footer">
         <div class="footer-container">
-            <a href="dashboard.html" class="logo">
-                <div class="logo-icon">O</div>
-                <span>OriginX</span>
-            </a>
-
-            <div class="footer-divider"></div>
-
-            <div class="footer-info">
-                <nav class="footer-nav">
-                    <!-- FIXED -->
-                    <a href="dashboard.html">Dashboard</a>
-                    <a href="jobs.html">Jobs</a>
-                    <a href="profile.html">Profile</a>
-                    <a href="../index.html">Log out</a>
-                </nav>
-                <p class="copyright">© 2026 Origin X. All rights reserved.</p>
-            </div>
-
-            <div class="footer-social">
-                <p class="support-email">Support: OriginX@gmail.com</p>
+            <p class="copyright">© 2026 OriginX Hub. All rights reserved.</p>
+            <div class="footer-links">
+                <a href="#">Help Center</a>
+                <a href="#">Privacy Policy</a>
+                <a href="#">Terms of Service</a>
             </div>
         </div>
     </footer>
 
+    <script src="../js/config.js"></script>
+    <script src="../js/profile.js"></script>
 </body>
 
 </html>

@@ -11,37 +11,37 @@
 <body>
     <header class="navbar">
         <a href="company_dashboard.html" class="logo">
-            <div class="logo-icon">O</div>
-            <span>OriginX Business</span>
+            Origin<span>X</span> Business
         </a>
         <nav class="nav-links">
             <a href="company_dashboard.html" class="active">Dashboard</a>
-            <a href="#" id="postJobNav">Post New Job</a>
             <a href="company_applications.html">Applications</a>
+            <a href="company_profile.html">Profile</a>
         </nav>
         <div class="user-profile">
-            <span id="companyNameDisplay" style="margin-right: 15px; font-weight: 600; color: var(--text-dark);">Company
+            <span id="companyNameDisplay"
+                style="margin-right: 15px; font-weight: 600; color: var(--text-primary); opacity: 0.8;">Company
                 Name</span>
-            <a href="company_profile.html" class="profile">Profile</a>
             <a href="../index.html" class="logout-btn">Logout</a>
         </div>
     </header>
 
     <main class="dashboard-main">
-        <div class="dashboard-header">
-            <h1 id="welcomeMsg">Welcome, Employer</h1>
+        <div class="page-header">
+            <div class="header-left">
+                <h1 id="welcomeMsg">Welcome, Employer</h1>
+                <p class="breadcrumb">Business Dashboard / <span>Overview</span></p>
+            </div>
             <button id="openPostModal" class="btn-primary">Create New Job</button>
         </div>
 
         <div class="stats-grid">
             <div class="stat-card">
                 <div class="stat-icon blue">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                        class="lucide lucide-folder-root">
-                        <path
-                            d="M4 20h16a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.93a2 2 0 0 1-1.66-.9l-.82-1.2A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13c0 1.1.9 2 2 2Z" />
-                        <circle cx="12" cy="13" r="2" />
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <rect width="20" height="14" x="2" y="7" rx="2" ry="2" />
+                        <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16" />
                     </svg>
                 </div>
                 <div class="stat-info">
@@ -51,10 +51,9 @@
             </div>
             <div class="stat-card">
                 <div class="stat-icon green">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                        class="lucide lucide-users">
-                        <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 0 0 0-4 4v2" />
                         <circle cx="9" cy="7" r="4" />
                         <path d="M22 21v-2a4 4 0 0 0-3-3.87" />
                         <circle cx="19" cy="11" r="2" />
@@ -65,35 +64,35 @@
                     <p>Total Candidates</p>
                 </div>
             </div>
-            <div class="stat-card">
-                <div class="stat-icon orange">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                        class="lucide lucide-zap">
-                        <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
-                    </svg>
-                </div>
-                <div class="stat-info">
-                    <h3 id="statInterviews">0</h3>
-                    <p>Fast Matches</p>
-                </div>
-            </div>
         </div>
 
         <div class="dashboard-grid">
             <!-- Left Column: Job Management -->
             <div class="left-col">
                 <div class="section-container">
-                    <div class="section-header">
+                    <div class="section-header" style="display: flex; align-items: center; gap: 10px;">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <rect width="20" height="14" x="2" y="7" rx="2" ry="2" />
+                            <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16" />
+                        </svg>
                         <h2>Published Job Listings</h2>
                     </div>
                     <div id="employerJobs">
-                        <p style="color:var(--text-muted);">Loading active listings...</p>
+                        <p style="color:var(--text-secondary);">Loading active listings...</p>
                     </div>
 
-                    <h2 style="margin: 30px 0 20px; font-size: 18px;">Part-Time Opportunities</h2>
+                    <div class="section-header"
+                        style="margin-top: 40px; display: flex; align-items: center; gap: 10px;">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="10" />
+                            <polyline points="12 6 12 12 16 14" />
+                        </svg>
+                        <h2>Part-Time Opportunities</h2>
+                    </div>
                     <div id="employerPTJobs">
-                        <p style="color:var(--text-muted);">Loading part-time listings...</p>
+                        <p style="color:var(--text-secondary);">Loading part-time listings...</p>
                     </div>
                 </div>
             </div>
@@ -101,11 +100,18 @@
             <!-- Right Column: Recent Activity/Apps -->
             <div class="right-col">
                 <div class="section-container">
-                    <div class="section-header">
+                    <div class="section-header" style="display: flex; align-items: center; gap: 10px;">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 0 0 0-4 4v2" />
+                            <circle cx="9" cy="7" r="4" />
+                            <path d="M22 21v-2a4 4 0 0 0-3-3.87" />
+                            <circle cx="19" cy="11" r="2" />
+                        </svg>
                         <h2>Recent Applications</h2>
                     </div>
                     <div id="companyApplications">
-                        <p style="color:var(--text-muted);">Loading candidates...</p>
+                        <p style="color:var(--text-secondary);">Loading candidates...</p>
                     </div>
                 </div>
             </div>
@@ -160,21 +166,48 @@
         </div>
     </div>
 
+    <!-- Job Details Modal -->
+    <div id="jobDetailsModal" class="modal"
+        style="display:none; position:fixed; z-index:1001; left:0; top:0; width:100%; height:100%; background:rgba(0,0,0,0.5); align-items:center; justify-content:center;">
+        <div class="modal-content"
+            style="background:white; padding:30px; border-radius:12px; max-width:600px; width:90%;">
+            <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 1.5rem;">
+                <h3 id="detailJobTitle" style="font-size: 1.5rem; margin: 0; color: var(--primary);">Job Title</h3>
+                <span id="detailJobType" class="job-type-pill full-time">Full-time</span>
+            </div>
+
+            <div class="job-detail-row">
+                <span class="job-detail-label">Location</span>
+                <span id="detailJobLocation" class="job-detail-value">Location</span>
+            </div>
+            <div class="job-detail-row">
+                <span class="job-detail-label">Salary</span>
+                <span id="detailJobSalary" class="job-detail-value">Salary</span>
+            </div>
+
+            <div class="job-detail-desc">
+                <h4>Description</h4>
+                <p id="detailJobDesc">Job description goes here...</p>
+            </div>
+
+            <div class="job-detail-desc" id="detailSkillsContainer">
+                <h4>Skills Required</h4>
+                <p id="detailJobSkills">Skills...</p>
+            </div>
+
+            <div class="modal-actions" style="margin-top: 2rem;">
+                <button type="button" id="closeDetailModal" class="btn-primary" style="width:100%;">Close</button>
+            </div>
+        </div>
+    </div>
+
     <footer class="main-footer">
         <div class="footer-container">
-            <a href="company_dashboard.html" class="logo">
-                <div class="logo-icon">O</div><span>OriginX</span>
-            </a>
-            <div class="footer-divider"></div>
-            <div class="footer-info">
-                <nav class="footer-nav">
-                    <a href="company_dashboard.html">Dashboard</a>
-                    <a href="company_profile.html">Profile</a>
-                </nav>
-                <p class="copyright">© 2026 Origin X Business.</p>
-            </div>
-            <div class="footer-social">
-                <p class="support-email">Support: OriginX@gmail.com</p>
+            <p class="copyright">© 2026 OriginX Business Dashboard. All rights reserved.</p>
+            <div class="footer-links">
+                <a href="#">Help Center</a>
+                <a href="#">Privacy Policy</a>
+                <a href="#">Terms of Service</a>
             </div>
         </div>
     </footer>
@@ -215,7 +248,7 @@
                 <button id="rejectBtn"
                     style="flex:1; background:#ef4444; color:white; border:none; padding:12px; border-radius:8px; font-weight:700; cursor:pointer;">Reject
                     Application</button>
-                <button id="closeDetailModal"
+                <button id="closeAppDetailModal"
                     style="padding:12px 20px; border:1.5px solid var(--border-color); border-radius:8px; font-weight:600; cursor:pointer;">Close</button>
             </div>
         </div>

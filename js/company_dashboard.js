@@ -77,7 +77,8 @@ document.addEventListener("DOMContentLoaded", async () => {
         } catch (err) { console.error(err); }
     };
 
-    window.openEditModal = (job, type) => {
+    window.openEditModal = (e, job, type) => {
+        e.stopPropagation(); // Prevent triggering the card click
         editingJobId = job.id;
         document.getElementById("jobType").value = type;
         document.getElementById("jobTitle").value = job.title;
@@ -88,6 +89,28 @@ document.addEventListener("DOMContentLoaded", async () => {
 
         document.querySelector("#postJobModal h3").textContent = "Update Job Listing";
         modal.style.display = "flex";
+    };
+
+    // Job Details Modal Logic
+    const detailsModal = document.getElementById("jobDetailsModal");
+    const closeDetailBtn = document.getElementById("closeDetailModal");
+
+    window.openJobDetails = (job) => {
+        document.getElementById("detailJobTitle").textContent = job.title;
+        document.getElementById("detailJobType").textContent = job.is_part_time ? "Part-time" : "Full-time"; // Assuming logic or pass type
+        document.getElementById("detailJobType").className = `job-type-pill ${job.is_part_time ? 'part-time' : 'full-time'}`;
+        document.getElementById("detailJobLocation").textContent = job.location;
+        document.getElementById("detailJobSalary").textContent = job.salary || "Not specified";
+        document.getElementById("detailJobDesc").textContent = job.description || "No description provided.";
+        document.getElementById("detailJobSkills").textContent = job.skills_required || job.skills || "None listed";
+
+        detailsModal.style.display = "flex";
+    };
+
+    closeDetailBtn.onclick = () => detailsModal.style.display = "none";
+    window.onclick = (e) => {
+        if (e.target == modal) modal.style.display = "none";
+        if (e.target == detailsModal) detailsModal.style.display = "none";
     };
 
     // Load Company Data
@@ -108,22 +131,26 @@ async function fetchCompanyData(companyId) {
             myJobs.forEach(job => {
                 const item = document.createElement("div");
                 item.className = "job-card";
+                item.onclick = () => openJobDetails(job); // Add click handler
                 item.innerHTML = `
-                    <div style="flex:1;">
-                        <span class="job-type-pill pill-ft">Full-time</span>
-                        <h4 style="margin:10px 0 5px;">${job.title}</h4>
-                        <p style="margin:0; font-size:13px; color:var(--text-muted); display:flex; align-items:center; gap:4px;">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none"
-                                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
-                                <circle cx="12" cy="10" r="3"></circle>
-                            </svg>
-                            ${job.location} | 💰 ${job.salary || 'N/A'}
-                        </p>
+                    <div class="job-info">
+                        <span class="job-type-pill full-time">Full-time</span>
+                        <h3>${job.title}</h3>
+                        <div class="job-meta">
+                            <span>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                                    <circle cx="12" cy="10" r="3"></circle>
+                                </svg>
+                                ${job.location}
+                            </span>
+                            <span>💰 ${job.salary || 'N/A'}</span>
+                        </div>
                     </div>
-                    <div style="display:flex; gap:8px;">
-                        <button class="btn-edit" onclick='openEditModal(${JSON.stringify(job)}, "full-time")'>Edit</button>
-                        <button class="btn-delete" onclick='deleteJob(${job.id}, "full-time")'>Delete</button>
+                    <div class="job-actions">
+                        <button class="btn-edit" onclick='openEditModal(event, ${JSON.stringify(job)}, "full-time")'>Edit</button>
+                        <button class="btn-delete" onclick='deleteJob(event, ${job.id}, "full-time")'>Delete</button>
                     </div>
                 `;
                 container.appendChild(item);
@@ -143,22 +170,27 @@ async function fetchCompanyData(companyId) {
             myPTJobs.forEach(job => {
                 const item = document.createElement("div");
                 item.className = "job-card";
+                job.is_part_time = true; // Mark as part time for modal
+                item.onclick = () => openJobDetails(job);
                 item.innerHTML = `
-                    <div style="flex:1;">
-                        <span class="job-type-pill pill-pt">Part-time</span>
-                        <h4 style="margin:10px 0 5px;">${job.title}</h4>
-                        <p style="margin:0; font-size:13px; color:var(--text-muted); display:flex; align-items:center; gap:4px;">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none"
-                                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
-                                <circle cx="12" cy="10" r="3"></circle>
-                            </svg>
-                            ${job.location} | 💰 ${job.salary || 'N/A'}
-                        </p>
+                    <div class="job-info">
+                        <span class="job-type-pill part-time">Part-time</span>
+                        <h3>${job.title}</h3>
+                        <div class="job-meta">
+                            <span>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                                    <circle cx="12" cy="10" r="3"></circle>
+                                </svg>
+                                ${job.location}
+                            </span>
+                            <span>💰 ${job.salary || 'N/A'}</span>
+                        </div>
                     </div>
-                    <div style="display:flex; gap:8px;">
-                        <button class="btn-edit" onclick='openEditModal(${JSON.stringify(job)}, "part-time")'>Edit</button>
-                        <button class="btn-delete" onclick='deleteJob(${job.id}, "part-time")'>Delete</button>
+                    <div class="job-actions">
+                        <button class="btn-edit" onclick='openEditModal(event, ${JSON.stringify(job)}, "part-time")'>Edit</button>
+                        <button class="btn-delete" onclick='deleteJob(event, ${job.id}, "part-time")'>Delete</button>
                     </div>
                 `;
                 container.appendChild(item);
@@ -184,26 +216,25 @@ async function fetchCompanyData(companyId) {
                 // Sort by latest first and take top 5
                 const recentApps = apps
                     .sort((a, b) => new Date(b.created_at || 0) - new Date(a.created_at || 0))
-                    .slice(0, 5);
+                    .slice(0, 3);
 
                 recentApps.forEach(app => {
                     const initials = app.full_name ? app.full_name.split(' ').map(n => n[0]).join('').toUpperCase() : "??";
+
+                    // Format Date
+                    const dateObj = new Date(app.created_at || Date.now());
+                    const dateStr = dateObj.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+
                     const card = document.createElement("div");
                     card.className = "app-item";
-                    card.style.cursor = "pointer";
-                    card.onclick = () => showAppDetail(app);
-
                     card.innerHTML = `
                         <div class="app-avatar">${initials}</div>
                         <div class="app-details">
                             <h4>${app.full_name}</h4>
-                            <p>For: ${app.job_title || 'N/A'}</p>
-                            <p style="font-size:11px; opacity:0.8;">${app.email}</p>
+                            <p class="app-sub">Applied: <strong>${app.job_title || 'N/A'}</strong></p>
                         </div>
-                        <div style="display:flex; flex-direction:column; align-items:flex-end; gap:5px;">
-                            <span class="status-badge status-${app.status.toLowerCase()}">${app.status}</span>
-                            <button class="btn-edit" style="padding:4px 8px; font-size:10px;">Details</button>
-                        </div>
+                        <div class="app-date">${dateStr}</div>
+                        <button class="btn-view-app" onclick='showAppDetail(${JSON.stringify(app)})'>View</button>
                     `;
                     container.appendChild(card);
                 });
@@ -243,7 +274,7 @@ function showAppDetail(app) {
     modal.style.display = "flex";
 
     // Close logic
-    document.getElementById("closeDetailModal").onclick = () => modal.style.display = "none";
+    document.getElementById("closeAppDetailModal").onclick = () => modal.style.display = "none";
 }
 
 async function updateStatus(appId, newStatus) {
@@ -269,7 +300,8 @@ async function updateStatus(appId, newStatus) {
     }
 }
 
-async function deleteJob(jobId, type) {
+async function deleteJob(e, jobId, type) {
+    e.stopPropagation(); // Prevent card click
     if (!confirm(`Are you sure you want to delete this ${type} job listing? This action cannot be undone.`)) return;
 
     let endpoint = type === "full-time" ? "/jobs/" : "/part_time_jobs/";

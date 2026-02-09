@@ -60,45 +60,61 @@
     </style>
 </head>
 
-<body>
-    <div class="success-box">
-        <div class="success-icon">Check</div>
-        <h2>Application Submitted!</h2>
-        <p>Your application has been received. The company will review it shortly.</p>
+<body style="display: flex; flex-direction: column; min-height: 100vh; margin: 0;">
 
-        <div class="summary-card" id="summaryCard">
-            <div class="summary-row">
-                <span class="summary-label">Applicant Name</span>
-                <span class="summary-value" id="resName">---</span>
+    <header class="navbar"
+        style="background: white; border-bottom: 1px solid #e0e0e0; padding: 0 8%; display: flex; align-items: center; height: 64px;">
+        <a href="dashboard.html" class="logo"
+            style="display: flex; align-items: center; gap: 8px; font-size: 1.5rem; font-weight: 700; color: #2563eb; text-decoration: none;">
+            Origin<span style="color: #2563eb;">X</span>
+        </a>
+    </header>
+
+    <main style="flex: 1;">
+        <div class="success-box">
+            <div class="success-icon">
+                <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                    <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                </svg>
             </div>
-            <div class="summary-row">
-                <span class="summary-label">Applied for</span>
-                <span class="summary-value" id="resJob">---</span>
+            <h2>Application Submitted!</h2>
+            <p>Your application has been received. The company will review it shortly.</p>
+
+            <div class="summary-card" id="summaryCard">
+                <div class="summary-row">
+                    <span class="summary-label">Applicant Name</span>
+                    <span class="summary-value" id="resName">---</span>
+                </div>
+                <div class="summary-row">
+                    <span class="summary-label">Applied for</span>
+                    <span class="summary-value" id="resJob">---</span>
+                </div>
+                <div class="summary-row">
+                    <span class="summary-label">Company</span>
+                    <span class="summary-value" id="resCompany">---</span>
+                </div>
+                <div class="summary-row">
+                    <span class="summary-label">Location</span>
+                    <span class="summary-value" id="resLoc">---</span>
+                </div>
             </div>
-            <div class="summary-row">
-                <span class="summary-label">Company</span>
-                <span class="summary-value" id="resCompany">---</span>
-            </div>
-            <div class="summary-row">
-                <span class="summary-label">Location</span>
-                <span class="summary-value" id="resLoc">---</span>
-            </div>
+
+            <a href="dashboard.html" class="back-btn">Go to Dashboard</a>
         </div>
 
-        <a href="dashboard.html" class="back-btn">Go to Dashboard</a>
-    </div>
-
-    <script>
-        document.addEventListener("DOMContentLoaded", () => {
-            const summary = JSON.parse(localStorage.getItem("last_application"));
-            if (summary) {
-                document.getElementById("resName").textContent = summary.userName;
-                document.getElementById("resJob").textContent = summary.jobTitle;
-                document.getElementById("resCompany").textContent = summary.companyName;
-                document.getElementById("resLoc").textContent = summary.location;
-            }
-        });
-    </script>
+        <script>
+            document.addEventListener("DOMContentLoaded", () => {
+                const summary = JSON.parse(localStorage.getItem("last_application"));
+                if (summary) {
+                    document.getElementById("resName").textContent = summary.userName;
+                    document.getElementById("resJob").textContent = summary.jobTitle;
+                    document.getElementById("resCompany").textContent = summary.companyName;
+                    document.getElementById("resLoc").textContent = summary.location;
+                }
+            });
+        </script>
 </body>
 
 </html>

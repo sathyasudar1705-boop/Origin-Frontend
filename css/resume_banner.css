@@ -1,0 +1,136 @@
+.resume-banner {
+    background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+    border-radius: 16px;
+    padding: 1.25rem 2rem;
+    margin: 1rem 0 2.5rem;
+    /* Left aligned, not centered */
+    max-width: 800px;
+    /* Further reduced for a compact look */
+    /* Reduced width to make it more card-like */
+    width: 100%;
+    /* Take full width up to max-width */
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+    border: 1px solid #e2e8f0;
+    position: relative;
+    overflow: hidden;
+}
+
+.resume-banner::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -10%;
+    width: 300px;
+    height: 300px;
+    background: radial-gradient(circle, rgba(255, 20, 147, 0.05) 0%, transparent 70%);
+    z-index: 0;
+}
+
+.banner-left {
+    display: flex;
+    align-items: center;
+    gap: 2.5rem;
+    z-index: 1;
+}
+
+.resume-illustration {
+    width: 100px;
+    height: auto;
+    border-radius: 8px;
+    transform: rotate(-3deg);
+    transition: transform 0.3s ease;
+    z-index: 1;
+}
+
+.resume-banner:hover .resume-illustration {
+    transform: rotate(0deg) scale(1.05);
+}
+
+.banner-text h2 {
+    font-size: 1.5rem;
+    /* More professional, less loud */
+    font-weight: 700;
+    color: #0f172a;
+    margin-bottom: 0.75rem;
+    letter-spacing: -0.01em;
+}
+
+.banner-text ol {
+    list-style: none;
+    counter-reset: step-counter;
+    display: flex;
+    flex-direction: column;
+    /* Back to vertical */
+    gap: 0.5rem;
+}
+
+.banner-text li {
+    font-size: 0.95rem;
+    color: #475569;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-weight: 500;
+}
+
+.banner-text li::before {
+    counter-increment: step-counter;
+    content: counter(step-counter) ".";
+    color: #64748b;
+    font-weight: 600;
+}
+
+.banner-right {
+    z-index: 1;
+}
+
+.btn-create-resume {
+    background: #2563eb;
+    color: white;
+    padding: 0.75rem 1.75rem;
+    border-radius: 8px;
+    /* More professional squared-round */
+    font-size: 0.95rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.2s;
+    box-shadow: 0 2px 8px rgba(37, 99, 235, 0.2);
+    border: none;
+    cursor: pointer;
+    display: inline-block;
+}
+
+.btn-create-resume:hover {
+    background: #1d4ed8;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(37, 99, 235, 0.6);
+}
+
+.btn-create-resume:active {
+    transform: translateY(0);
+}
+
+@media (max-width: 968px) {
+    .resume-banner {
+        flex-direction: column;
+        text-align: center;
+        padding: 2.5rem 1.5rem;
+        gap: 2rem;
+    }
+
+    .banner-left {
+        flex-direction: column;
+    }
+
+    .banner-text h2 {
+        font-size: 1.75rem;
+    }
+
+    .banner-text li {
+        font-size: 1.1rem;
+        justify-content: center;
+    }
+}

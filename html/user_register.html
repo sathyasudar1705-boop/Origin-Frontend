@@ -11,52 +11,55 @@
 
 <body>
 
-    <div class="auth-container">
-        <button class="close-btn" onclick="location.href='../index.html'">&times;</button>
-
-        <a href="../index.html" style="text-decoration: none;">
-            <div style="display: flex; justify-content: center; margin-bottom: 2rem;">
-                <div
-                    style="background: var(--accent); color: white; width: 48px; height: 48px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 1.5rem; box-shadow: 0 8px 16px rgba(37, 99, 235, 0.2);">
-                    O</div>
+    <div class="split-container">
+        <!-- Branding Side -->
+        <div class="branding-side">
+            <div class="branding-content">
+                <div class="branding-logo">Origin<span>X</span></div>
+                <h1 class="branding-title">Build your path.</h1>
+                <p class="branding-subtitle">Create a professional profile, discover global opportunities, and grow your
+                    career with OriginX. Join thousands of dreamers.</p>
             </div>
-        </a>
-
-        <div class="auth-header">
-            <h2>Create Account</h2>
-            <p>Join us to find your dream job</p>
         </div>
 
-        <form class="register-form" onsubmit="registerUser(event)">
-            <div class="input-group">
-                <label for="name">Full Name</label>
-                <input type="text" id="fullName" name="name" placeholder="John Doe" required>
+        <!-- Form Side -->
+        <div class="form-side">
+            <button class="close-btn" onclick="location.href='../index.html'">&times;</button>
+
+            <div class="auth-container">
+                <a href="../index.html" class="mobile-logo">Origin<span>X</span></a>
+
+                <div class="auth-header">
+                    <h2>Join OriginX</h2>
+                    <p>Start your professional journey today.</p>
+                </div>
+
+                <form class="register-form" onsubmit="registerUser(event)">
+                    <div class="input-group">
+                        <label for="name">Full Name</label>
+                        <input type="text" id="fullName" name="name" placeholder="Full Name" required>
+                    </div>
+
+                    <div class="input-group">
+                        <label for="email">Email Address</label>
+                        <input type="email" id="email" name="email" placeholder="Email Address" required>
+                    </div>
+
+                    <input type="hidden" id="role" value="job seeker">
+
+                    <div class="input-group">
+                        <label for="password">Password (8+ characters)</label>
+                        <input type="password" id="password" name="password" placeholder="Password" required>
+                    </div>
+
+                    <button type="submit" class="auth-btn">Agree & Join</button>
+                </form>
+
+
+                <div class="auth-footer">
+                    <p>Already have an account? <a href="user_login.html">Sign in</a></p>
+                </div>
             </div>
-
-            <div class="input-group">
-                <label for="email">Email Address</label>
-                <input type="email" id="email" name="email" placeholder="john@example.com" required>
-            </div>
-
-            <!-- Hidden role input, default to job_seeker for now -->
-            <input type="hidden" id="role" value="job seeker">
-
-            <div class="input-group">
-                <label for="password">Password</label>
-                <input type="password" id="password" name="password" placeholder="Create a password" required>
-            </div>
-
-            <div class="input-group">
-                <label for="confirm-password">Confirm Password</label>
-                <input type="password" id="confirm-password" name="confirm_password" placeholder="Confirm your password"
-                    required>
-            </div>
-
-            <button type="submit" class="auth-btn">Sign Up</button>
-        </form>
-
-        <div class="auth-footer">
-            <p>Already have an account? <a href="user_login.html">Login</a></p>
         </div>
     </div>
 

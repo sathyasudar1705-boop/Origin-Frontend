@@ -11,41 +11,54 @@
 
 <body>
 
-    <div class="auth-container">
-        <button class="close-btn" onclick="location.href='../index.html'">&times;</button>
-
-        <a href="../index.html" style="text-decoration: none;">
-            <div style="display: flex; justify-content: center; margin-bottom: 2rem;">
-                <div
-                    style="background: var(--accent); color: white; width: 48px; height: 48px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 1.5rem; box-shadow: 0 8px 16px rgba(37, 99, 235, 0.2);">
-                    O</div>
+    <div class="split-container">
+        <!-- Branding Side -->
+        <div class="branding-side">
+            <div class="branding-content">
+                <div class="branding-logo">Origin<span>X</span></div>
+                <h1 class="branding-title">Connect to opportunity.</h1>
+                <p class="branding-subtitle">Join the world's most innovative job portal for dreamers and builders. Your
+                    next big career move starts here.</p>
             </div>
-        </a>
-
-        <div class="auth-header">
-            <h2>Welcome Back</h2>
-            <p>Login to your account to continue</p>
         </div>
 
-        <form class="login-form" onsubmit="loginUser(event, 'job seeker')">
-            <div class="input-group">
-                <label for="email">Email Address</label>
-                <input type="email" id="email" name="email" placeholder="Enter your email" required>
+        <!-- Form Side -->
+        <div class="form-side">
+            <button class="close-btn" onclick="location.href='../index.html'">&times;</button>
+
+            <div class="auth-container">
+                <a href="../index.html" class="mobile-logo">Origin<span>X</span></a>
+
+                <div class="auth-header">
+                    <h2>Sign in</h2>
+                    <p>Welcome back! Please enter your details.</p>
+                </div>
+
+                <form class="login-form" onsubmit="loginUser(event, 'job seeker')">
+                    <div class="input-group">
+                        <label for="email">Email Address</label>
+                        <input type="email" id="email" name="email" placeholder="Email Address" required>
+                    </div>
+
+                    <div class="input-group">
+                        <label for="password">Password</label>
+                        <input type="password" id="password" name="password" placeholder="Password" required>
+                    </div>
+
+                    <p style="text-align: right; margin-top: 0.5rem;">
+                        <a href="#"
+                            style="color: var(--primary); font-weight: 600; text-decoration: none; font-size: 0.9rem;">Forgot
+                            password?</a>
+                    </p>
+
+                    <button type="submit" class="auth-btn">Sign in</button>
+                </form>
+
+
+                <div class="auth-footer">
+                    <p>New to OriginX? <a href="user_register.html">Create an account</a></p>
+                </div>
             </div>
-
-            <div class="input-group">
-                <label for="password">Password</label>
-                <input type="password" id="password" name="password" placeholder="Enter your password" required>
-            </div>
-
-            <button type="submit" class="auth-btn">Login</button>
-        </form>
-
-        <div class="auth-footer">
-            <p>Don't have an account? <a href="user_register.html">Sign Up</a></p>
-            <p><a href="#"
-                    style="font-size: 13px; color: #a0aec0; display: block; margin-top: 10px; text-decoration: none;">Forgot
-                    Password?</a></p>
         </div>
     </div>
 

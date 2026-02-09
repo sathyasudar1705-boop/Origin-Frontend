@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Saved Jobs | OriginX</title>
+    <link rel="stylesheet" href="../css/dashboard.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        .saved-hero {
+            background: #ffffff;
+            border-bottom: 1px solid var(--border-color);
+            padding: 3rem 8%;
+            margin-bottom: 2rem;
+        }
+
+        .saved-hero h1 {
+            font-size: 1.75rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .saved-hero p {
+            color: var(--text-secondary);
+            font-size: 0.9375rem;
+        }
+
+        .saved-container {
+            max-width: 1128px;
+            margin: 0 auto;
+            padding: 0 1.5rem 4rem;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 5rem 2rem;
+            background: white;
+            border: 2px dashed var(--border-color);
+            border-radius: var(--radius-md);
+            color: var(--text-secondary);
+        }
+
+        .job-card-row {
+            background: white;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            padding: 1.5rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            transition: all 0.2s;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .job-card-row:hover {
+            box-shadow: var(--shadow-md);
+            transform: translateY(-2px);
+        }
+
+        .job-info h3 {
+            font-size: 1.1rem;
+            color: var(--accent);
+            margin-bottom: 0.25rem;
+        }
+
+        .job-info p {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+        }
+
+        .job-actions {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .btn-view {
+            padding: 0.5rem 1.25rem;
+            background: var(--accent);
+            color: white;
+            border-radius: 24px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.875rem;
+        }
+
+        .btn-remove {
+            padding: 0.5rem 1.25rem;
+            border: 1px solid #dc2626;
+            color: #dc2626;
+            border-radius: 24px;
+            cursor: pointer;
+            background: transparent;
+            font-weight: 600;
+            font-size: 0.875rem;
+        }
+
+        .btn-remove:hover {
+            background: #fee2e2;
+        }
+
+        body {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        .saved-container {
+            flex: 1;
+        }
+    </style>
+</head>
+
+<body>
+
+    <header class="navbar">
+        <a href="dashboard.html" class="logo">
+            Origin<span>X</span>
+        </a>
+        <nav class="nav-links">
+            <a href="dashboard.html">Dashboard</a>
+            <a href="jobs.html">Search Jobs</a>
+            <a href="part_time_jobs.html">Part Time</a>
+            <a href="saved_jobs.html" class="active">Saved</a>
+        </nav>
+        <div class="user-profile">
+            <a href="profile.html" class="profile">Profile</a>
+            <a href="../index.html" class="logout-btn">Logout</a>
+        </div>
+    </header>
+
+    <div class="saved-hero">
+        <div style="max-width: 1128px; margin: 0 auto; width: 100%;">
+            <h1>Jobs you've bookmarked</h1>
+            <p>Ready to move forward? Apply for these roles today.</p>
+        </div>
+    </div>
+
+    <main class="saved-container">
+        <div id="savedList">
+            <!-- Populated via JS -->
+        </div>
+    </main>
+
+    <footer class="main-footer">
+        <div class="footer-container">
+            <p class="copyright">© 2026 OriginX Hub. All rights reserved.</p>
+            <div class="footer-links">
+                <a href="#">Help Center</a>
+                <a href="#">Privacy Policy</a>
+                <a href="#">Terms of Service</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const list = document.getElementById("savedList");
+            const savedJobs = JSON.parse(localStorage.getItem("saved_jobs") || "[]");
+
+            if (savedJobs.length === 0) {
+                list.innerHTML = `
+                    <div class="empty-state">
+                        <h2>Your collection is currently empty</h2>
+                        <p>When you find a job you like, click the 'Save' button to see it here later.</p>
+                        <a href="jobs.html" style="color: var(--accent); font-weight: 600; margin-top: 1.5rem; display: inline-block;">Browse Jobs →</a>
+                    </div>
+                `;
+                return;
+            }
+
+            savedJobs.reverse().forEach((job, index) => {
+                const card = document.createElement("div");
+                card.classList.add("job-card-row");
+                card.innerHTML = `
+                    <div class="job-info">
+                        <h3>${job.title}</h3>
+                        <p>${job.company_name} · ${job.location} · ${job.type}</p>
+                    </div>
+                    <div class="job-actions">
+                        <a href="${job.type === 'Full-time' ? 'jobs.html' : 'part_time_jobs.html'}" class="btn-view">View Detail</a>
+                        <button class="btn-remove" onclick="removeJob(${index})">Remove</button>
+                    </div>
+                `;
+                list.appendChild(card);
+            });
+        });
+
+        function removeJob(index) {
+            let savedJobs = JSON.parse(localStorage.getItem("saved_jobs") || "[]");
+            savedJobs.reverse(); // Reverse back to match the displayed index
+            savedJobs.splice(index, 1);
+            savedJobs.reverse(); // Return to original order
+            localStorage.setItem("saved_jobs", JSON.stringify(savedJobs));
+            location.reload();
+        }
+    </script>
+</body>
+
+</html>

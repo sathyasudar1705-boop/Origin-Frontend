@@ -73,15 +73,18 @@ async function fetchJobs(q = '', location = '') {
             const badgeClass = job.type === 'Full-time' ? 'blue' : 'part-time';
             const companyName = job.company ? job.company.company_name : (job.company_name || 'Unknown Company');
 
+            const initial = companyName.charAt(0);
             jobCard.innerHTML = `
-                <div class="job-item-header">
+                <div class="job-logo">${initial}</div>
+                <div class="job-content">
                     <h4>${job.title}</h4>
-                    <span class="badge ${badgeClass}">${job.type}</span>
-                </div>
-                <p class="company">${companyName}</p>
-                <div class="job-item-meta">
-                    <span>📍 ${job.location}</span>
-                    <span>💰 ${job.salary || 'Competitive'}</span>
+                    <p class="company">${companyName}</p>
+                    <p class="location-line">${job.location} (Remote)</p>
+                    <div class="job-item-meta">
+                        <span>${job.type}</span>
+                        <span>•</span>
+                        <span>Actively hiring</span>
+                    </div>
                 </div>
             `;
             jobCard.onclick = () => {
@@ -126,30 +129,33 @@ function displayJobDetails(job) {
 
     detailPane.innerHTML = `
         <div class="detail-header">
-            <div class="detail-title-row">
-                <h2>${job.title}</h2>
-                <span class="badge ${badgeClass}">${job.type}</span>
+            <h2>${job.title}</h2>
+            <div class="detail-company-line">
+                <a href="#">${companyName}</a> · ${job.location} · 1 week ago
             </div>
-            <p class="detail-company">${companyName}</p>
+            
             <div class="detail-meta">
-                <span>📍 ${job.location}</span>
-                <span>💰 ${job.salary || 'Competitive'}</span>
-                <span>🕒 Posted Recently</span>
+                <span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path></svg> ${job.type}</span>
+                <span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg> 10,001+ employees</span>
+                <span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg> Skills: ${skills.split(',')[0]} and more</span>
+            </div>
+
+            <div class="action-row">
+                <a href="${applyUrl}" class="apply">Apply Now</a>
+                <button class="btn-secondary" onclick="toggleSaveJob(${job.id}, '${job.type}')" id="saveBtn-${job.id}">
+                    ${isJobSaved(job.id, job.type) ? 'Saved' : 'Save'}
+                </button>
             </div>
         </div>
 
         <div class="detail-body">
-            <h3>Job Description</h3>
+            <h3>About the job</h3>
             <p>${job.description || "No description provided."}</p>
 
             <h3>Required Skills</h3>
             <div class="skills-tags">
                 ${skillsHtml}
             </div>
-
-            <button class="${applyBtnClass}">
-                <a href="${applyUrl}">${applyBtnText}</a>
-            </button>
         </div>
     `;
 }
@@ -170,6 +176,51 @@ document.addEventListener("DOMContentLoaded", () => {
 
     fetchJobs();
 });
+
+function isJobSaved(jobId, type) {
+    const saved = JSON.parse(localStorage.getItem("saved_jobs") || "[]");
+    return saved.some(j => j.id === jobId && j.type === type);
+}
+
+function toggleSaveJob(jobId, type) {
+    let saved = JSON.parse(localStorage.getItem("saved_jobs") || "[]");
+    const index = saved.findIndex(j => j.id === jobId && j.type === type);
+
+    // Find the job object from the list (this requires allJobs to be accessible or passed)
+    // For simplicity, we'll store a minimal job object or we might need to change how this is called
+    // Let's assume we can re-find it or we store the current job in a global variable
+    if (index > -1) {
+        saved.splice(index, 1);
+        alert("Job removed from saved list.");
+    } else {
+        // We need the full job object. In a real app, we'd fetch it or have it in a global state.
+        // For now, let's use a trick: get it from the last job passed to displayJobDetails
+        const job = currentJob;
+        if (job) {
+            saved.push({
+                id: job.id,
+                title: job.title,
+                company_name: job.company ? job.company.company_name : (job.company_name || 'Enterprise Partner'),
+                location: job.location,
+                type: job.type,
+                salary: job.salary
+            });
+            alert("Job saved successfully!");
+        }
+    }
+    localStorage.setItem("saved_jobs", JSON.stringify(saved));
+    const btn = document.getElementById(`saveBtn-${jobId}`);
+    if (btn) btn.textContent = isJobSaved(jobId, type) ? 'Saved' : 'Save';
+}
+
+let currentJob = null;
+
+// Update displayJobDetails to set currentJob
+const originalDisplayJobDetails = displayJobDetails;
+displayJobDetails = function (job) {
+    currentJob = job;
+    originalDisplayJobDetails(job);
+};
 
 function debounce(func, timeout = 300) {
     let timer;

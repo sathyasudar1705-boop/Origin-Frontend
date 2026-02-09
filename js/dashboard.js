@@ -5,41 +5,9 @@ document.addEventListener("DOMContentLoaded", async () => {
         return;
     }
 
-    // Resume Generation
-    const resumeBtn = document.getElementById("createResumeBtn");
-    const resumeModal = document.getElementById("resumeOptionsModal");
-    const closeResumeModal = document.getElementById("closeResumeModal");
-    const confirmResumeBtn = document.getElementById("confirmGenerateResume");
+    const welcomeMsg = document.getElementById("welcomeMsg");
+    if (welcomeMsg) welcomeMsg.textContent = `Welcome back, ${user.full_name || 'User'}!`;
 
-    if (resumeBtn) {
-        resumeBtn.addEventListener("click", () => {
-            resumeModal.style.display = "flex";
-        });
-    }
-
-    if (closeResumeModal) {
-        closeResumeModal.addEventListener("click", () => {
-            resumeModal.style.display = "none";
-        });
-    }
-
-    window.addEventListener("click", (e) => {
-        if (e.target === resumeModal) resumeModal.style.display = "none";
-    });
-
-    if (confirmResumeBtn) {
-        confirmResumeBtn.addEventListener("click", () => {
-            const template = document.querySelector('input[name="resumeTemplate"]:checked').value;
-            const options = {
-                template: template,
-                show_salary: document.getElementById("showSalary").checked,
-                show_location: document.getElementById("showLocation").checked,
-                show_department: document.getElementById("showDepartment").checked
-            };
-            generateResume(user.id, options);
-            resumeModal.style.display = "none";
-        });
-    }
 
     // 1. Fetch and Display Jobs (Recommended)
     await fetchRecommendedJobs();
@@ -174,9 +142,12 @@ async function fetchUserApplications(userId) {
             const apps = await response.json();
 
             // Update Stats
+            const statsSelected = document.getElementById("statSelected");
+            const statsRejected = document.getElementById("statRejected");
+
             statsApps.textContent = apps.length;
-            statsShortlisted.textContent = apps.filter(a => a.status === 'Shortlisted').length;
-            statsInterviews.textContent = apps.filter(a => a.status === 'Interview').length;
+            if (statsSelected) statsSelected.textContent = apps.filter(a => a.status === 'Approved').length;
+            if (statsRejected) statsRejected.textContent = apps.filter(a => a.status === 'Rejected').length;
 
             // Update Recent Applications (top 3)
             const recent = apps.slice(-3).reverse();

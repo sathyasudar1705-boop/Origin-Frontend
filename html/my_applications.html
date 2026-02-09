@@ -5,82 +5,183 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Applications | OriginX</title>
-    <link rel="stylesheet" href="../css/jobs.css">
+    <link rel="stylesheet" href="../css/dashboard.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
-        .app-container {
-            max-width: 1000px;
-            margin: 40px auto;
-            padding: 0 20px;
+        .app-hero {
+            background: #ffffff;
+            border-bottom: 1px solid var(--border-color);
+            padding: 3rem 8%;
+            margin-bottom: 2rem;
+        }
+
+        .app-hero h1 {
+            font-size: 1.75rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: var(--text-primary);
+        }
+
+        .app-hero p {
+            color: var(--text-secondary);
+            font-size: 0.9375rem;
+        }
+
+        .app-list-container {
+            max-width: 1250px;
+            /* Increased from 1128px */
+            margin: 0 auto;
+            padding: 0 1.5rem 4rem;
+            flex: 1;
+            /* Sticky footer magic */
         }
 
         .app-card {
-            background: white;
-            border-radius: 12px;
-            padding: 20px;
-            margin-bottom: 15px;
+            background: #ffffff;
             border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            padding: 1.25rem 2.5rem;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            transition: transform 0.2s;
+            margin-bottom: 1rem;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
         }
 
         .app-card:hover {
-            transform: translateX(5px);
-            border-color: var(--primary-blue);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            border-color: var(--accent);
+            transform: translateY(-2px);
         }
 
         .app-info h3 {
-            margin: 0;
-            font-size: 18px;
-            color: var(--text-dark);
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--accent);
+            margin-bottom: 0.4rem;
         }
 
         .app-info p {
-            color: var(--text-muted);
-            margin: 5px 0;
+            font-size: 0.9375rem;
+            color: var(--text-secondary);
+            margin: 0.25rem 0;
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
 
         .status-badge {
-            padding: 5px 12px;
+            padding: 0.4rem 1.25rem;
             border-radius: 20px;
-            font-size: 12px;
-            font-weight: 600;
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 0.3px;
+            text-transform: uppercase;
         }
 
+        body {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            background: var(--bg-main);
+        }
+
+        /* Modal Enhancements */
+        .modal-content {
+            border-radius: 12px !important;
+            padding: 2.5rem !important;
+            border: none !important;
+        }
+
+        .close-modal:hover {
+            color: var(--accent) !important;
+        }
+
+
         .status-applied {
-            background: #eff6ff;
-            color: var(--primary-blue);
+            background: #f3f2f0;
+            color: rgba(0, 0, 0, 0.6);
         }
 
         .status-shortlisted,
         .status-approved {
-            background: #f0fdf4;
-            color: #16a34a;
+            background: #e6f7ed;
+            color: #057642;
         }
 
         .status-rejected {
-            background: #fef2f2;
+            background: #fee2e2;
             color: #dc2626;
         }
 
         .status-cancelled {
-            background: #f5f5f5;
+            background: #f3f2f0;
             color: #737373;
+            border: 1px dashed #d1d1d1;
+        }
+
+        /* Modal Synced */
+        .modal-content {
+            border-radius: var(--radius-md) !important;
+            padding: 2.5rem !important;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1.5rem;
+        }
+
+        .modal-header h2 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .modal-section {
+            margin-top: 1.5rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .modal-section p {
+            margin-bottom: 0.75rem;
+        }
+
+        .cancel-btn-pro {
+            width: 100%;
+            padding: 0.75rem;
+            background: #ef4444;
+            color: white;
+            border: none;
+            border-radius: 24px;
+            font-weight: 700;
+            cursor: pointer;
+            font-size: 0.9375rem;
+            margin-top: 2rem;
+            transition: background 0.2s;
+        }
+
+        .cancel-btn-pro:hover {
+            background: #dc2626;
         }
     </style>
 </head>
 
-<body style="display: flex; flex-direction: column; min-height: 100vh; margin: 0; overflow-y: auto;">
+<body>
+
     <header class="navbar">
         <a href="dashboard.html" class="logo">
-            <div class="logo-icon">O</div>
-            <span>OriginX</span>
+            Origin<span>X</span>
         </a>
         <nav class="nav-links">
             <a href="dashboard.html">Dashboard</a>
             <a href="jobs.html">Search Jobs</a>
-            <a href="part_time_jobs.html">Part Time Jobs</a>
+            <a href="part_time_jobs.html">Part Time</a>
+            <a href="saved_jobs.html">Saved</a>
         </nav>
         <div class="user-profile">
             <a href="profile.html" class="profile">Profile</a>
@@ -88,81 +189,64 @@
         </div>
     </header>
 
-    <main class="app-container">
-        <h1>My Applications</h1>
-        <p style="color: var(--text-muted);">Track the status of your job applications</p>
+    <div class="app-hero">
+        <div style="max-width: 1128px; margin: 0 auto; width: 100%;">
+            <h1>Application History</h1>
+            <p>Transparency from submission to selection</p>
+        </div>
+    </div>
 
-        <div id="applicationsList" style="margin-top: 30px;">
-            <p>Loading your applications...</p>
+    <main class="app-list-container">
+        <div id="applicationsList">
+            <p style="text-align: center; color: var(--text-secondary); margin-top: 3rem;">Retrieving your records...
+            </p>
         </div>
     </main>
 
     <div id="detailsModal" class="modal"
-        style="display:none; position:fixed; z-index:100; left:0; top:0; width:100%; height:100%; background:rgba(0,0,0,0.5); align-items:center; justify-content:center;">
+        style="display:none; position:fixed; z-index:1001; left:0; top:0; width:100%; height:100%; background:rgba(0,0,0,0.45); align-items:center; justify-content:center; backdrop-filter: blur(4px);">
         <div class="modal-content"
-            style="background:white; padding:30px; border-radius:12px; max-width:600px; width:90%; position:relative;">
+            style="background:white; max-width:600px; width:90%; position:relative; box-shadow: var(--shadow-md);">
             <span class="close-modal"
-                style="position:absolute; right:20px; top:15px; font-size:24px; cursor:pointer;">&times;</span>
-            <h2 id="modalJobTitle">Job Details</h2>
-            <p id="modalJobMeta"
-                style="color:var(--text-muted); margin-bottom:20px; display:flex; align-items:center; gap:6px;">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
-                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
-                    <circle cx="12" cy="10" r="3"></circle>
-                </svg>
-                Location • 📅 Date
-            </p>
+                style="position:absolute; right:20px; top:15px; font-size:24px; cursor:pointer; color: var(--text-secondary);">&times;</span>
 
-            <div style="border-top:1px solid #eee; padding-top:20px;">
-                <p><strong>Status:</strong> <span id="modalStatus" class="status-badge">Applied</span></p>
-                <div style="margin-top:15px;">
-                    <p><strong>Skills submitted:</strong></p>
-                    <p id="modalSkills" style="color:var(--text-muted);"></p>
+            <div class="modal-header">
+                <div>
+                    <h2 id="modalJobTitle">Loading...</h2>
+                    <p id="modalJobMeta" style="color:var(--text-secondary); font-size: 0.875rem; margin-top: 0.5rem;">
+                    </p>
                 </div>
-                <div style="margin-top:10px;">
-                    <p><strong>Experience:</strong></p>
-                    <p id="modalExp" style="color:var(--text-muted);"></p>
-                </div>
-                <div style="margin-top:10px;">
-                    <p><strong>Resume Link:</strong></p>
-                    <a id="modalResume" href="#" target="_blank" style="color:var(--primary-blue);">View Resume</a>
-                </div>
+                <span id="modalStatus" class="status-badge">---</span>
+            </div>
 
-                <div id="cancelActionContainer" style="margin-top:25px; border-top:1px solid #eee; padding-top:20px;">
-                    <button id="cancelAppBtn"
-                        style="width:100%; padding:12px; background:#ef4444; color:white; border:none; border-radius:8px; font-weight:700; cursor:pointer; transition: opacity 0.2s;">
-                        Cancel This Application
-                    </button>
-                    <p id="cancelNote" style="font-size:12px; color:#737373; margin-top:8px; text-align:center;">Note:
-                        Companies will be notified that you cancelled your application.</p>
+            <div class="modal-section">
+                <p><strong>Submission Details:</strong></p>
+                <div style="font-size: 0.9375rem; color: var(--text-primary);">
+                    <p>Skills Included: <span id="modalSkills" style="color: var(--text-secondary);"></span></p>
+                    <p>Experience Level: <span id="modalExp" style="color: var(--text-secondary);"></span></p>
                 </div>
+                <div style="margin-top: 1rem;">
+                    <a id="modalResume" href="#" target="_blank"
+                        style="color:var(--accent); text-decoration: none; font-weight: 600; font-size: 0.875rem;">View
+                        Submitted Resume →</a>
+                </div>
+            </div>
+
+            <div id="cancelActionContainer" class="modal-section">
+                <button id="cancelAppBtn" class="cancel-btn-pro">Withdraw Application</button>
+                <p style="font-size: 0.75rem; color: var(--text-secondary); margin-top: 1rem; text-align: center;">Note:
+                    Employers will be notified of your withdrawal.</p>
             </div>
         </div>
     </div>
 
-    <footer class="main-footer" style="background-color: #1a1a1a; color: #888; padding: 3rem 0; margin-top: auto;">
-        <div class="footer-container"
-            style="max-width: 1200px; margin: 0 auto; display: flex; align-items: center; padding: 0 2rem; gap: 2rem;">
-            <a href="dashboard.html" class="logo"
-                style="display: flex; align-items: center; gap: 12px; font-size: 1.5rem; font-weight: 850; color: white; text-decoration: none;">
-                <div class="logo-icon"
-                    style="background: var(--accent); color: white; width: 32px; height: 32px; border-radius: 8px; display: flex; justify-content: center; align-items: center; font-size: 1.25rem;">
-                    O</div>
-                <span>OriginX</span>
-            </a>
-            <div class="footer-divider" style="width: 1px; height: 60px; background-color: #333;"></div>
-            <div class="footer-info">
-                <nav class="footer-nav">
-                    <a href="dashboard.html"
-                        style="color: #888; text-decoration: none; margin-right: 1.5rem; font-size: 0.875rem;">Dashboard</a>
-                    <a href="jobs.html"
-                        style="color: #888; text-decoration: none; margin-right: 1.5rem; font-size: 0.875rem;">Jobs</a>
-                    <a href="profile.html"
-                        style="color: #888; text-decoration: none; margin-right: 1.5rem; font-size: 0.875rem;">Profile</a>
-                </nav>
-                <p class="copyright" style="font-size: 0.8125rem; margin: 0; color: #888;">© 2026 Origin X. All rights
-                    reserved.</p>
+    <footer class="main-footer">
+        <div class="footer-container">
+            <p class="copyright">© 2026 OriginX Hub. All rights reserved.</p>
+            <div class="footer-links">
+                <a href="#">Help Center</a>
+                <a href="#">Privacy Policy</a>
+                <a href="#">Terms of Service</a>
             </div>
         </div>
     </footer>
@@ -185,7 +269,7 @@
                 if (response.ok) {
                     const apps = await response.json();
                     if (apps.length === 0) {
-                        list.innerHTML = "<p>You haven't applied for any jobs yet.</p>";
+                        list.innerHTML = "<p style='text-align:center; padding: 4rem; color: var(--text-secondary); border: 2px dashed #e0e0e0; border-radius: 8px;'>You haven't initiated any applications yet.</p>";
                         return;
                     }
 
@@ -193,28 +277,26 @@
                     apps.reverse().forEach(app => {
                         const card = document.createElement("div");
                         card.classList.add("app-card");
-                        card.style.cursor = "pointer";
                         card.onclick = () => showDetails(app);
 
                         card.innerHTML = `
                             <div class="app-info">
-                                <h3>${app.job_title || 'Application ID: ' + (app.job_id || app.pt_job_id)}</h3>
-                                <p style="display:flex; align-items:center; gap:4px;">
+                                <h3>${app.job_title || 'Application Summary'}</h3>
+                                <p>
                                     <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none"
                                         stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                         <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
                                         <circle cx="12" cy="10" r="3"></circle>
                                     </svg>
-                                    ${app.job_location || 'N/A'}
+                                    ${app.job_location || 'Remote/TBA'}
                                 </p>
-                                <p>📅 Applied: ${app.created_at || new Date().toLocaleDateString()}</p>
+                                <p>Applied: ${app.created_at || 'Recently'}</p>
                             </div>
                             <span class="status-badge status-${app.status.toLowerCase()}">${app.status}</span>
                         `;
                         list.appendChild(card);
                     });
 
-                    // Check for app_id in URL from dashboard click
                     const urlParams = new URLSearchParams(window.location.search);
                     const specificId = urlParams.get('app_id');
                     if (specificId) {
@@ -223,30 +305,25 @@
                     }
                 }
             } catch (err) {
-                list.innerHTML = "<p>Error loading applications.</p>";
+                list.innerHTML = "<p>Critical Error: Connection failed.</p>";
             }
 
             function showDetails(app) {
-                document.getElementById("modalJobTitle").textContent = app.job_title || "Application Details";
-                document.getElementById("modalJobMeta").innerHTML = `
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
-                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
-                        <circle cx="12" cy="10" r="3"></circle>
-                    </svg>
-                    ${app.job_location || 'N/A'} • 📅 ${app.created_at || 'Recently'}`;
+                document.getElementById("modalJobTitle").textContent = app.job_title || "Application Overview";
+                document.getElementById("modalJobMeta").textContent = `${app.job_location || 'N/A'} • Submitted: ${app.created_at || 'Recently'}`;
+
                 const statusBadge = document.getElementById("modalStatus");
                 statusBadge.textContent = app.status;
                 statusBadge.className = `status-badge status-${app.status.toLowerCase()}`;
 
-                document.getElementById("modalSkills").textContent = app.skills || "Not specified";
-                document.getElementById("modalExp").textContent = app.experience || "Not specified";
+                document.getElementById("modalSkills").textContent = app.skills || "None listed";
+                document.getElementById("modalExp").textContent = app.experience || "Not provided";
                 document.getElementById("modalResume").href = app.resume_url || "#";
 
                 const cancelBtn = document.getElementById("cancelAppBtn");
                 const cancelContainer = document.getElementById("cancelActionContainer");
 
-                if (app.status === "Cancelled") {
+                if (app.status === "Cancelled" || app.status === "Approved" || app.status === "Rejected") {
                     cancelContainer.style.display = "none";
                 } else {
                     cancelContainer.style.display = "block";
@@ -257,7 +334,7 @@
             }
 
             async function cancelApplication(appId) {
-                if (!confirm("Are you sure you want to cancel this application? The company will see that you cancelled it.")) return;
+                if (!confirm("Confirm Withdrawal: This action will be visible to recruiters. Proceed?")) return;
 
                 try {
                     const res = await fetch(`${API_BASE_URL}/applications/${appId}`, {
@@ -267,15 +344,12 @@
                     });
 
                     if (res.ok) {
-                        alert("Application Cancelled Successfully.");
+                        alert("Application Withdrawn.");
                         location.reload();
                     } else {
-                        alert("Failed to cancel application.");
+                        alert("Withdrawal failed.");
                     }
-                } catch (err) {
-                    console.error(err);
-                    alert("An error occurred.");
-                }
+                } catch (err) { alert("Server error."); }
             }
         });
     </script>

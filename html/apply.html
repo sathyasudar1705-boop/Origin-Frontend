@@ -4,32 +4,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>OriginX - Apply for Position</title>
-
-    <!-- FIXED CSS PATH -->
+    <title>Submit Application | OriginX</title>
     <link rel="stylesheet" href="../css/apply.css">
-
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 </head>
 
-<body style="display: flex; flex-direction: column; min-height: 100vh; margin: 0;">
+<body>
 
     <header class="navbar">
         <a href="dashboard.html" class="logo">
-            <div class="logo-icon">O</div>
-            <span>OriginX</span>
+            Origin<span>X</span>
         </a>
 
         <nav class="nav-links">
-            <!-- FIXED LINKS -->
-            <a href="dashboard.html" class="dashboard">Dashboard</a>
-            <a href="jobs.html" class="dashboard">Search Jobs</a>
-            <a href="part_time_jobs.html" class="dashboard">Part Time Jobs</a>
+            <a href="dashboard.html">Dashboard</a>
+            <a href="jobs.html">Search Jobs</a>
+            <a href="part_time_jobs.html">Part Time</a>
+            <a href="saved_jobs.html">Saved</a>
         </nav>
 
         <div class="user-profile">
-            <a href="profile.html" class="profile">Profile</a>
-            <!-- FIXED -->
             <a href="../index.html" class="logout-btn">Logout</a>
         </div>
     </header>
@@ -38,107 +32,104 @@
 
         <section class="job-summary-card" id="jobSummary">
             <div class="job-header-row">
-                <h2 id="jobTitle">Loading Job...</h2>
-                <span class="badge blue" id="jobType">Full-time</span>
+                <h2 id="jobTitle">Role Preparation...</h2>
+                <span class="badge blue" id="jobType">Standard</span>
             </div>
-            <p class="company-name" id="companyName">---</p>
+            <p class="company-name" id="companyName">Enterprise Partner</p>
             <div class="job-meta" id="jobMeta">
-                <span id="jobLocation">---</span>
-                <span>•</span>
-                <span id="jobSalary">---</span>
+                <span id="jobLocation">TBA</span>
+                <span style="opacity: 0.5;">•</span>
+                <span id="jobSalary">Competitive</span>
             </div>
         </section>
 
         <section class="application-form-card">
             <div class="form-header">
-                <div class="icon-box">📄</div>
+                <div class="icon-box">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                        <polyline points="14 2 14 8 20 8"></polyline>
+                        <line x1="16" y1="13" x2="8" y2="13"></line>
+                        <line x1="16" y1="17" x2="8" y2="17"></line>
+                        <polyline points="10 9 9 9 8 9"></polyline>
+                    </svg>
+                </div>
                 <div>
-                    <h3>Apply for this Position</h3>
-                    <p>Fill in your details to submit your application</p>
+                    <h3>Direct Application</h3>
+                    <p>Enter your professional credentials for review</p>
                 </div>
             </div>
 
             <form id="applyForm">
                 <div class="form-section">
-                    <h4>Personal Information</h4>
+                    <h4>Personal Data</h4>
                     <div class="input-grid">
                         <div class="input-group">
-                            <label>Full Name *</label>
-                            <input type="text" id="applyFullName" placeholder="Your Name" required>
+                            <label>Full Display Name *</label>
+                            <input type="text" id="applyFullName" placeholder="e.g. Alex Johnson" required>
                         </div>
                         <div class="input-group">
-                            <label>Email Address *</label>
-                            <input type="email" id="applyEmail" placeholder="Your Email" required>
+                            <label>Professional Email *</label>
+                            <input type="email" id="applyEmail" placeholder="email@example.com" required>
                         </div>
                         <div class="input-group">
-                            <label>Phone Number *</label>
-                            <input type="tel" id="applyPhone" placeholder="+91 00000 00000" required>
+                            <label>Contact Number *</label>
+                            <input type="tel" id="applyPhone" placeholder="+91" required>
                         </div>
                         <div class="input-group">
-                            <label>Current Location *</label>
-                            <input type="text" id="applyLocation" placeholder="City, Country" required>
+                            <label>Current City *</label>
+                            <input type="text" id="applyLocation" placeholder="e.g. Chennai" required>
                         </div>
                     </div>
                 </div>
 
                 <div class="form-section">
-                    <h4>Professional Details</h4>
+                    <h4>Professional Profile</h4>
                     <div class="input-grid">
                         <div class="input-group">
-                            <label>Years of Experience *</label>
-                            <input type="text" id="applyExperience" placeholder="e.g., 3 years" required>
+                            <label>Relevant Experience *</label>
+                            <input type="text" id="applyExperience" placeholder="e.g. 2+ Years" required>
                         </div>
                         <div class="input-group">
-                            <label>Skills</label>
-                            <input type="text" id="applySkills" placeholder="e.g., Frontend, Backend">
+                            <label>Top Skills (Optional)</label>
+                            <input type="text" id="applySkills" placeholder="e.g. React, UX Design">
                         </div>
                         <div class="input-group">
-                            <label>Expected Salary (LPA / Month) *</label>
-                            <input type="text" id="applySalary" placeholder="e.g., 12" required>
+                            <label>Expected Compensation *</label>
+                            <input type="text" id="applySalary" placeholder="Expected LPA/Salary" required>
                         </div>
                     </div>
                 </div>
 
                 <div class="form-section">
-                    <h4>Resume & Documents</h4>
-                    <label class="field-label">Upload Resume URL *</label>
+                    <h4>Credential Management</h4>
+                    <label
+                        style="font-size: 0.8125rem; font-weight: 600; color: var(--text-secondary); display: block; margin-bottom: 0.5rem;">Resume
+                        URL (Cloud Storage) *</label>
                     <div class="upload-zone">
-                        <p>Paste Link (or mock upload)</p>
-                        <input type="text" id="resumeUrl" placeholder="Link to your resume" required
-                            style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 4px;">
+                        <input type="text" id="resumeUrl" placeholder="Paste your Google Drive or Dropbox link" required
+                            style="width: 100%; padding: 0.75rem; border: 1px solid var(--border-color); border-radius: 4px; outline: none;">
+                        <p style="font-size: 0.75rem; color: var(--text-secondary); margin-top: 0.75rem;">Ensure link
+                            permissions are set to 'Anyone with the link'</p>
                     </div>
                 </div>
 
-                <div class="form-actions">
-                    <button type="submit" class="submit-btn">Submit Application</button>
-                    <a href="dashboard.html" class="cancel-btn">Cancel</a>
+                <div class="form-actions" style="display: flex; gap: 1rem; align-items: center;">
+                    <button type="submit" class="submit-btn">Submit to Recruiter</button>
+                    <a href="dashboard.html" class="cancel-btn">Back to Safety</a>
                 </div>
             </form>
         </section>
     </main>
 
-    <footer class="main-footer" style="background-color: #1a1a1a; color: #888; padding: 3rem 0; margin-top: auto;">
-        <div class="footer-container"
-            style="max-width: 1200px; margin: 0 auto; display: flex; align-items: center; padding: 0 2rem; gap: 2rem;">
-            <a href="dashboard.html" class="logo"
-                style="display: flex; align-items: center; gap: 12px; font-size: 1.5rem; font-weight: 850; color: white; text-decoration: none;">
-                <div class="logo-icon"
-                    style="background: var(--accent); color: white; width: 32px; height: 32px; border-radius: 8px; display: flex; justify-content: center; align-items: center; font-size: 1.25rem;">
-                    O</div>
-                <span>OriginX</span>
-            </a>
-            <div class="footer-divider" style="width: 1px; height: 60px; background-color: #333;"></div>
-            <div class="footer-info">
-                <nav class="footer-nav">
-                    <a href="dashboard.html"
-                        style="color: #888; text-decoration: none; margin-right: 1.5rem; font-size: 0.875rem;">Dashboard</a>
-                    <a href="jobs.html"
-                        style="color: #888; text-decoration: none; margin-right: 1.5rem; font-size: 0.875rem;">Jobs</a>
-                    <a href="profile.html"
-                        style="color: #888; text-decoration: none; margin-right: 1.5rem; font-size: 0.875rem;">Profile</a>
-                </nav>
-                <p class="copyright" style="font-size: 0.8125rem; margin: 0; color: #888;">© 2026 Origin X. All rights
-                    reserved.</p>
+    <footer class="main-footer">
+        <div class="footer-container">
+            <p class="copyright">© 2026 OriginX Hub. All rights reserved.</p>
+            <div class="footer-links">
+                <a href="#">Help Center</a>
+                <a href="#">Privacy Policy</a>
+                <a href="#">Terms of Service</a>
             </div>
         </div>
     </footer>

@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Build Your Resume | OriginX</title>
+    <link rel="stylesheet" href="../css/dashboard.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        .form-container {
+            max-width: 700px;
+            margin: 2rem auto;
+            background: white;
+            padding: 2.5rem;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+            border: 1px solid #e2e8f0;
+        }
+
+        .step-indicator {
+            display: flex;
+            justify-content: center;
+            gap: 4rem;
+            margin-bottom: 2.5rem;
+            position: relative;
+        }
+
+        .step-indicator::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 20%;
+            right: 20%;
+            height: 2px;
+            background: #f1f5f9;
+            z-index: 0;
+            transform: translateY(-50%);
+        }
+
+        .step {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: white;
+            border: 2px solid #e2e8f0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 0.85rem;
+            z-index: 1;
+            transition: all 0.3s ease;
+            color: #94a3b8;
+        }
+
+        .step.active {
+            border-color: #2563eb;
+            color: #2563eb;
+            background: #eff6ff;
+            transform: scale(1.1);
+        }
+
+        .step.completed {
+            background: #2563eb;
+            border-color: #2563eb;
+            color: white;
+        }
+
+        .form-step {
+            display: none;
+            animation: fadeIn 0.4s ease;
+        }
+
+        .form-step.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .form-step h2 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #0f172a;
+            letter-spacing: -0.01em;
+            margin-bottom: 0.5rem;
+        }
+
+        .form-step p {
+            font-size: 0.95rem;
+            color: #64748b;
+            margin-bottom: 2rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.25rem;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: #334155;
+            font-size: 0.9rem;
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 0.65rem 0.85rem;
+            border: 1px solid #cbd5e1;
+            border-radius: 6px;
+            font-size: 0.95rem;
+            color: #0f172a;
+            transition: all 0.2s;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #2563eb;
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+
+        .btn-group {
+            display: flex;
+            justify-content: flex-end;
+            gap: 1rem;
+            margin-top: 2.5rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid #f1f5f9;
+        }
+
+        .btn-prev {
+            padding: 0.65rem 1.5rem;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            background: #f8fafc;
+            color: #64748b;
+            border: 1px solid #e2e8f0;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-prev:hover {
+            background: #f1f5f9;
+            color: #0f172a;
+        }
+
+        .btn-next,
+        .btn-submit {
+            padding: 0.65rem 1.5rem;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            background: #2563eb;
+            color: white;
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s;
+            box-shadow: 0 2px 4px rgba(37, 99, 235, 0.1);
+        }
+
+        .btn-next:hover,
+        .btn-submit:hover {
+            background: #1d4ed8;
+            box-shadow: 0 4px 6px rgba(37, 99, 235, 0.2);
+        }
+
+        .template-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+            margin-top: 1rem;
+        }
+
+        .template-card {
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 1rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .template-card.active {
+            border-color: #2563eb;
+            background: #eff6ff;
+        }
+
+        .template-preview {
+            height: 80px;
+            background: #f1f5f9;
+            border-radius: 6px;
+            margin-bottom: 0.75rem;
+        }
+    </style>
+</head>
+
+<body>
+    <header class="navbar">
+        <a href="dashboard.html" class="logo">
+            Origin<span>X</span>
+        </a>
+    </header>
+
+    <main class="dashboard-container">
+        <div class="form-container">
+            <div class="step-indicator">
+                <div class="step active" id="step1-indicator">1</div>
+                <div class="step" id="step2-indicator">2</div>
+                <div class="step" id="step3-indicator">3</div>
+            </div>
+
+            <form id="resumeForm">
+                <!-- Step 1: Basic Info & Socials -->
+                <div class="form-step active" id="step1">
+                    <h2>Basic Information</h2>
+                    <p>Tell us who you are and how recruiters can find you.</p>
+
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
+                        <div class="form-group">
+                            <label>Full Name</label>
+                            <input type="text" id="fullName" placeholder="John Doe" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Phone Number</label>
+                            <input type="text" id="phone" placeholder="+1 (555) 000-0000">
+                        </div>
+                    </div>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
+                        <div class="form-group">
+                            <label>Location</label>
+                            <input type="text" id="location" placeholder="City, Country">
+                        </div>
+                        <div class="form-group">
+                            <label>Target Job Title</label>
+                            <input type="text" id="desiredJob" placeholder="Software Engineer">
+                        </div>
+                    </div>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
+                        <div class="form-group">
+                            <label>GitHub Profile Link</label>
+                            <input type="url" id="githubUrl" placeholder="https://github.com/username">
+                        </div>
+                        <div class="form-group">
+                            <label>LinkedIn Profile Link</label>
+                            <input type="url" id="linkedinUrl" placeholder="https://linkedin.com/in/username">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 2: About & Experience -->
+                <div class="form-step" id="step2">
+                    <h2>Profile & History</h2>
+                    <p>A brief summary of your professional background and education.</p>
+
+                    <div class="form-group">
+                        <label>About Me (Professional Summary)</label>
+                        <textarea id="summary" rows="4"
+                            placeholder="Briefly describe your career goals and expertise..."></textarea>
+                    </div>
+
+                    <div style="display: grid; grid-template-columns: 1fr 2fr; gap: 1.5rem;">
+                        <div class="form-group">
+                            <label>Years of Experience</label>
+                            <input type="number" id="experience" placeholder="e.g. 3">
+                        </div>
+                        <div class="form-group">
+                            <label>Education Details</label>
+                            <input type="text" id="education" placeholder="University, Degree Name - Year">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 3: Skills, Projects & Template -->
+                <div class="form-step" id="step3">
+                    <h2>Skills & Portfolio</h2>
+                    <p>Highlight your technical toolkit and recent projects.</p>
+
+                    <div class="form-group">
+                        <label>Key Skills (Comma separated)</label>
+                        <input type="text" id="skills" placeholder="React, Node.js, Python, Figma">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Featured Projects</label>
+                        <textarea id="projects" rows="4"
+                            placeholder="Project name - brief description or tech stack..."></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Select Template</label>
+                        <div class="template-grid">
+                            <div class="template-card active" data-template="professional">
+                                <div class="template-preview" style="background: #2563eb;"></div>
+                                <span>Professional</span>
+                            </div>
+                            <div class="template-card" data-template="modern">
+                                <div class="template-preview" style="background: #0f172a;"></div>
+                                <span>Modern</span>
+                            </div>
+                            <div class="template-card" data-template="minimal">
+                                <div class="template-preview" style="border: 1px solid #e2e8f0;"></div>
+                                <span>Minimalist</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="btn-group">
+                    <button type="button" id="prevBtn" class="btn-prev" style="visibility: hidden;">Back</button>
+                    <button type="button" id="nextBtn" class="btn-next">Next Step</button>
+                    <button type="submit" id="submitBtn" class="btn-submit" style="display: none;">Generate My
+                        Resume</button>
+                </div>
+            </form>
+        </div>
+    </main>
+
+    <script src="../js/config.js"></script>
+    <script src="../js/resume_form.js"></script>
+</body>
+
+</html>

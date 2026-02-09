@@ -4,195 +4,158 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>OriginX Dashboard</title>
-
-    <!-- FIXED: absolute path -> relative path -->
+    <title>Dashboard | OriginX</title>
     <link rel="stylesheet" href="../css/dashboard.css">
-
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/resume_banner.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 </head>
 
 <body>
 
     <header class="navbar">
         <a href="dashboard.html" class="logo">
-            <div class="logo-icon">O</div>
-            <span>OriginX</span>
+            Origin<span>X</span>
         </a>
 
         <nav class="nav-links">
-            <!-- FIXED LINKS -->
-            <a href="dashboard.html" class="dashboard">Dashboard</a>
-            <a href="jobs.html" class="dashboard">Search Jobs</a>
-            <a href="part_time_jobs.html" class="dashboard">Part Time Jobs</a>
+            <a href="dashboard.html" class="active">Dashboard</a>
+            <a href="jobs.html">Search Jobs</a>
+            <a href="part_time_jobs.html">Part Time</a>
+            <a href="saved_jobs.html">Saved</a>
         </nav>
 
         <div class="user-profile">
-            <button id="createResumeBtn" class="profile"
-                style="border: 1px solid var(--border-color); background: white; color: var(--primary); font-size: 0.875rem;">Create
-                Resume</button>
             <a href="profile.html" class="profile">Profile</a>
-
-            <!-- logout -> go to home page -->
             <a href="../index.html" class="logout-btn">Logout</a>
         </div>
     </header>
 
     <main class="dashboard-container">
+        <div class="page-header">
+            <div class="header-left">
+                <h1 id="welcomeMsg">Welcome back!</h1>
+                <p class="breadcrumb">Job Seeker Dashboard / <span>Overview</span></p>
+            </div>
+        </div>
+
+        <!-- Resume Builder Banner -->
+        <section class="resume-banner">
+            <div class="banner-left">
+                <img src="../assets/resume_home.png" alt="Resume Illustration" class="resume-illustration">
+                <div class="banner-text">
+                    <h2>Create your resume in 3 easy steps ✨</h2>
+                    <ol>
+                        <li>Fill in your basic information</li>
+                        <li>Add your projects and social links</li>
+                        <li>Choose a professional template</li>
+                    </ol>
+                </div>
+            </div>
+            <div class="banner-right">
+                <a href="resume_form.html" class="btn-create-resume">Create resume</a>
+            </div>
+        </section>
+
         <section class="stats-row">
-
             <div class="stat-card">
+                <div class="stat-icon purple">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                        <polyline points="14 2 14 8 20 8"></polyline>
+                        <line x1="16" y1="13" x2="8" y2="13"></line>
+                        <line x1="16" y1="17" x2="8" y2="17"></line>
+                        <polyline points="10 9 9 9 8 9"></polyline>
+                    </svg>
+                </div>
                 <div class="stat-info">
-                    <p>Applications</p>
                     <h3 id="statApps">0</h3>
+                    <p>Total Applications</p>
                 </div>
-                <div class="stat-icon green-bg">📄</div>
             </div>
 
             <div class="stat-card">
-                <div class="stat-info">
-                    <p>Shortlisted</p>
-                    <h3 id="statShortlisted">0</h3>
+                <div class="stat-icon green">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="20 6 9 17 4 12"></polyline>
+                    </svg>
                 </div>
-                <div class="stat-icon orange-bg">💼</div>
+                <div class="stat-info">
+                    <h3 id="statSelected">0</h3>
+                    <p>Applications Selected</p>
+                </div>
             </div>
 
             <div class="stat-card">
-                <div class="stat-info">
-                    <p>Interviews</p>
-                    <h3 id="statInterviews">0</h3>
+                <div class="stat-icon orange">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <polyline points="12 6 12 12 16 14"></polyline>
+                    </svg>
                 </div>
-                <div class="stat-icon purple-bg">🕒</div>
+                <div class="stat-info">
+                    <h3 id="statRejected">0</h3>
+                    <p>Rejected (Unselected)</p>
+                </div>
             </div>
         </section>
 
         <div class="main-content">
-            <section class="jobs-section">
-                <div class="section-header">
-                    <h2>Recommended Jobs</h2>
-                    <a href="jobs.html" class="view-all">View All →</a>
-                </div>
+            <div class="left-col">
+                <section class="section-container">
+                    <div class="section-header">
+                        <div style="display: flex; align-items: center; gap: 10px;">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
+                                stroke-linejoin="round">
+                                <circle cx="11" cy="11" r="8"></circle>
+                                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                            </svg>
+                            <h2>Recommended Jobs</h2>
+                        </div>
+                        <a href="jobs.html" class="view-all">View All →</a>
+                    </div>
+                    <div id="recommendedJobsContainer">
+                        <p style="color:var(--text-secondary); font-size: 0.9rem;">Tailoring jobs for your profile...
+                        </p>
+                    </div>
+                </section>
+            </div>
 
-                <div id="recommendedJobsContainer">
-                    <p>Loading recommendations...</p>
-                </div>
-            </section>
-
-            <aside class="applications-sidebar">
-                <div class="section-header">
-                    <h2>Recent Applications</h2>
-                    <a href="my_applications.html" class="view-all" style="font-size: 12px;">See All</a>
-                </div>
-
-                <div id="recentApplicationsList">
-                    <p>Loading recent apps...</p>
-                </div>
+            <aside class="right-col">
+                <section class="section-container">
+                    <div class="section-header">
+                        <div style="display: flex; align-items: center; gap: 10px;">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
+                                stroke-linejoin="round">
+                                <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 0 0 0-4 4v2"></path>
+                                <circle cx="9" cy="7" r="4"></circle>
+                                <path d="M22 21v-2a4 4 0 0 0-3-3.87"></path>
+                                <circle cx="19" cy="11" r="2"></circle>
+                            </svg>
+                            <h2>Recent Activity</h2>
+                        </div>
+                        <a href="my_applications.html" class="view-all">See All</a>
+                    </div>
+                    <div id="recentApplicationsList">
+                        <p style="color:var(--text-secondary); font-size: 0.9rem;">Loading history...</p>
+                    </div>
+                </section>
             </aside>
         </div>
     </main>
 
-    <!-- Resume Options Modal -->
-    <div id="resumeOptionsModal" class="modal"
-        style="display:none; position:fixed; z-index:1001; left:0; top:0; width:100%; height:100%; background:rgba(0,0,0,0.6); align-items:center; justify-content:center; backdrop-filter: blur(4px);">
-        <div class="modal-content"
-            style="background:white; padding:40px; border-radius:24px; max-width:550px; width:90%; position:relative; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25);">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px;">
-                <h2 style="margin: 0; font-size: 24px; font-weight: 800; color: #0f172a;">Customize Your Resume</h2>
-                <span id="closeResumeModal"
-                    style="font-size: 28px; cursor: pointer; color: #64748b; font-weight: 300;">&times;</span>
-            </div>
-
-            <div style="margin-bottom: 30px;">
-                <p style="font-weight: 700; margin-bottom: 15px; font-size: 15px; color: #1e293b;">Choose Template</p>
-                <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px;">
-                    <label style="cursor: pointer;">
-                        <input type="radio" name="resumeTemplate" value="professional" checked style="display: none;">
-                        <div class="template-option"
-                            style="border: 2px solid #e2e8f0; padding: 15px; border-radius: 12px; text-align: center; transition: all 0.2s;">
-                            <div style="height: 60px; background: #2563eb; border-radius: 6px; margin-bottom: 8px;">
-                            </div>
-                            <span style="font-size: 13px; font-weight: 600;">Professional</span>
-                        </div>
-                    </label>
-                    <label style="cursor: pointer;">
-                        <input type="radio" name="resumeTemplate" value="modern" style="display: none;">
-                        <div class="template-option"
-                            style="border: 2px solid #e2e8f0; padding: 15px; border-radius: 12px; text-align: center; transition: all 0.2s;">
-                            <div style="height: 60px; background: #0f172a; border-radius: 6px; margin-bottom: 8px;">
-                            </div>
-                            <span style="font-size: 13px; font-weight: 600;">Modern Blue</span>
-                        </div>
-                    </label>
-                    <label style="cursor: pointer;">
-                        <input type="radio" name="resumeTemplate" value="minimal" style="display: none;">
-                        <div class="template-option"
-                            style="border: 2px solid #e2e8f0; padding: 15px; border-radius: 12px; text-align: center; transition: all 0.2s;">
-                            <div
-                                style="height: 60px; border: 1px solid #e2e8f0; border-radius: 6px; margin-bottom: 8px;">
-                            </div>
-                            <span style="font-size: 13px; font-weight: 600;">Minimalist</span>
-                        </div>
-                    </label>
-                </div>
-            </div>
-
-            <div style="margin-bottom: 30px;">
-                <p style="font-weight: 700; margin-bottom: 15px; font-size: 15px; color: #1e293b;">Section Options</p>
-                <div style="display: flex; flex-direction: column; gap: 12px;">
-                    <label style="display: flex; align-items: center; gap: 10px; cursor: pointer; font-size: 14px;">
-                        <input type="checkbox" id="showSalary" checked
-                            style="width: 18px; height: 18px; cursor: pointer;">
-                        <span>Show Expected Salary</span>
-                    </label>
-                    <label style="display: flex; align-items: center; gap: 10px; cursor: pointer; font-size: 14px;">
-                        <input type="checkbox" id="showLocation" checked
-                            style="width: 18px; height: 18px; cursor: pointer;">
-                        <span>Show Preferred Work Location</span>
-                    </label>
-                    <label style="display: flex; align-items: center; gap: 10px; cursor: pointer; font-size: 14px;">
-                        <input type="checkbox" id="showDepartment" checked
-                            style="width: 18px; height: 18px; cursor: pointer;">
-                        <span>Show Department/Education Details</span>
-                    </label>
-                </div>
-            </div>
-
-            <button id="confirmGenerateResume" class="apply-btn"
-                style="width: 100%; justify-content: center; height: 50px; font-size: 16px;">
-                Download PDF
-            </button>
-        </div>
-    </div>
-
-    <style>
-        input[name="resumeTemplate"]:checked+.template-option {
-            border-color: #2563eb !important;
-            background-color: #eff6ff;
-            transform: scale(1.05);
-        }
-    </style>
 
     <footer class="main-footer">
         <div class="footer-container">
-            <a href="dashboard.html" class="logo">
-                <div class="logo-icon">O</div>
-                <span>OriginX</span>
-            </a>
-
-            <div class="footer-divider"></div>
-
-            <div class="footer-info">
-                <nav class="footer-nav">
-                    <a href="dashboard.html">Dashboard</a>
-                    <a href="jobs.html">Jobs</a>
-                    <a href="profile.html">Profile</a>
-                    <a href="../index.html">Log out</a>
-                </nav>
-                <p class="copyright">© 2026 Origin X. All rights reserved.</p>
-            </div>
-
-            <div class="footer-social">
-                <p class="support-email">Support: OriginX@gmail.com</p>
+            <p class="copyright">© 2026 OriginX Hub. All rights reserved.</p>
+            <div class="footer-links">
+                <a href="#">Help Center</a>
+                <a href="#">Privacy Policy</a>
+                <a href="#">Terms of Service</a>
             </div>
         </div>
     </footer>

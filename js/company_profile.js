@@ -15,7 +15,14 @@ document.addEventListener("DOMContentLoaded", async () => {
     const form = document.getElementById("companyProfileForm");
     const editBtn = document.getElementById("editToggleBtn");
     const cancelBtn = document.getElementById("cancelEditBtn");
-    const statusMsg = document.getElementById("profileStatus");
+    const formActions = document.getElementById("formActions");
+
+    // Profile Photo Elements
+    const profileUpload = document.getElementById("profileUpload");
+    const profileImagePreview = document.getElementById("profileImagePreview");
+    const navProfilePic = document.getElementById("navProfilePic");
+    const avatarOverlay = document.getElementById("avatarOverlay");
+    const uploadControls = document.getElementById("uploadControls");
 
     // Load initial data
     loadCompanyData(company);
@@ -24,10 +31,40 @@ document.addEventListener("DOMContentLoaded", async () => {
     cancelBtn.onclick = () => {
         enableEdit(false);
         loadCompanyData(company);
+        // Reset preview if cancelled
+        if (company.logo_url) {
+            profileImagePreview.src = company.logo_url;
+        } else {
+            profileImagePreview.src = "../assets/default-company-logo.png";
+        }
     };
+
+    // Profile Photo Upload Preview
+    profileUpload.addEventListener('change', function (e) {
+        if (this.files && this.files[0]) {
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                profileImagePreview.src = e.target.result;
+            }
+            reader.readAsDataURL(this.files[0]);
+        }
+    });
+
+    // Make avatar clickable in edit mode
+    avatarOverlay.addEventListener('click', () => {
+        if (!form.classList.contains('view-mode')) {
+            profileUpload.click();
+        }
+    });
 
     function loadCompanyData(comp) {
         document.getElementById("displayCompName").textContent = comp.company_name;
+        document.getElementById("displayCompIndustry").textContent = comp.industry || "Industry Not Set";
+
+        // Update header company name
+        const headerCompName = document.getElementById("companyNameDisplay");
+        if (headerCompName) headerCompName.textContent = comp.company_name;
+
         document.getElementById("compName").value = comp.company_name;
         document.getElementById("compEmail").value = comp.email || user.email;
         document.getElementById("compIndustry").value = comp.industry || "";
@@ -35,6 +72,15 @@ document.addEventListener("DOMContentLoaded", async () => {
         document.getElementById("compLocation").value = comp.location || "";
         document.getElementById("compPhone").value = comp.phone || "";
         document.getElementById("compDesc").value = comp.description || "";
+
+        // Load Logo if exists
+        if (comp.logo_url) {
+            profileImagePreview.src = comp.logo_url;
+            // Update nav bar profile pic if we had a way to display it there
+            if (navProfilePic) {
+                navProfilePic.style.backgroundImage = `url('${comp.logo_url}')`;
+            }
+        }
 
         updateProgress(comp);
     }
@@ -46,19 +92,22 @@ document.addEventListener("DOMContentLoaded", async () => {
                 if (el.id !== "compEmail") el.removeAttribute("readonly");
             });
             editBtn.style.display = "none";
-            statusMsg.textContent = "Updating your business presence...";
-            statusMsg.style.color = "var(--primary-blue)";
+            formActions.style.display = "flex";
+            avatarOverlay.style.display = "flex";
+            uploadControls.style.display = "block";
         } else {
             form.classList.add("view-mode");
             form.querySelectorAll("input, textarea").forEach(el => el.setAttribute("readonly", true));
             editBtn.style.display = "block";
-            statusMsg.textContent = "Manage your business brand and contact details";
-            statusMsg.style.color = "var(--text-muted)";
+            formActions.style.display = "none";
+            avatarOverlay.style.display = "none";
+            uploadControls.style.display = "none";
         }
     }
 
     form.onsubmit = async (e) => {
         e.preventDefault();
+
         const updatedData = {
             company_name: document.getElementById("compName").value,
             industry: document.getElementById("compIndustry").value,
@@ -70,12 +119,40 @@ document.addEventListener("DOMContentLoaded", async () => {
 
         if (!company.id) {
             alert("Session error: Company ID missing. Please log out and log back in.");
-            console.error("Company object in localStorage is missing ID:", company);
             return;
         }
 
         try {
-            console.log("Updating company profile. ID:", company.id, "Data:", updatedData);
+            console.log("Updating company profile. ID:", company.id);
+
+            // 1. Upload Logo if selected
+            if (profileUpload.files && profileUpload.files[0]) {
+                const formData = new FormData();
+                formData.append("file", profileUpload.files[0]);
+
+                try {
+                    console.log("Uploading logo...");
+                    const uploadRes = await fetch(`${API_BASE_URL}/companies/${company.id}/logo`, {
+                        method: "POST",
+                        body: formData
+                    });
+
+                    if (uploadRes.ok) {
+                        const uploadData = await uploadRes.json();
+                        updatedData.logo_url = uploadData.logo_url;
+                        console.log("Logo uploaded successfully:", uploadData.logo_url);
+                    } else {
+                        console.error("Logo upload failed");
+                        let errText = await uploadRes.text();
+                        console.error("Upload error details:", errText);
+                    }
+                } catch (uploadErr) {
+                    console.error("Logo upload network error:", uploadErr);
+                }
+            }
+
+            // 2. Update Text Data
+            console.log("Saving text data:", updatedData);
             const res = await fetch(`${API_BASE_URL}/companies/${company.id}`, {
                 method: "PUT",
                 headers: { "Content-Type": "application/json" },
@@ -84,7 +161,10 @@ document.addEventListener("DOMContentLoaded", async () => {
 
             if (res.ok) {
                 const updatedComp = await res.json();
+
+                // Merge old user data with new company data
                 user.company = updatedComp;
+
                 localStorage.setItem("user", JSON.stringify(user));
                 alert("Company profile updated successfully!");
                 location.reload();
@@ -101,14 +181,18 @@ document.addEventListener("DOMContentLoaded", async () => {
             }
         } catch (err) {
             console.error("Fetch/Script Error:", err);
-            alert("Connection error or script crash. Please check if the server is running.\nError: " + err.message);
+            alert("Connection error: " + err.message);
         }
     };
 
     function updateProgress(comp) {
         let fields = ['company_name', 'industry', 'website', 'location', 'phone', 'description'];
         let completed = fields.filter(f => comp[f] && comp[f].length > 0).length;
-        let percentage = Math.round((completed / fields.length) * 100);
+        // Add logo to progress if it exists
+        if (comp.logo_url) completed++;
+
+        let total = fields.length + 1; // +1 for logo
+        let percentage = Math.round((completed / total) * 100);
         document.getElementById("profileProgress").style.width = percentage + "%";
     }
 });
