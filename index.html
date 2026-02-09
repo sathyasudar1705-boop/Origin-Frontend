@@ -36,48 +36,46 @@
 
     <!-- Professional Hero Section -->
     <section class="hero-section">
-        <div class="hero-content">
-            <h1 class="hero-title">Find your dream job with <span>OriginX</span></h1>
+        <div class="hero-bg-blobs">
+            <div class="blob blob-1"></div>
+            <div class="blob blob-2"></div>
+        </div>
 
-            <div class="search-container">
+        <div class="hero-content centered">
+            <h1 class="hero-title">Find your dream job with <span>OriginX</span></h1>
+            <p class="hero-subtitle">The most intuitive way to find local and remote opportunities across the globe.</p>
+
+            <div class="search-container glass">
                 <div class="input-group">
                     <label>Skills / Designation</label>
                     <input type="text" id="searchInput" placeholder="Product Designer, Developer...">
                 </div>
+                <div class="divider"></div>
                 <div class="input-group">
                     <label>Experience</label>
-                    <select id="experienceInput"
-                        style="border:none; outline:none; font-size:1rem; padding:0.5rem 0; width:100%; color:var(--text-main); background:white;">
+                    <select id="experienceInput">
                         <option value="">Any</option>
                         <option>Fresher</option>
                         <option>1-3 Years</option>
                         <option>3-5 Years</option>
                         <option>5+ Years</option>
                     </select>
-                    <div style="height: 2px; background: transparent;"></div> <!-- Alignment spacer -->
                 </div>
+                <div class="divider"></div>
                 <div class="input-group">
                     <label>Location</label>
                     <input type="text" id="locationInput" placeholder="Chennai, Bangalore...">
                 </div>
-                <button id="searchBtn" class="search-btn">Search</button>
+                <button id="searchBtn" class="search-btn">Search Jobs</button>
             </div>
 
-            <div style="margin-top: 1.5rem; display: flex; gap: 1rem; flex-wrap: wrap;">
-                <span style="font-size: 0.9rem; color: var(--text-muted);">Trending:</span>
-                <span class="btn-text"
-                    style="font-size: 0.85rem; padding: 0.2rem 0.8rem; background: #e5e7eb; border-radius: 12px; cursor: pointer;">Remote</span>
-                <span class="btn-text"
-                    style="font-size: 0.85rem; padding: 0.2rem 0.8rem; background: #e5e7eb; border-radius: 12px; cursor: pointer;">MNC</span>
-                <span class="btn-text"
-                    style="font-size: 0.85rem; padding: 0.2rem 0.8rem; background: #e5e7eb; border-radius: 12px; cursor: pointer;">Marketing</span>
-                <span class="btn-text"
-                    style="font-size: 0.85rem; padding: 0.2rem 0.8rem; background: #e5e7eb; border-radius: 12px; cursor: pointer;">Startup</span>
+            <div class="trending-tags">
+                <span class="trending-label">Trending:</span>
+                <span class="tag">Remote</span>
+                <span class="tag">MNC</span>
+                <span class="tag">Marketing</span>
+                <span class="tag">Startup</span>
             </div>
-        </div>
-
-        <div class="hero-image">
-            <img src="assets/home.jpg" alt="Job Search Illustration" style="max-width: 500px; border-radius: 20px;">
         </div>
     </section>
 
