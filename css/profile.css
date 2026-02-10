@@ -15,6 +15,79 @@
   --font-main: -apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
 }
 
+/* Company Profile Specific Layout */
+.profile-photo-section {
+  padding: 2rem !important;
+  margin-bottom: 2rem;
+}
+
+.profile-header {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+}
+
+.profile-avatar-container {
+  position: relative;
+  width: 120px;
+  height: 120px;
+  flex-shrink: 0;
+}
+
+.profile-avatar {
+  width: 100%;
+  height: 100%;
+  border-radius: 12px;
+  object-fit: cover;
+  border: 1px solid var(--border-color);
+  background: white;
+}
+
+.avatar-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.4);
+  border-radius: 12px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  color: white;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+.profile-avatar-container:hover .avatar-overlay {
+  opacity: 1;
+}
+
+.profile-title-info h2 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 0.25rem;
+  color: var(--text-primary);
+}
+
+.profile-title-info p {
+  font-size: 1rem;
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+
+.upload-controls {
+  margin-top: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.text-xs {
+  font-size: 0.75rem;
+}
+
 * {
   margin: 0;
   padding: 0;

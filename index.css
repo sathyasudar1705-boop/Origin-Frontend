@@ -419,9 +419,9 @@ body {
 }
 
 .partners-logos img {
-    height: 30px;
-    /* Smaller size as requested */
-    width: auto;
+    height: 40px;
+    /* Slightly larger for better visibility */
+    max-width: 150px;
     object-fit: contain;
     filter: grayscale(100%);
     opacity: 0.6;
