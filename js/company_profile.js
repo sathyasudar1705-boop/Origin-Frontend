@@ -5,86 +5,104 @@ document.addEventListener("DOMContentLoaded", async () => {
         return;
     }
 
-    const company = user.company;
+    const BASE_URL = window.API_BASE_URL || "http://127.0.0.1:8000";
+
+    // Always fetch fresh company data from API (not from stale localStorage)
+    let company = null;
+
+    try {
+        const res = await fetch(`${BASE_URL}/companies`);
+        if (res.ok) {
+            const companies = await res.json();
+            company = companies.find(c => c.user_id === user.id) || null;
+            if (company) {
+                // Keep localStorage in sync with fresh data
+                user.company = company;
+                localStorage.setItem("user", JSON.stringify(user));
+            }
+        }
+    } catch (e) {
+        console.error("Failed to fetch company data:", e);
+        // Fallback to localStorage if network fails
+        company = user.company || null;
+    }
+
     if (!company) {
-        alert("Company details not found.");
-        window.location.href = "company_dashboard.html";
+        window.location.href = "create_company.html";
         return;
     }
 
+    // ---- DOM refs ----
     const form = document.getElementById("companyProfileForm");
     const editBtn = document.getElementById("editToggleBtn");
     const cancelBtn = document.getElementById("cancelEditBtn");
     const formActions = document.getElementById("formActions");
-
-    // Profile Photo Elements
     const profileUpload = document.getElementById("profileUpload");
-    const profileImagePreview = document.getElementById("profileImagePreview");
-    const navProfilePic = document.getElementById("navProfilePic");
-    const avatarOverlay = document.getElementById("avatarOverlay");
-    const uploadControls = document.getElementById("uploadControls");
+    const logoPreview = document.getElementById("profileImagePreview");
+    const logoChangeTrig = document.getElementById("logoChangeTrigger");
+    const saveBtn = document.getElementById("saveBtn");
 
-    // Load initial data
+    // Update company name and avatar in header
+    const companyNameDisplay = document.getElementById("companyNameDisplay");
+    if (companyNameDisplay) companyNameDisplay.textContent = company.company_name;
+
+    const avatar = document.getElementById("companyInitialsAvatar");
+    if (avatar && company) {
+        const initials = company.company_name ? company.company_name.charAt(0).toUpperCase() : "C";
+        const logoUrl = company.logo_url || company.logo;
+        if (logoUrl) {
+            const finalLogoUrl = logoUrl.startsWith('http') ? logoUrl : `${BASE_URL}${logoUrl}`;
+            avatar.innerHTML = `<img src="${finalLogoUrl}" alt="${company.company_name}" style="width:100%; height:100%; object-fit:cover;" onerror="this.parentElement.innerHTML='${initials}'">`;
+        } else {
+            avatar.textContent = initials;
+        }
+    }
+
+    // Load data initially
     loadCompanyData(company);
 
+
+    // ---- Edit / Cancel ----
     editBtn.onclick = () => enableEdit(true);
+
     cancelBtn.onclick = () => {
         enableEdit(false);
         loadCompanyData(company);
-        // Reset preview if cancelled
-        if (company.logo_url) {
-            profileImagePreview.src = company.logo_url;
-        } else {
-            profileImagePreview.src = "../assets/default-company-logo.png";
-        }
+        // Reset logo preview if cancelled without saving
+        const logoUrl = company.logo_url || company.logo;
+        if (logoUrl) logoPreview.src = logoUrl;
     };
 
-    // Profile Photo Upload Preview
-    profileUpload.addEventListener('change', function (e) {
+    // ---- Logo Upload Preview ----
+    profileUpload.addEventListener("change", function () {
         if (this.files && this.files[0]) {
             const reader = new FileReader();
-            reader.onload = function (e) {
-                profileImagePreview.src = e.target.result;
-            }
+            reader.onload = (e) => { logoPreview.src = e.target.result; };
             reader.readAsDataURL(this.files[0]);
         }
     });
 
-    // Make avatar clickable in edit mode
-    avatarOverlay.addEventListener('click', () => {
-        if (!form.classList.contains('view-mode')) {
-            profileUpload.click();
-        }
-    });
-
+    // ---- Load Data into Form ----
     function loadCompanyData(comp) {
-        document.getElementById("displayCompName").textContent = comp.company_name;
-        document.getElementById("displayCompIndustry").textContent = comp.industry || "Industry Not Set";
+        document.getElementById("displayCompName").textContent = comp.company_name || "—";
+        document.getElementById("displayCompIndustry").textContent = comp.industry || "Industry not set";
 
-        // Update header company name
-        const headerCompName = document.getElementById("companyNameDisplay");
-        if (headerCompName) headerCompName.textContent = comp.company_name;
-
-        document.getElementById("compName").value = comp.company_name;
-        document.getElementById("compEmail").value = comp.email || user.email;
+        document.getElementById("compName").value = comp.company_name || "";
+        document.getElementById("compEmail").value = comp.email || user.email || "";
         document.getElementById("compIndustry").value = comp.industry || "";
         document.getElementById("compWebsite").value = comp.website || "";
         document.getElementById("compLocation").value = comp.location || "";
         document.getElementById("compPhone").value = comp.phone || "";
         document.getElementById("compDesc").value = comp.description || "";
 
-        // Load Logo if exists
-        if (comp.logo_url) {
-            profileImagePreview.src = comp.logo_url;
-            // Update nav bar profile pic if we had a way to display it there
-            if (navProfilePic) {
-                navProfilePic.style.backgroundImage = `url('${comp.logo_url}')`;
-            }
-        }
+        // Load logo
+        const logoUrl = comp.logo_url || comp.logo;
+        if (logoUrl) logoPreview.src = logoUrl;
 
         updateProgress(comp);
     }
 
+    // ---- Enable / Disable Edit Mode ----
     function enableEdit(isEditing) {
         if (isEditing) {
             form.classList.remove("view-mode");
@@ -93,67 +111,54 @@ document.addEventListener("DOMContentLoaded", async () => {
             });
             editBtn.style.display = "none";
             formActions.style.display = "flex";
-            avatarOverlay.style.display = "flex";
-            uploadControls.style.display = "block";
+            if (logoChangeTrig) logoChangeTrig.classList.add("visible");
         } else {
             form.classList.add("view-mode");
             form.querySelectorAll("input, textarea").forEach(el => el.setAttribute("readonly", true));
-            editBtn.style.display = "block";
+            editBtn.style.display = "flex";
             formActions.style.display = "none";
-            avatarOverlay.style.display = "none";
-            uploadControls.style.display = "none";
+            if (logoChangeTrig) logoChangeTrig.classList.remove("visible");
         }
     }
 
+    // ---- Form Submit (PUT to backend) ----
     form.onsubmit = async (e) => {
         e.preventDefault();
 
         const updatedData = {
-            company_name: document.getElementById("compName").value,
-            industry: document.getElementById("compIndustry").value,
-            website: document.getElementById("compWebsite").value,
-            location: document.getElementById("compLocation").value,
-            phone: document.getElementById("compPhone").value,
-            description: document.getElementById("compDesc").value
+            company_name: document.getElementById("compName").value.trim(),
+            industry: document.getElementById("compIndustry").value.trim(),
+            website: document.getElementById("compWebsite").value.trim(),
+            location: document.getElementById("compLocation").value.trim(),
+            phone: document.getElementById("compPhone").value.trim(),
+            description: document.getElementById("compDesc").value.trim()
         };
 
         if (!company.id) {
-            alert("Session error: Company ID missing. Please log out and log back in.");
+            showToast("❌ Session error: Company ID missing.", true);
             return;
         }
 
+        saveBtn.disabled = true;
+        saveBtn.textContent = "Saving...";
+
         try {
-            console.log("Updating company profile. ID:", company.id);
-
-            // 1. Upload Logo if selected
+            // 1. Upload Logo if new one selected
             if (profileUpload.files && profileUpload.files[0]) {
-                const formData = new FormData();
-                formData.append("file", profileUpload.files[0]);
-
                 try {
-                    console.log("Uploading logo...");
-                    const uploadRes = await fetch(`${API_BASE_URL}/companies/${company.id}/logo`, {
-                        method: "POST",
-                        body: formData
-                    });
-
-                    if (uploadRes.ok) {
-                        const uploadData = await uploadRes.json();
-                        updatedData.logo_url = uploadData.logo_url;
-                        console.log("Logo uploaded successfully:", uploadData.logo_url);
-                    } else {
-                        console.error("Logo upload failed");
-                        let errText = await uploadRes.text();
-                        console.error("Upload error details:", errText);
+                    if (typeof uploadImage === "function") {
+                        const imageUrl = await uploadImage(profileUpload.files[0], "company");
+                        updatedData.logo_url = imageUrl;
+                        updatedData.logo = imageUrl;
                     }
                 } catch (uploadErr) {
-                    console.error("Logo upload network error:", uploadErr);
+                    console.error("Logo upload error:", uploadErr);
+                    showToast("⚠️ Logo upload failed. Saving other changes...", true);
                 }
             }
 
-            // 2. Update Text Data
-            console.log("Saving text data:", updatedData);
-            const res = await fetch(`${API_BASE_URL}/companies/${company.id}`, {
+            // 2. Update company data via PUT
+            const res = await fetch(`${BASE_URL}/companies/${company.id}`, {
                 method: "PUT",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(updatedData)
@@ -161,38 +166,103 @@ document.addEventListener("DOMContentLoaded", async () => {
 
             if (res.ok) {
                 const updatedComp = await res.json();
+                console.log("Company update response:", updatedComp);
 
-                // Merge old user data with new company data
-                user.company = updatedComp;
+                // Ensure logo data is preserved from either source
+                const logo = updatedComp.logo || updatedComp.logo_url || company.logo || company.logo_url;
 
+                // Merge update back into session
+                company = { ...company, ...updatedComp, logo: logo, logo_url: logo };
+                user.company = company;
                 localStorage.setItem("user", JSON.stringify(user));
-                alert("Company profile updated successfully!");
-                location.reload();
+
+                // Update display names without full reload
+                loadCompanyData(company);
+                if (companyNameDisplay) companyNameDisplay.textContent = company.company_name;
+                enableEdit(false);
+                showToast("✅ Profile updated successfully!");
             } else {
-                let errorMsg = "Unknown error";
-                try {
-                    const error = await res.json();
-                    errorMsg = error.detail || JSON.stringify(error);
-                } catch (e) {
-                    errorMsg = await res.text();
-                }
-                console.error("API Error:", errorMsg);
-                alert("Update failed: " + errorMsg);
+                const err = await res.json().catch(() => ({}));
+                showToast("❌ " + (err.detail || "Update failed. Please try again."), true);
+                saveBtn.disabled = false;
+                saveBtn.textContent = "Save Changes";
             }
         } catch (err) {
-            console.error("Fetch/Script Error:", err);
-            alert("Connection error: " + err.message);
+            console.error(err);
+            showToast("❌ Network error. Please check your connection.", true);
+            saveBtn.disabled = false;
+            saveBtn.textContent = "Save Changes";
         }
     };
 
+    // ---- Profile Completion Progress ----
     function updateProgress(comp) {
-        let fields = ['company_name', 'industry', 'website', 'location', 'phone', 'description'];
+        const fields = ["company_name", "industry", "website", "location", "phone", "description"];
         let completed = fields.filter(f => comp[f] && comp[f].length > 0).length;
-        // Add logo to progress if it exists
-        if (comp.logo_url) completed++;
-
-        let total = fields.length + 1; // +1 for logo
-        let percentage = Math.round((completed / total) * 100);
-        document.getElementById("profileProgress").style.width = percentage + "%";
+        if (comp.logo_url || comp.logo) completed++;
+        const total = fields.length + 1;
+        const pct = Math.round((completed / total) * 100);
+        document.getElementById("profileProgress").style.width = pct + "%";
+        document.getElementById("progressLabel").textContent = pct + "% Complete";
     }
+
+    // ---- Toast Helper ----
+    function showToast(msg, isError = false) {
+        const toast = document.getElementById("profileToast");
+        const msgEl = document.getElementById("toastMsg");
+        if (!toast || !msgEl) { alert(msg); return; }
+        msgEl.textContent = msg;
+        toast.style.background = isError ? "#ef4444" : "#1b2559";
+        toast.classList.add("show");
+        setTimeout(() => toast.classList.remove("show"), 3500);
+    }
+
+    // ---- Account Deletion Logic ----
+    const deleteBtn = document.getElementById("deleteCompanyBtn");
+    const deleteModal = document.getElementById("deleteCompanyModal");
+    const closeBtn = document.getElementById("closeDeleteModal");
+    const cancelDeleteBtn = document.getElementById("cancelDeleteBtn");
+    const confirmDeleteBtn = document.getElementById("confirmDeleteBtn");
+
+    if (deleteBtn) {
+        deleteBtn.onclick = () => deleteModal.style.display = "flex";
+    }
+
+    if (closeBtn) closeBtn.onclick = () => deleteModal.style.display = "none";
+    if (cancelDeleteBtn) cancelDeleteBtn.onclick = () => deleteModal.style.display = "none";
+
+    confirmDeleteBtn.onclick = async () => {
+        const password = document.getElementById("deleteConfirmPassword").value;
+        if (!password) {
+            alert("Please enter your password to confirm.");
+            return;
+        }
+
+        try {
+            confirmDeleteBtn.textContent = "Deleting Brand...";
+            confirmDeleteBtn.disabled = true;
+
+            const res = await fetch(`${BASE_URL}/companies/${company.id}`, {
+                method: "DELETE",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ password: password })
+            });
+
+            if (res.ok) {
+                alert("Company and associated account deleted successfully.");
+                localStorage.clear();
+                window.location.href = "../index.html";
+            } else {
+                const err = await res.json();
+                alert(err.detail || "Deletion failed. Please check your password.");
+                confirmDeleteBtn.textContent = "Delete Permanently";
+                confirmDeleteBtn.disabled = false;
+            }
+        } catch (err) {
+            console.error(err);
+            alert("An error occurred. Please try again.");
+            confirmDeleteBtn.textContent = "Delete Permanently";
+            confirmDeleteBtn.disabled = false;
+        }
+    };
 });

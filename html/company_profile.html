@@ -4,193 +4,551 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Company Profile | OriginX Business</title>
+    <title>Brand Profile | OriginX Business</title>
     <link rel="stylesheet" href="../css/company_dashboard.css">
-    <link rel="stylesheet" href="../css/profile.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        .profile-page-grid {
+            display: grid;
+            grid-template-columns: 1fr 340px;
+            gap: 24px;
+            align-items: start;
+        }
+
+        /* ---- Logo / Avatar ---- */
+        .logo-section {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+            margin-bottom: 32px;
+            padding-bottom: 28px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .logo-box {
+            position: relative;
+            width: 100px;
+            height: 100px;
+            border-radius: 20px;
+            overflow: hidden;
+            background: var(--primary-light);
+            border: 3px solid white;
+            box-shadow: var(--shadow-main);
+            flex-shrink: 0;
+        }
+
+        .logo-box img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .logo-overlay {
+            position: absolute;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.45);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 600;
+            text-align: center;
+            gap: 6px;
+            flex-direction: column;
+        }
+
+        .logo-box:hover .logo-overlay {
+            display: flex;
+        }
+
+        .logo-info h2 {
+            font-size: 22px;
+            font-weight: 800;
+            color: var(--text-main);
+            margin-bottom: 4px;
+        }
+
+        .logo-info p {
+            font-size: 14px;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        .logo-change-btn {
+            display: none;
+            margin-top: 10px;
+            background: none;
+            border: none;
+            color: var(--primary);
+            font-weight: 700;
+            font-size: 13px;
+            cursor: pointer;
+            padding: 0;
+        }
+
+        .logo-change-btn.visible {
+            display: inline;
+        }
+
+        /* ---- View Mode Fields ---- */
+        .view-mode .form-group input,
+        .view-mode .form-group textarea {
+            background: var(--bg-main);
+            border-color: transparent;
+            color: var(--text-main);
+            font-weight: 500;
+            pointer-events: none;
+        }
+
+        /* ---- Progress Card ---- */
+        .progress-card {
+            background: linear-gradient(135deg, #1b2559, #0b1437);
+            color: white;
+            border-radius: var(--radius-xl);
+            padding: 28px;
+            margin-bottom: 24px;
+        }
+
+        .progress-card h3 {
+            font-size: 16px;
+            font-weight: 700;
+            margin-bottom: 6px;
+        }
+
+        .progress-card p {
+            font-size: 12px;
+            opacity: 0.75;
+            margin-bottom: 16px;
+        }
+
+        .progress-rail {
+            height: 8px;
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: var(--primary);
+            border-radius: 10px;
+            transition: width 1s ease;
+        }
+
+        .progress-label {
+            text-align: right;
+            font-size: 12px;
+            font-weight: 700;
+            margin-top: 8px;
+            opacity: 0.9;
+        }
+
+        /* ---- Tips Card ---- */
+        .tips-card {
+            background: var(--bg-white);
+            border-radius: var(--radius-xl);
+            padding: 24px;
+            box-shadow: var(--shadow-card);
+        }
+
+        .tips-card h3 {
+            font-size: 15px;
+            font-weight: 800;
+            color: var(--text-main);
+            margin-bottom: 18px;
+        }
+
+        .tip-item {
+            display: flex;
+            gap: 12px;
+            align-items: flex-start;
+            margin-bottom: 14px;
+        }
+
+        .tip-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .tip-dot {
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            background: var(--green-bg);
+            color: var(--green);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            margin-top: 1px;
+        }
+
+        .tip-item p {
+            font-size: 13px;
+            color: var(--text-secondary);
+            font-weight: 500;
+            line-height: 1.5;
+        }
+
+        /* ---- Success Toast ---- */
+        .toast {
+            position: fixed;
+            bottom: 32px;
+            right: 32px;
+            background: var(--text-main);
+            color: white;
+            padding: 14px 22px;
+            border-radius: var(--radius-md);
+            font-size: 14px;
+            font-weight: 600;
+            display: none;
+            align-items: center;
+            gap: 10px;
+            z-index: 9999;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            animation: toastIn 0.3s ease;
+        }
+
+        .toast.show {
+            display: flex;
+        }
+
+        @keyframes toastIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .btn-delete-company.red-theme {
+            width: 100%;
+            background: #ff4d4f;
+            color: white;
+            border: none;
+            padding: 14px;
+            border-radius: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: var(--transition);
+            font-size: 14px;
+        }
+
+        .btn-delete-company.red-theme:hover {
+            background: #e03e3e;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(255, 77, 79, 0.3);
+        }
+
+        /* Modal Settings */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(11, 14, 30, 0.5);
+            backdrop-filter: blur(4px);
+            z-index: 2000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .modal-content-pro {
+            background: white;
+            width: 440px;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.1);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .close-modal-btn {
+            background: none;
+            border: none;
+            font-size: 24px;
+            color: var(--text-secondary);
+            cursor: pointer;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        @media (max-width: 992px) {
+            .profile-page-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
 </head>
 
 <body>
-    <header class="navbar">
-        <a href="company_dashboard.html" class="logo">
-            Origin<span>X</span> Business
-        </a>
-        <nav class="nav-links">
-            <a href="company_dashboard.html">Dashboard</a>
-            <a href="company_applications.html">Applications</a>
-            <a href="company_profile.html" class="active">Profile</a>
-        </nav>
-        <div class="user-profile">
-            <span id="companyNameDisplay"
-                style="margin-right: 15px; font-weight: 600; color: var(--text-primary); opacity: 0.8;">Company
-                Name</span>
-            <div class="nav-profile-pic" id="navProfilePic"></div>
-            <a href="../index.html" class="logout-btn">Logout</a>
-        </div>
-    </header>
+    <div class="app-wrapper">
 
-    <main class="dashboard-main">
-        <div class="page-header">
-            <div class="header-left">
-                <h1 id="welcomeMsg">Company Profile</h1>
-                <p class="breadcrumb">Business Dashboard / <span>Profile</span></p>
+        <!-- ===== SIDEBAR ===== -->
+        <aside class="sidebar">
+            <a href="company_dashboard.html" class="sidebar-logo">Origin<span>X</span> <em>Hiring</em></a>
+
+            <nav class="nav-menu">
+                <p class="nav-label">Company</p>
+                <a href="company_dashboard.html" class="nav-item">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
+                    </svg>
+                    Dashboard
+                </a>
+                <a href="company_applications.html" class="nav-item">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z" />
+                    </svg>
+                    Candidates
+                </a>
+                <a href="company_profile.html" class="nav-item active">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                    </svg>
+                    Brand Profile
+                </a>
+            </nav>
+
+            <div class="sidebar-footer">
+                <a href="../index.html" class="nav-item logout-link">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                    </svg>
+                    Log out
+                </a>
             </div>
-            <div class="header-actions">
-                <button type="button" id="editToggleBtn" class="btn-primary">Edit Profile</button>
-            </div>
-        </div>
+        </aside>
 
-        <div class="dashboard-grid">
-            <div class="left-col">
-                <form id="companyProfileForm" class="view-mode">
+        <!-- ===== MAIN AREA ===== -->
+        <main class="main-area">
+            <!-- Header -->
+            <header class="top-bar">
+                <div class="header-info">
+                    <p id="companyNameDisplay">Your Company</p>
+                    <h1>Brand Profile</h1>
+                </div>
+                <div class="header-actions">
+                    <button type="button" id="editToggleBtn" class="btn-post-job">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24"
+                            stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                        </svg>
+                        Edit Profile
+                    </button>
+                    <div class="company-avatar-wrap">
+                        <div class="company-initials" id="companyInitialsAvatar"
+                            style="overflow:hidden; display:flex; align-items:center; justify-content:center;">C</div>
+                    </div>
+                </div>
+            </header>
 
-                    <!-- Profile Photo Section -->
-                    <div class="section-container profile-photo-section">
-                        <div class="profile-header">
-                            <div class="profile-avatar-container">
+            <div class="profile-page-grid">
+                <!-- LEFT: Main Form -->
+                <div>
+                    <form id="companyProfileForm" class="section-container view-mode">
+
+                        <!-- Logo + Name -->
+                        <div class="logo-section">
+                            <div class="logo-box" id="logoBoxWrapper">
                                 <img src="../assets/default-company-logo.png" alt="Company Logo"
-                                    id="profileImagePreview" class="profile-avatar">
-                                <div class="avatar-overlay" id="avatarOverlay" style="display: none;">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                        stroke-linejoin="round" class="feather feather-camera">
-                                        <path
-                                            d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z">
-                                        </path>
-                                        <circle cx="12" cy="13" r="4"></circle>
+                                    id="profileImagePreview"
+                                    onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2280%22 height=%2280%22 viewBox=%220 0 24 24%22 fill=%22%234318ff%22%3E%3Cpath d=%22M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5%22/%3E%3C/svg%3E'">
+                                <div class="logo-overlay" id="avatarOverlay"
+                                    onclick="document.getElementById('profileUpload').click()">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none"
+                                        viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
                                     </svg>
+                                    Change Logo
                                 </div>
-                                <input type="file" id="profileUpload" accept="image/*" style="display: none;">
+                                <input type="file" id="profileUpload" accept="image/*" style="display:none;">
                             </div>
-                            <div class="profile-title-info">
+                            <div class="logo-info">
                                 <h2 id="displayCompName">Company Name</h2>
-                                <p id="displayCompIndustry" class="text-secondary">Industry</p>
+                                <p id="displayCompIndustry">Industry</p>
+                                <button type="button" id="logoChangeTrigger" class="logo-change-btn"
+                                    onclick="document.getElementById('profileUpload').click()">📷 Change Logo</button>
                             </div>
                         </div>
-                        <div class="upload-controls" id="uploadControls" style="display: none;">
-                            <button type="button" class="btn-edit"
-                                onclick="document.getElementById('profileUpload').click()">Change Photo</button>
-                            <span class="text-xs text-secondary">Recommended: 400x400px</span>
-                        </div>
-                    </div>
 
-                    <div class="section-container">
-                        <div class="section-header">
-                            <h2>Business Information</h2>
-                        </div>
-                        <div class="input-grid-pro">
-                            <div class="input-group-pro">
+                        <!-- Fields Grid -->
+                        <div class="form-row" style="margin-bottom: 20px;">
+                            <div class="form-group">
                                 <label>Company Name</label>
-                                <input type="text" id="compName" required readonly>
+                                <input type="text" id="compName" placeholder="e.g. Acme Corp" required>
                             </div>
-                            <div class="input-group-pro">
+                            <div class="form-group">
                                 <label>Industry</label>
-                                <input type="text" id="compIndustry" placeholder="e.g. Technology" readonly>
+                                <input type="text" id="compIndustry" placeholder="e.g. Fintech, Healthcare">
                             </div>
-                            <div class="input-group-pro">
+                        </div>
+
+                        <div class="form-row" style="margin-bottom: 20px;">
+                            <div class="form-group">
                                 <label>Website</label>
-                                <input type="url" id="compWebsite" placeholder="https://..." readonly>
+                                <input type="url" id="compWebsite" placeholder="https://yourcompany.com">
                             </div>
-                            <div class="input-group-pro">
+                            <div class="form-group">
                                 <label>Location</label>
-                                <input type="text" id="compLocation" placeholder="e.g. London, UK" readonly>
+                                <input type="text" id="compLocation" placeholder="e.g. Chennai, India">
                             </div>
                         </div>
-                    </div>
 
-                    <div class="section-container">
-                        <div class="section-header">
-                            <h2>Contact Details</h2>
-                        </div>
-                        <div class="input-grid-pro">
-                            <div class="input-group-pro">
+                        <div class="form-row" style="margin-bottom: 20px;">
+                            <div class="form-group">
                                 <label>Business Email</label>
-                                <input type="email" id="compEmail" required readonly>
+                                <input type="email" id="compEmail" readonly>
                             </div>
-                            <div class="input-group-pro">
-                                <label>Phone Number</label>
-                                <input type="text" id="compPhone" placeholder="Not provided" readonly>
+                            <div class="form-group">
+                                <label>Phone</label>
+                                <input type="text" id="compPhone" placeholder="e.g. +91 98765 43210">
                             </div>
                         </div>
-                    </div>
 
-                    <div class="section-container">
-                        <div class="section-header">
-                            <h2>About Company</h2>
+                        <div class="form-group" style="margin-bottom: 20px;">
+                            <label>About Your Company</label>
+                            <textarea id="compDesc" rows="5"
+                                placeholder="Describe your company culture, mission, and what makes you a great place to work..."></textarea>
                         </div>
-                        <div class="input-group-pro">
-                            <textarea id="compDesc" rows="6" placeholder="Describe your company mission..."
-                                readonly></textarea>
+
+                        <!-- Action buttons (only visible in edit mode) -->
+                        <div id="formActions" style="display: none; gap: 12px; margin-top: 8px;">
+                            <button type="submit" class="btn-submit" id="saveBtn">Save Changes</button>
+                            <button type="button" id="cancelEditBtn" class="btn-cancel">Cancel</button>
                         </div>
-                    </div>
 
-                    <div class="form-actions" id="formActions" style="display: none;">
-                        <button type="submit" class="btn-primary">Save Changes</button>
-                        <button type="button" id="cancelEditBtn" class="btn-delete">Discard Changes</button>
-                    </div>
-                </form>
-            </div>
-
-            <div class="right-col">
-                <div class="section-container">
-                    <div class="section-header">
-                        <h2>Profile Strength</h2>
-                    </div>
-                    <div class="progress-bar-container">
-                        <div class="progress-bar" id="profileProgress" style="width: 0%;"></div>
-                    </div>
-                    <p style="font-size: 0.8125rem; color: var(--text-secondary); margin-top: 1rem;">
-                        Candidates love seeing detailed business information!
-                    </p>
+                    </form>
                 </div>
 
-                <div class="section-container">
-                    <div class="section-header">
-                        <h2>Branding Tips</h2>
+                <!-- RIGHT sidebar -->
+                <div>
+                    <!-- Profile Completion -->
+                    <div class="progress-card">
+                        <h3>Profile Completion</h3>
+                        <p>Complete your profile to attract more candidates.</p>
+                        <div class="progress-rail">
+                            <div class="progress-fill" id="profileProgress" style="width: 0%;"></div>
+                        </div>
+                        <p class="progress-label" id="progressLabel">0% Complete</p>
                     </div>
-                    <ul class="tips-list">
-                        <li>
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
-                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                stroke-linejoin="round" class="icon-check">
-                                <circle cx="12" cy="12" r="10" />
-                                <path d="m9 12 2 2 4-4" />
-                            </svg> Upload a high-quality logo.
-                        </li>
-                        <li>
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
-                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                stroke-linejoin="round" class="icon-check">
-                                <circle cx="12" cy="12" r="10" />
-                                <path d="m9 12 2 2 4-4" />
-                            </svg> Link your actual website.
-                        </li>
-                        <li>
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
-                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                stroke-linejoin="round" class="icon-check">
-                                <circle cx="12" cy="12" r="10" />
-                                <path d="m9 12 2 2 4-4" />
-                            </svg> Describe your company culture.
-                        </li>
-                    </ul>
+
+                    <!-- Tips -->
+                    <div class="tips-card" style="margin-bottom: 24px;">
+                        <h3>💡 Profile Tips</h3>
+                        <div class="tip-item">
+                            <div class="tip-dot">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="none"
+                                    viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3"
+                                        d="M5 13l4 4L19 7" />
+                                </svg>
+                            </div>
+                            <p>Add a clear logo to build brand recognition with candidates.</p>
+                        </div>
+                        <div class="tip-item">
+                            <div class="tip-dot">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="none"
+                                    viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3"
+                                        d="M5 13l4 4L19 7" />
+                                </svg>
+                            </div>
+                            <p>A detailed "About" section increases application rates by 60%.</p>
+                        </div>
+                        <div class="tip-item">
+                            <div class="tip-dot">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="none"
+                                    viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3"
+                                        d="M5 13l4 4L19 7" />
+                                </svg>
+                            </div>
+                            <p>Add your website link so candidates can learn more about you.</p>
+                        </div>
+                        <div class="tip-item">
+                            <div class="tip-dot">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="none"
+                                    viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3"
+                                        d="M5 13l4 4L19 7" />
+                                </svg>
+                            </div>
+                            <p>Keep your location updated for geo-based talent searches.</p>
+                        </div>
+                    </div>
+
+                    <!-- Delete Button -->
+                    <div style="margin-top: 24px;">
+                        <button type="button" id="deleteCompanyBtn" class="btn-delete-company red-theme">Delete Brand
+                            Account</button>
+                    </div>
                 </div>
             </div>
-        </div>
+    </div>
+
     </main>
+    </div>
 
-    <footer class="main-footer">
-        <div class="footer-container">
-            <p class="copyright">© 2026 OriginX Business. All rights reserved.</p>
-            <div class="footer-links">
-                <a href="#">Help Center</a>
-                <a href="#">Privacy Policy</a>
-                <a href="#">Terms of Service</a>
+    <!-- Delete Modal -->
+    <div id="deleteCompanyModal" class="modal-overlay" style="display: none;">
+        <div class="modal-content-pro">
+            <div class="modal-header">
+                <h2 style="color: #ff4d4f;">Confirm Brand Deletion</h2>
+                <button type="button" class="close-modal-btn" id="closeDeleteModal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p style="margin-bottom: 20px; color: var(--text-secondary); line-height: 1.5;">This action is
+                    permanent. All jobs, employer data, and access will be lost. Please enter your password to confirm.
+                </p>
+                <div class="form-group">
+                    <label>Verify Identity Password</label>
+                    <input type="password" id="deleteConfirmPassword" placeholder="Enter your password">
+                </div>
+            </div>
+            <div class="modal-footer" style="display: flex; gap: 12px; margin-top: 24px;">
+                <button type="button" class="btn-cancel" id="cancelDeleteBtn" style="flex:1;">Cancel</button>
+                <button type="button" class="btn-delete-final" id="confirmDeleteBtn"
+                    style="flex:1; background: #ff4d4f; color: white; border: none; padding: 12px; border-radius: 12px; font-weight: 700; cursor: pointer;">Delete
+                    Permanently</button>
             </div>
         </div>
-    </footer>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="profileToast" class="toast">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="#01b574">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7" />
+        </svg>
+        <span id="toastMsg">Profile updated successfully!</span>
+    </div>
 
     <script src="../js/config.js"></script>
+    <script src="../js/upload_handler.js"></script>
     <script src="../js/company_profile.js"></script>
 </body>
 

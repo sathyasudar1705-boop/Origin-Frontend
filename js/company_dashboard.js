@@ -5,14 +5,50 @@ document.addEventListener("DOMContentLoaded", async () => {
         return;
     }
 
-    const company = user.company;
+    const BASE_URL = window.API_BASE_URL || "http://127.0.0.1:8000";
+
+    // Get company from session or fetch from API as fallback
+    let company = user.company || null;
+
     if (!company) {
-        alert("Company details not found. Please contact support.");
+        try {
+            const res = await fetch(`${BASE_URL}/companies?user_id=${user.id}`);
+            if (res.ok) {
+                const companies = await res.json();
+                // Find this user's company
+                company = companies.find(c => c.user_id === user.id) || companies[0] || null;
+                if (company) {
+                    // Save it back to session for next time
+                    user.company = company;
+                    localStorage.setItem("user", JSON.stringify(user));
+                }
+            }
+        } catch (e) {
+            console.error("Failed to fetch company fallback:", e);
+        }
+    }
+
+    if (!company) {
+        // Company doesn't exist yet, redirect to create it
+        window.location.href = "create_company.html";
         return;
     }
 
-    document.getElementById("companyNameDisplay").textContent = company.company_name;
-    document.getElementById("welcomeMsg").textContent = `Welcome, ${user.full_name}`;
+    document.getElementById("welcomeMsg").textContent = `Welcome, ${user.full_name} 👋`;
+    const sub = document.getElementById("companySubtitle");
+    if (sub) sub.textContent = company.company_name || "Employer Hub";
+    // Set initials avatar or logo
+    const avatar = document.getElementById("companyInitialsAvatar");
+    if (avatar && company) {
+        const initials = company.company_name ? company.company_name.charAt(0).toUpperCase() : "C";
+        const logoUrl = company.logo_url || company.logo;
+        if (logoUrl) {
+            const finalLogoUrl = logoUrl.startsWith('http') ? logoUrl : `${BASE_URL}${logoUrl}`;
+            avatar.innerHTML = `<img src="${finalLogoUrl}" alt="${company.company_name}" style="width:100%; height:100%; object-fit:cover;" onerror="this.parentElement.innerHTML='${initials}'">`;
+        } else {
+            avatar.textContent = initials;
+        }
+    }
 
     // Modal logic
     const modal = document.getElementById("postJobModal");
@@ -31,6 +67,8 @@ document.addEventListener("DOMContentLoaded", async () => {
     openBtn.onclick = openModal;
     if (postJobNav) postJobNav.onclick = (e) => { e.preventDefault(); openModal(); };
     closeBtn.onclick = () => modal.style.display = "none";
+    const cancelPostBtn = document.getElementById("cancelPostBtn");
+    if (cancelPostBtn) cancelPostBtn.onclick = () => modal.style.display = "none";
     window.onclick = (e) => { if (e.target == modal) modal.style.display = "none"; };
 
     // Post/Edit Job Form
@@ -124,37 +162,36 @@ async function fetchCompanyData(companyId) {
         if (jobsRes.ok) {
             const allJobs = await jobsRes.json();
             const myJobs = allJobs.filter(j => j.company && j.company.id === companyId);
-            document.getElementById("statJobs").textContent = myJobs.length;
+            const statJobsEl = document.getElementById("statTotalJobs");
+            if (statJobsEl) { statJobsEl.textContent = myJobs.length; statJobsEl.dataset.ftCount = myJobs.length; }
 
             const container = document.getElementById("employerJobs");
             container.innerHTML = "";
-            myJobs.forEach(job => {
-                const item = document.createElement("div");
-                item.className = "job-card";
-                item.onclick = () => openJobDetails(job); // Add click handler
-                item.innerHTML = `
-                    <div class="job-info">
-                        <span class="job-type-pill full-time">Full-time</span>
-                        <h3>${job.title}</h3>
-                        <div class="job-meta">
-                            <span>
-                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none"
-                                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
-                                    <circle cx="12" cy="10" r="3"></circle>
-                                </svg>
-                                ${job.location}
-                            </span>
-                            <span>💰 ${job.salary || 'N/A'}</span>
+            if (myJobs.length === 0) {
+                container.innerHTML = '<div class="empty-state"><p>No full-time jobs posted yet.</p></div>';
+            } else {
+                myJobs.forEach(job => {
+                    const item = document.createElement("div");
+                    item.className = "job-listing-card";
+                    item.onclick = () => openJobDetails(job);
+                    item.innerHTML = `
+                        <div class="job-listing-info">
+                            <h4>${job.title}</h4>
+                            <p>${job.location} &bull; ${job.salary || 'Competitive'}</p>
                         </div>
-                    </div>
-                    <div class="job-actions">
-                        <button class="btn-edit" onclick='openEditModal(event, ${JSON.stringify(job)}, "full-time")'>Edit</button>
-                        <button class="btn-delete" onclick='deleteJob(event, ${job.id}, "full-time")'>Delete</button>
-                    </div>
-                `;
-                container.appendChild(item);
-            });
+                        <div class="job-listing-actions">
+                            <span class="job-type-pill full-time">Full-time</span>
+                            <button class="btn-icon-action" onclick='openEditModal(event, ${JSON.stringify(job)}, "full-time")' title="Edit">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" /></svg>
+                            </button>
+                            <button class="btn-icon-action" style="border-color:#fecaca; color:#ef4444;" onclick='deleteJob(event, ${job.id}, "full-time")' title="Delete">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
+                            </button>
+                        </div>
+                    `;
+                    container.appendChild(item);
+                });
+            }
         }
 
         // Part-time Jobs
@@ -169,74 +206,78 @@ async function fetchCompanyData(companyId) {
 
             myPTJobs.forEach(job => {
                 const item = document.createElement("div");
-                item.className = "job-card";
-                job.is_part_time = true; // Mark as part time for modal
+                item.className = "job-listing-card";
+                job.is_part_time = true;
                 item.onclick = () => openJobDetails(job);
                 item.innerHTML = `
-                    <div class="job-info">
-                        <span class="job-type-pill part-time">Part-time</span>
-                        <h3>${job.title}</h3>
-                        <div class="job-meta">
-                            <span>
-                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none"
-                                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
-                                    <circle cx="12" cy="10" r="3"></circle>
-                                </svg>
-                                ${job.location}
-                            </span>
-                            <span>💰 ${job.salary || 'N/A'}</span>
-                        </div>
+                    <div class="job-listing-info">
+                        <h4>${job.title}</h4>
+                        <p>${job.location} &bull; ${job.salary || 'Competitive'}</p>
                     </div>
-                    <div class="job-actions">
-                        <button class="btn-edit" onclick='openEditModal(event, ${JSON.stringify(job)}, "part-time")'>Edit</button>
-                        <button class="btn-delete" onclick='deleteJob(event, ${job.id}, "part-time")'>Delete</button>
+                    <div class="job-listing-actions">
+                        <span class="job-type-pill part-time">Part-time</span>
+                        <button class="btn-icon-action" onclick='openEditModal(event, ${JSON.stringify(job)}, "part-time")' title="Edit">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" /></svg>
+                        </button>
+                        <button class="btn-icon-action" style="border-color:#fecaca; color:#ef4444;" onclick='deleteJob(event, ${job.id}, "part-time")' title="Delete">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
+                        </button>
                     </div>
                 `;
                 container.appendChild(item);
             });
 
-            // Total jobs stat update
-            const totalJobs = parseInt(document.getElementById("statJobs").textContent) + myPTJobs.length;
-            document.getElementById("statJobs").textContent = totalJobs;
+            const totalJobsStat = document.getElementById("statTotalJobs");
+            if (totalJobsStat) {
+                const ftCount = parseInt(document.getElementById("statTotalJobs")?.dataset.ftCount || 0);
+                totalJobsStat.textContent = ftCount + myPTJobs.length;
+            }
         }
 
         // Applications (Recent)
         const appsRes = await fetch(`${API_BASE_URL}/applications/company/${companyId}`);
         if (appsRes.ok) {
             const apps = await appsRes.json();
-            document.getElementById("statApps").textContent = apps.length;
+            const statTotalAppsEl = document.getElementById("statTotalApplications");
+            if (statTotalAppsEl) statTotalAppsEl.textContent = apps.length;
+
+            // Count shortlisted
+            const shortlisted = apps.filter(a => a.status === 'Approved' || a.status === 'Shortlisted').length;
+            const statSelectedEl = document.getElementById("statSelected");
+            if (statSelectedEl) statSelectedEl.textContent = shortlisted;
 
             const container = document.getElementById("companyApplications");
             container.innerHTML = "";
 
             if (apps.length === 0) {
-                container.innerHTML = "<p>No applications received yet.</p>";
+                container.innerHTML = '<div class="empty-state"><p>No applications received yet.<br>Post a job to start receiving candidates!</p></div>';
             } else {
-                // Sort by latest first and take top 5
                 const recentApps = apps
                     .sort((a, b) => new Date(b.created_at || 0) - new Date(a.created_at || 0))
-                    .slice(0, 3);
+                    .slice(0, 8);
 
                 recentApps.forEach(app => {
-                    const initials = app.full_name ? app.full_name.split(' ').map(n => n[0]).join('').toUpperCase() : "??";
+                    const initials = app.full_name ? app.full_name.split(' ').map(n => n[0]).join('').toUpperCase() : '??';
+                    const item = document.createElement("div");
+                    item.className = "candidate-card";
+                    item.onclick = () => showAppDetail(app);
 
-                    // Format Date
-                    const dateObj = new Date(app.created_at || Date.now());
-                    const dateStr = dateObj.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+                    const candidateUrl = `view_candidate.html?id=${app.user_id}`;
+                    let avatarHtml = `<div class="candidate-avatar" style="cursor:pointer;" onclick="event.stopPropagation(); window.location.href='${candidateUrl}'">${initials}</div>`;
+                    if (app.candidate_profile_image) {
+                        const imgPath = app.candidate_profile_image.startsWith('http') ? app.candidate_profile_image : `${BASE_URL}${app.candidate_profile_image}`;
+                        avatarHtml = `<div class="candidate-avatar" style="cursor:pointer;" onclick="event.stopPropagation(); window.location.href='${candidateUrl}'"><img src="${imgPath}" alt="${app.full_name || ''}" onerror="this.parentElement.innerHTML='${initials}'"></div>`;
+                    }
 
-                    const card = document.createElement("div");
-                    card.className = "app-item";
-                    card.innerHTML = `
-                        <div class="app-avatar">${initials}</div>
-                        <div class="app-details">
-                            <h4>${app.full_name}</h4>
-                            <p class="app-sub">Applied: <strong>${app.job_title || 'N/A'}</strong></p>
+                    item.innerHTML = `
+                        ${avatarHtml}
+                        <div class="candidate-details">
+                            <h4>${app.full_name || 'N/A'}</h4>
+                            <p>${app.job_title || 'No role specified'}</p>
                         </div>
-                        <div class="app-date">${dateStr}</div>
-                        <button class="btn-view-app" onclick='showAppDetail(${JSON.stringify(app)})'>View</button>
+                        <span class="status-badge status-${(app.status || 'applied').toLowerCase()}">${app.status || 'Applied'}</span>
                     `;
-                    container.appendChild(card);
+                    container.appendChild(item);
                 });
             }
         }
@@ -245,16 +286,34 @@ async function fetchCompanyData(companyId) {
 
 function showAppDetail(app) {
     const modal = document.getElementById("appDetailModal");
-    document.getElementById("detailCandidateName").textContent = app.full_name;
-    document.getElementById("detailStatusBadge").textContent = app.status;
-    document.getElementById("detailStatusBadge").className = `status-badge status-${app.status.toLowerCase()}`;
+    const initials = app.full_name ? app.full_name.split(' ').map(n => n[0]).join('').toUpperCase() : '??';
+
+    let avatarHtml = `<div class="candidate-avatar" style="width: 60px; height: 60px; margin-bottom: 15px; border-radius: 12px; font-size: 24px;">${initials}</div>`;
+    if (app.candidate_profile_image) {
+        const imgPath = app.candidate_profile_image.startsWith('http') ? app.candidate_profile_image : `${API_BASE_URL}${app.candidate_profile_image}`;
+        avatarHtml = `<div class="candidate-avatar" style="width: 60px; height: 60px; margin-bottom: 15px; border-radius: 12px; overflow: hidden;"><img src="${imgPath}" alt="${app.full_name}" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.parentElement.innerHTML='${initials}'"></div>`;
+    }
+
+    const modalTop = document.querySelector("#appDetailModal .modal-top > div");
+    if (modalTop) {
+        modalTop.innerHTML = `
+            ${avatarHtml}
+            <h3 id="detailCandidateName">${app.full_name}</h3>
+            <span id="detailStatusBadge" class="status-badge status-${app.status.toLowerCase()}">${app.status}</span>
+        `;
+    } else {
+        document.getElementById("detailCandidateName").textContent = app.full_name;
+        document.getElementById("detailStatusBadge").textContent = app.status;
+        document.getElementById("detailStatusBadge").className = `status-badge status-${app.status.toLowerCase()}`;
+    }
 
     document.getElementById("detailEmail").textContent = app.email;
     document.getElementById("detailPhone").textContent = app.phone;
     document.getElementById("detailLocation").textContent = app.current_location;
     document.getElementById("detailExperience").textContent = app.experience;
     document.getElementById("detailSalary").textContent = app.expected_salary;
-    document.getElementById("detailJobTitle").textContent = app.job_title || 'N/A';
+    const appliedJobTitleEl = document.getElementById("detailAppliedJobTitle") || document.getElementById("detailJobTitle");
+    if (appliedJobTitleEl) appliedJobTitleEl.textContent = app.job_title || 'N/A';
     document.getElementById("detailSkills").textContent = app.skills;
     document.getElementById("detailResume").href = app.resume_url;
 
@@ -274,7 +333,8 @@ function showAppDetail(app) {
     modal.style.display = "flex";
 
     // Close logic
-    document.getElementById("closeAppDetailModal").onclick = () => modal.style.display = "none";
+    const closeAppBtn = document.getElementById("closeAppDetailModal") || document.getElementById("closeCandidateModal");
+    if (closeAppBtn) closeAppBtn.onclick = () => modal.style.display = "none";
 }
 
 async function updateStatus(appId, newStatus) {
@@ -326,3 +386,20 @@ async function deleteJob(e, jobId, type) {
 // Make globally accessible if needed
 window.updateAppStatus = updateStatus;
 window.deleteJob = deleteJob;
+// Mobile Sidebar Toggle
+window.toggleSidebar = function () {
+    const sidebar = document.querySelector('.sidebar');
+    if (sidebar) {
+        sidebar.classList.toggle('open');
+    }
+};
+
+// Close sidebar when clicking outside on mobile
+document.addEventListener('click', (e) => {
+    const sidebar = document.querySelector('.sidebar');
+    const toggle = document.querySelector('.menu-toggle');
+    if (sidebar && sidebar.classList.contains('open') &&
+        !sidebar.contains(e.target) && !toggle.contains(e.target)) {
+        sidebar.classList.remove('open');
+    }
+});

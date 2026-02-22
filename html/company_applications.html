@@ -4,102 +4,161 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Manage Applications | OriginX Business</title>
+    <title>Talent Pipeline | OriginX Business</title>
     <link rel="stylesheet" href="../css/company_dashboard.css">
+    <link rel="stylesheet" href="../css/company_applications.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 </head>
 
 <body>
-    <header class="navbar">
-        <a href="company_dashboard.html" class="logo">
-            Origin<span>X</span> Business
-        </a>
-        <nav class="nav-links">
-            <a href="company_dashboard.html">Dashboard</a>
-            <a href="company_applications.html" class="active">Applications</a>
-            <a href="company_profile.html">Profile</a>
-        </nav>
-        <div class="user-profile">
-            <span id="companyNameDisplay"
-                style="margin-right: 15px; font-weight: 600; color: var(--text-primary); opacity: 0.8;">Company
-                Name</span>
-            <a href="../index.html" class="logout-btn">Logout</a>
-        </div>
-    </header>
+    <div class="app-wrapper">
 
-    <main class="dashboard-main">
-        <div class="dashboard-header">
-            <h1>Candidate Applications</h1>
-            <div class="filter-group">
-                <select id="statusFilter"
-                    style="padding: 10px; border-radius: 8px; border: 1px solid var(--border-color);">
-                    <option value="all">All Statuses</option>
-                    <option value="Applied">New (Applied)</option>
-                    <option value="Approved">Approved</option>
-                    <option value="Rejected">Rejected</option>
-                    <option value="Cancelled">Cancelled by User</option>
-                </select>
+        <!-- ===== SIDEBAR ===== -->
+        <aside class="sidebar">
+            <a href="company_dashboard.html" class="sidebar-logo">Origin<span>X</span> <em>Hiring</em></a>
+
+            <nav class="nav-menu">
+                <p class="nav-label">Company</p>
+                <a href="company_dashboard.html" class="nav-item">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
+                    </svg>
+                    Dashboard
+                </a>
+                <a href="company_applications.html" class="nav-item active">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z" />
+                    </svg>
+                    Candidates
+                </a>
+                <a href="company_profile.html" class="nav-item">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                    </svg>
+                    Brand Profile
+                </a>
+            </nav>
+
+            <div class="sidebar-footer">
+                <a href="../index.html" class="nav-item logout-link">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                    </svg>
+                    Log out
+                </a>
             </div>
-        </div>
+        </aside>
 
-        <div class="section-container" style="width: 100%;">
-            <div id="applicationsFullList">
-                <p style="color:var(--text-muted);">Loading system applications...</p>
-            </div>
-        </div>
-    </main>
+        <!-- ===== MAIN AREA ===== -->
+        <main class="main-area">
+            <div class="main-container">
+                <header class="top-bar">
+                    <div class="header-info">
+                        <p id="companyNameDisplay">Employer Hub</p>
+                        <h1>Talent Pipeline</h1>
+                    </div>
+                    <div class="header-actions">
+                        <div class="filter-wrap">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none"
+                                viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" />
+                            </svg>
+                            <select id="statusFilter">
+                                <option value="all">All Candidates</option>
+                                <option value="Applied">Applied</option>
+                                <option value="Shortlisted">Shortlisted</option>
+                                <option value="Selected">Selected</option>
+                                <option value="Cancelled">Rejected / Withdrawn</option>
+                            </select>
+                        </div>
+                        <div class="company-avatar-wrap">
+                            <div class="company-initials" id="companyInitialsAvatar"
+                                style="overflow:hidden; display:flex; align-items:center; justify-content:center;">C
+                            </div>
+                        </div>
+                    </div>
+                </header>
 
-    <!-- Application Detail Modal -->
-    <div id="appDetailModal" class="modal"
-        style="display:none; position:fixed; z-index:1001; left:0; top:0; width:100%; height:100%; background:rgba(0,0,0,0.5); align-items:center; justify-content:center;">
-        <div class="modal-content"
-            style="background:white; padding:30px; border-radius:12px; max-width:700px; width:90%; max-height: 90vh; overflow-y: auto;">
-            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 20px;">
-                <h3 id="detailCandidateName" style="margin: 0; font-size: 24px;">Candidate Name</h3>
-                <span id="detailStatusBadge" class="status-badge">Applied</span>
-            </div>
-
-            <div class="detail-grid" style="display: grid; grid-template-columns: 1fr 1.5fr; gap: 25px;">
-                <div class="sidebar-info">
-                    <p><strong>Email:</strong> <br> <span id="detailEmail">email@example.com</span></p>
-                    <p><strong>Phone:</strong> <br> <span id="detailPhone">+91 ...</span></p>
-                    <p><strong>Location:</strong> <br> <span id="detailLocation">City, State</span></p>
-                    <p><strong>Experience:</strong> <br> <span id="detailExperience">...</span></p>
-                    <p><strong>Expected Salary:</strong> <br> <span id="detailSalary">...</span></p>
+                <!-- Candidate List -->
+                <div class="apps-list-container">
+                    <div id="applicationsFullList">
+                        <p class="apps-loading">Scanning candidate records...</p>
+                    </div>
                 </div>
-                <div class="main-info">
-                    <p><strong>Applied For:</strong> <br> <span id="detailJobTitle"
-                            style="font-weight: 600; color: var(--accent);">Job Title</span></p>
-                    <p><strong>Key Skills:</strong> <br> <span id="detailSkills">Skills list...</span></p>
-                    <p><strong>Resume Link:</strong> <br> <a id="detailResume" href="#" target="_blank"
-                            style="color: var(--accent); text-decoration: none; font-weight: 600;">View Resume
-                            Document</a></p>
+            </div>
+
+        </main>
+    </div>
+
+    <!-- ===== APPLICATION DETAIL MODAL ===== -->
+    <div id="appDetailModal" class="modal">
+        <div class="modal-card wide-modal">
+            <div class="modal-top">
+                <div>
+                    <h3 id="detailCandidateName">Candidate Name</h3>
+                    <span id="detailStatusBadge" class="status-badge status-applied">Applied</span>
+                </div>
+                <button id="closeDetailModal" class="modal-close-btn">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24"
+                        stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+                            d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
+            </div>
+
+            <div class="candidate-detail-grid">
+                <div class="candidate-detail-col">
+                    <div class="detail-info-block">
+                        <span class="detail-label">Email</span>
+                        <span class="detail-value" id="detailEmail">—</span>
+                    </div>
+                    <div class="detail-info-block">
+                        <span class="detail-label">Phone</span>
+                        <span class="detail-value" id="detailPhone">—</span>
+                    </div>
+                    <div class="detail-info-block">
+                        <span class="detail-label">Location</span>
+                        <span class="detail-value" id="detailLocation">—</span>
+                    </div>
+                    <div class="detail-info-block">
+                        <span class="detail-label">Experience</span>
+                        <span class="detail-value" id="detailExperience">—</span>
+                    </div>
+                    <div class="detail-info-block">
+                        <span class="detail-label">Expected Salary</span>
+                        <span class="detail-value" id="detailSalary">—</span>
+                    </div>
+                </div>
+                <div class="candidate-detail-col">
+                    <div class="detail-info-block">
+                        <span class="detail-label">Applied For</span>
+                        <span class="detail-value accent-text" id="detailJobTitle">—</span>
+                    </div>
+                    <div class="detail-info-block">
+                        <span class="detail-label">Key Skills</span>
+                        <span class="detail-value" id="detailSkills">—</span>
+                    </div>
+                    <div class="detail-info-block">
+                        <span class="detail-label">Resume</span>
+                        <a id="detailResume" href="#" target="_blank" class="resume-link">View Resume →</a>
+                    </div>
                 </div>
             </div>
 
-            <div class="modal-actions" id="modalActions"
-                style="display:flex; gap:12px; margin-top:30px; border-top: 1px solid var(--border-color); padding-top: 20px;">
-                <button id="approveBtn"
-                    style="flex:1; background:#22c55e; color:white; border:none; padding:12px; border-radius:8px; font-weight:700; cursor:pointer;">Approve
-                    Application</button>
-                <button id="rejectBtn"
-                    style="flex:1; background:#ef4444; color:white; border:none; padding:12px; border-radius:8px; font-weight:700; cursor:pointer;">Reject
-                    Application</button>
-                <button id="closeDetailModal"
-                    style="padding:12px 20px; border:1.5px solid var(--border-color); border-radius:8px; font-weight:600; cursor:pointer;">Close</button>
+            <div class="modal-footer-actions" id="modalActions">
+                <button id="shortlistBtn" class="btn-shortlist">⭐ Shortlist</button>
+                <button id="selectBtn" class="btn-select">✓ Select</button>
+                <button id="rejectBtn" class="btn-reject">✕ Reject</button>
+                <button id="closeAppBtn" class="btn-cancel">Close</button>
             </div>
         </div>
     </div>
-
-    <footer class="main-footer">
-        <div class="footer-container">
-            <p class="copyright">© 2026 OriginX Business Dashboard. All rights reserved.</p>
-            <div class="footer-links">
-                <a href="#">Help Center</a>
-                <a href="#">Privacy Policy</a>
-                <a href="#">Terms of Service</a>
-            </div>
-        </div>
-    </footer>
 
     <script src="../js/config.js"></script>
     <script src="../js/company_applications.js"></script>

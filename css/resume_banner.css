@@ -25,7 +25,7 @@
     left: -10%;
     width: 300px;
     height: 300px;
-    background: radial-gradient(circle, rgba(255, 20, 147, 0.05) 0%, transparent 70%);
+    background: radial-gradient(circle, rgba(0, 97, 255, 0.05) 0%, transparent 70%);
     z-index: 0;
 }
 
@@ -88,7 +88,7 @@
 }
 
 .btn-create-resume {
-    background: #2563eb;
+    background: #4318ff;
     color: white;
     padding: 0.75rem 1.75rem;
     border-radius: 8px;
@@ -104,9 +104,9 @@
 }
 
 .btn-create-resume:hover {
-    background: #1d4ed8;
+    background: #ff9d00;
     transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(37, 99, 235, 0.6);
+    box-shadow: 0 6px 20px rgba(255, 157, 0, 0.4);
 }
 
 .btn-create-resume:active {

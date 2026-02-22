@@ -57,10 +57,8 @@ async function registerCompany(event) {
         });
 
         if (response.ok) {
-            const user = await response.json();
-            localStorage.setItem("user", JSON.stringify(user));
-            alert("Company Registered Successfully!");
-            window.location.href = "company_dashboard.html";
+            alert("Company Registered Successfully! Please Login.");
+            window.location.href = "user_login.html";
         } else {
             const error = await response.json();
             alert("Registration Failed: " + (error.detail || "Error occurred"));
@@ -100,7 +98,8 @@ async function loginUser(event, requiredRole) {
         console.log("Response received:", response.status);
 
         if (response.ok) {
-            const user = await response.json();
+            const data = await response.json();
+            const user = data.user || data; // Handle both old and new formats for safety
             console.log("Login success, user role:", user.role);
 
             if (requiredRole && user.role !== requiredRole) {
@@ -110,6 +109,9 @@ async function loginUser(event, requiredRole) {
             }
 
             localStorage.setItem("user", JSON.stringify(user));
+            if (data.access_token) {
+                localStorage.setItem("access_token", data.access_token);
+            }
             alert("Login Successful!");
             window.location.href = user.role === "employer" ? "company_dashboard.html" : "dashboard.html";
         } else {

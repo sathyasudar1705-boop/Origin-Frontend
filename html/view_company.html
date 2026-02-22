@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Company | OriginX</title>
+    <link rel="stylesheet" href="../index.css">
+    <link rel="stylesheet" href="../css/dashboard.css">
+    <link rel="stylesheet" href="../css/companies.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        .company-profile-header {
+            background: var(--bg-white);
+            border-radius: var(--radius-xl);
+            padding: 40px;
+            box-shadow: var(--shadow-card);
+            margin-bottom: 24px;
+            display: flex;
+            align-items: center;
+            gap: 32px;
+        }
+
+        .company-profile-logo {
+            width: 120px;
+            height: 120px;
+            border-radius: 24px;
+            background: var(--primary-light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 48px;
+            font-weight: 800;
+            color: var(--primary);
+            overflow: hidden;
+            box-shadow: var(--shadow-main);
+            flex-shrink: 0;
+        }
+
+        .company-profile-logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .company-profile-info h1 {
+            font-size: 32px;
+            font-weight: 800;
+            color: var(--text-main);
+            margin-bottom: 8px;
+        }
+
+        .company-meta-tags {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-top: 12px;
+        }
+
+        .meta-tag {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 14px;
+            background: var(--bg-main);
+            border-radius: 50px;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-secondary);
+        }
+
+        .meta-tag svg {
+            width: 16px;
+            height: 16px;
+        }
+
+        .profile-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 24px;
+        }
+
+        .about-section {
+            background: var(--bg-white);
+            border-radius: var(--radius-xl);
+            padding: 32px;
+            box-shadow: var(--shadow-card);
+        }
+
+        .about-section h2 {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--text-main);
+            margin-bottom: 20px;
+        }
+
+        .about-content {
+            font-size: 15px;
+            color: var(--text-secondary);
+            line-height: 1.8;
+            white-space: pre-line;
+        }
+
+        .jobs-section {
+            margin-top: 32px;
+        }
+
+        .jobs-section h2 {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--text-main);
+            margin-bottom: 20px;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .company-profile-header {
+                flex-direction: column;
+                text-align: center;
+                padding: 30px 20px;
+            }
+
+            .profile-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .company-meta-tags {
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="app-wrapper">
+        <aside class="sidebar">
+            <a href="dashboard.html" class="sidebar-logo">Origin<span>X</span></a>
+            <nav class="nav-menu">
+                <p class="nav-label">General</p>
+                <a href="dashboard.html" class="nav-item">Dashboard</a>
+                <a href="jobs.html" class="nav-item">Search Jobs</a>
+                <a href="companies.html" class="nav-item active">Companies</a>
+                <a href="part_time_jobs.html" class="nav-item">Part Time</a>
+            </nav>
+        </aside>
+
+        <main class="main-area">
+            <div class="main-container">
+                <header class="top-bar">
+                    <div class="header-info">
+                        <p id="bread-crumb">Companies / Details</p>
+                        <h1 id="page-title">Company Profile</h1>
+                    </div>
+                    <div class="user-actions">
+                        <a href="profile.html">
+                            <img src="" alt="Profile" class="user-avatar" id="topNavProfilePic">
+                        </a>
+                    </div>
+                </header>
+
+                <div id="companyLoading" style="text-align: center; padding: 100px;">
+                    <p>Loading company information...</p>
+                </div>
+
+                <div id="companyContent" style="display: none;">
+                    <div class="company-profile-header">
+                        <div class="company-profile-logo" id="compLogo">?</div>
+                        <div class="company-profile-info">
+                            <h1 id="compName">Company Name</h1>
+                            <div class="company-meta-tags">
+                                <div class="meta-tag" id="tagIndustry">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                        stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                                    </svg>
+                                    <span>Industry</span>
+                                </div>
+                                <div class="meta-tag" id="tagLocation">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                        stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                                    </svg>
+                                    <span>Location</span>
+                                </div>
+                                <a href="#" class="meta-tag" id="tagWebsite" target="_blank">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                        stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                                    </svg>
+                                    <span>Website</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="profile-grid">
+                        <div class="about-section">
+                            <h2>About Company</h2>
+                            <div class="about-content" id="compDesc">
+                                Information about the company will appear here.
+                            </div>
+
+                            <div class="jobs-section">
+                                <h2>Open Positions</h2>
+                                <div id="companyJobsList" class="jobs-list">
+                                    <!-- Jobs will be loaded here -->
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="contact-card section-container" style="height: fit-content;">
+                            <h3 style="margin-bottom: 16px; font-size: 16px;">Contact Information</h3>
+                            <div style="display: flex; flex-direction: column; gap: 12px;">
+                                <div>
+                                    <p
+                                        style="font-size: 12px; font-weight: 700; color: var(--text-secondary); text-transform: uppercase;">
+                                        Email</p>
+                                    <p id="compEmail" style="font-weight: 600;">contact@company.com</p>
+                                </div>
+                                <div>
+                                    <p
+                                        style="font-size: 12px; font-weight: 700; color: var(--text-secondary); text-transform: uppercase;">
+                                        Phone</p>
+                                    <p id="compPhone" style="font-weight: 600;">Not provided</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div> <!-- End main-container -->
+        </main>
+    </div>
+
+    <script src="../js/config.js"></script>
+    <script src="../js/nav-profile.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", async () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const companyId = urlParams.get('id');
+
+            if (!companyId) {
+                alert("Company ID missing");
+                window.location.href = "companies.html";
+                return;
+            }
+
+            try {
+                const res = await fetch(`${API_BASE_URL}/companies/${companyId}`);
+                if (!res.ok) throw new Error("Failed to fetch company");
+
+                const company = await res.json();
+                renderCompany(company);
+                loadCompanyJobs(companyId);
+            } catch (err) {
+                console.error(err);
+                document.getElementById("companyLoading").innerHTML = `<p style="color:red">Error loading company details.</p>`;
+            }
+        });
+
+        function renderCompany(company) {
+            document.getElementById("companyLoading").style.display = "none";
+            document.getElementById("companyContent").style.display = "block";
+
+            document.getElementById("compName").textContent = company.company_name;
+            document.title = `${company.company_name} | OriginX`;
+
+            const initials = company.company_name.charAt(0).toUpperCase();
+            const logoUrl = company.logo_url || company.logo;
+            const logoEl = document.getElementById("compLogo");
+
+            if (logoUrl) {
+                const finalUrl = logoUrl.startsWith('http') ? logoUrl : `${API_BASE_URL}${logoUrl}`;
+                logoEl.innerHTML = `<img src="${finalUrl}" alt="${company.company_name}" onerror="this.parentElement.innerHTML='${initials}'">`;
+            } else {
+                logoEl.textContent = initials;
+            }
+
+            document.getElementById("tagIndustry").querySelector("span").textContent = company.industry || "Not specified";
+            document.getElementById("tagLocation").querySelector("span").textContent = company.location || "Remote / Global";
+
+            const websiteEl = document.getElementById("tagWebsite");
+            if (company.website) {
+                websiteEl.href = company.website.startsWith('http') ? company.website : `https://${company.website}`;
+                websiteEl.querySelector("span").textContent = company.website.replace(/^https?:\/\//, '');
+            } else {
+                websiteEl.style.display = "none";
+            }
+
+            document.getElementById("compDesc").textContent = company.description || "No description provided.";
+            document.getElementById("compEmail").textContent = company.email;
+            document.getElementById("compPhone").textContent = company.phone || "Not provided";
+        }
+
+        async function loadCompanyJobs(companyId) {
+            const container = document.getElementById("companyJobsList");
+            try {
+                const res = await fetch(`${API_BASE_URL}/jobs`);
+                if (res.ok) {
+                    const allJobs = await res.json();
+                    const companyJobs = allJobs.filter(j => j.company_id == companyId);
+
+                    if (companyJobs.length === 0) {
+                        container.innerHTML = `<p style="color: var(--text-secondary); font-size: 14px;">No active openings at the moment.</p>`;
+                        return;
+                    }
+
+                    container.innerHTML = companyJobs.map(job => `
+                        <div class="job-card-minimal" style="background: var(--bg-main); padding: 18px; border-radius: 12px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; border: 1px solid transparent; transition: all 0.2s;">
+                            <div>
+                                <h4 style="font-size: 16px; font-weight: 700; color: var(--text-main); margin-bottom: 4px;">${job.title}</h4>
+                                <p style="font-size: 13px; color: var(--text-secondary);">${job.location} • ${job.salary || 'Competitive'}</p>
+                            </div>
+                            <a href="jobs.html?job_id=${job.id}" class="btn-post-job" style="padding: 8px 18px; font-size: 12px; text-decoration: none;">View Role</a>
+                        </div>
+                    `).join('');
+                }
+            } catch (err) {
+                container.innerHTML = `<p style="color: red;">Could not load open positions.</p>`;
+            }
+        }
+    </script>
+</body>
+
+</html>

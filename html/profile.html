@@ -4,176 +4,292 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Profile | OriginX</title>
+    <title>Profile Settings | OriginX</title>
+    <link rel="stylesheet" href="../css/dashboard.css">
     <link rel="stylesheet" href="../css/profile.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 </head>
 
 <body>
 
-    <header class="navbar">
-        <a href="dashboard.html" class="logo">
-            Origin<span>X</span>
-        </a>
+    <div class="app-wrapper">
+        <aside class="sidebar">
+            <a href="dashboard.html" class="sidebar-logo">Origin<span>X</span></a>
 
-        <nav class="nav-links">
-            <a href="dashboard.html">Dashboard</a>
-            <a href="jobs.html">Search Jobs</a>
-            <a href="part_time_jobs.html">Part Time</a>
-            <a href="saved_jobs.html">Saved</a>
-        </nav>
-
-        <div class="user-profile">
-            <a href="profile.html" class="profile">Profile</a>
-            <a href="../index.html" class="logout-btn">Logout</a>
-        </div>
-    </header>
-
-    <main class="profile-container">
-        <div class="left-col">
-            <div class="profile-card">
-                <div class="card-header" style="display: flex; justify-content: space-between; align-items: center;">
-                    <div style="display: flex; align-items: center; gap: 20px;">
-                        <div class="profile-pic-container">
-                            <img src="https://ui-avatars.com/api/?name=User&background=eff6ff&color=2563eb"
-                                alt="Profile Picture" id="profilePic">
-                            <label for="profilePicInput" class="upload-overlay">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
-                                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                    stroke-linejoin="round">
-                                    <path
-                                        d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z">
-                                    </path>
-                                    <circle cx="12" cy="13" r="4"></circle>
-                                </svg>
-                            </label>
-                            <input type="file" id="profilePicInput" accept="image/*" style="display: none;">
-                        </div>
-                        <div>
-                            <h2 style="font-size: 1.25rem; font-weight: 700;">Professional Summary</h2>
-                            <p id="profileStatus" style="font-size: 0.8125rem; color: var(--text-secondary);">Manage
-                                your OriginX identity</p>
-                        </div>
-                    </div>
-                    <button type="button" id="editToggleBtn" class="edit-btn-pro">Edit Profile</button>
-                </div>
-
-                <form id="profileForm" class="view-mode">
-                    <div class="section-card">
-                        <h3>
-                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
-                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                stroke-linejoin="round">
-                                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-                                <circle cx="12" cy="7" r="4"></circle>
-                            </svg>
-                            Personal Information
-                        </h3>
-                        <div class="input-grid-pro">
-                            <div class="input-group-pro">
-                                <label>Full Name</label>
-                                <input type="text" id="profileFullName" placeholder="Full Name" required readonly>
-                            </div>
-                            <div class="input-group-pro">
-                                <label>Email Address</label>
-                                <input type="email" id="profileEmail" placeholder="Email Address" required readonly>
-                            </div>
-                            <div class="input-group-pro">
-                                <label>Phone Number</label>
-                                <input type="text" id="profilePhone" placeholder="Not provided" readonly>
-                            </div>
-                            <div class="input-group-pro">
-                                <label>Location</label>
-                                <input type="text" id="profileLocation" placeholder="Not provided" readonly>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="section-card">
-                        <h3>
-                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
-                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                stroke-linejoin="round">
-                                <rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect>
-                                <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path>
-                            </svg>
-                            Career Details
-                        </h3>
-                        <div class="input-grid-pro">
-                            <div class="input-group-pro">
-                                <label>Current Role / Expertise</label>
-                                <input type="text" id="profileDesiredJob" placeholder="e.g. Software Engineer" readonly>
-                            </div>
-                            <div class="input-group-pro">
-                                <label>Experience (Years)</label>
-                                <input type="text" id="profileExperience" placeholder="e.g. 3 years" readonly>
-                            </div>
-                        </div>
-                        <div class="input-group-pro" style="margin-top: 1.5rem;">
-                            <label>Technical Skills</label>
-                            <textarea id="profileSkills" rows="3" placeholder="React, Node.js, Python..."
-                                readonly></textarea>
-                        </div>
-                    </div>
-
-                    <div class="form-actions-pro">
-                        <button type="submit" class="save-btn-pro">Save Changes</button>
-                        <button type="button" id="cancelEditBtn" class="cancel-btn-pro">Discard</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-
-        <aside class="right-col">
-            <div class="sidebar-card">
-                <h4>
-                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
-                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
-                        <polyline points="22 4 12 14.01 9 11.01"></polyline>
+            <nav class="nav-menu">
+                <p class="nav-label">General</p>
+                <a href="dashboard.html" class="nav-item">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
                     </svg>
-                    Profile Strength
-                </h4>
-                <div class="progress-bar-container">
-                    <div class="progress-bar" style="width: 75%;"></div>
-                </div>
-                <p style="font-size: 0.8125rem; color: var(--text-secondary); margin-top: 1rem;">
-                    75% complete. Add your current location to reach All-Star status.
-                </p>
-            </div>
-
-            <div class="sidebar-card">
-                <h4>
-                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
-                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <circle cx="12" cy="12" r="10"></circle>
-                        <line x1="12" y1="16" x2="12" y2="12"></line>
-                        <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                    Dashboard
+                </a>
+                <a href="jobs.html" class="nav-item">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                     </svg>
-                    Quick Tips
-                </h4>
-                <ul>
-                    <li>✅ Professional photos get 14x more clicks.</li>
-                    <li>✅ Specific location helps local recruiters find you.</li>
-                    <li>✅ Highlighted skills appear in recommended job matches.</li>
-                </ul>
+                    Search Jobs
+                </a>
+                <a href="companies.html" class="nav-item">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                    </svg>
+                    Companies
+                </a>
+                <a href="part_time_jobs.html" class="nav-item">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                    Part Time
+                </a>
+                <a href="saved_jobs.html" class="nav-item">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z" />
+                    </svg>
+                    Saved Jobs
+                </a>
+                <a href="my_applications.html" class="nav-item">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+                    </svg>
+                    My Applications
+                </a>
+
+                <p class="nav-label" style="margin-top: 30px;">Tools</p>
+                <a href="resume_form.html" class="nav-item">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                    </svg>
+                    Resume Builder
+                </a>
+                <a href="profile.html" class="nav-item active">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                    </svg>
+                    Profile Settings
+                </a>
+            </nav>
+
+            <div class="sidebar-footer">
+                <a href="../index.html" class="nav-item logout-link" style="color: #ff4d4f;">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                    </svg>
+                    Log out
+                </a>
             </div>
         </aside>
-    </main>
 
-    <footer class="main-footer">
-        <div class="footer-container">
-            <p class="copyright">© 2026 OriginX Hub. All rights reserved.</p>
-            <div class="footer-links">
-                <a href="#">Help Center</a>
-                <a href="#">Privacy Policy</a>
-                <a href="#">Terms of Service</a>
+        <main class="main-area">
+            <div class="main-container">
+                <header class="top-bar">
+                    <div class="user-actions-mobile">
+                        <button class="menu-toggle" onclick="toggleSidebar()">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"
+                                viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M4 6h16M4 12h16m-7 6h7" />
+                            </svg>
+                        </button>
+                        <a href="dashboard.html" class="mobile-logo-dash">Origin<span>X</span></a>
+                    </div>
+                    <div class="header-info">
+                        <p>Personal Space</p>
+                        <h1>Security & Identity</h1>
+                    </div>
+
+                    <div class="user-actions">
+                        <button type="button" id="editToggleBtn" class="edit-btn-pro">Edit Profile</button>
+                        <a href="profile.html">
+                            <img src="https://ui-avatars.com/api/?name=User&background=4318ff&color=fff" alt="Profile"
+                                class="user-avatar" id="topNavProfilePic">
+                        </a>
+                    </div>
+                </header>
+
+                <div class="profile-content-grid">
+                    <div class="left-col">
+                        <div class="profile-card">
+                            <div class="profile-header-meta">
+                                <div style="display: flex; align-items: center; gap: 24px;">
+                                    <div class="profile-pic-container">
+                                        <img src="https://ui-avatars.com/api/?name=User&background=f4f7fe&color=4318ff"
+                                            alt="Profile" id="profilePic">
+                                        <label for="profilePicInput" class="upload-overlay">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18"
+                                                viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                <path
+                                                    d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z">
+                                                </path>
+                                                <circle cx="12" cy="13" r="4"></circle>
+                                            </svg>
+                                        </label>
+                                        <input type="file" id="profilePicInput" accept="image/*" style="display: none;">
+                                    </div>
+                                    <div class="header-text-container">
+                                        <h2
+                                            style="font-size: 22px; font-weight: 800; color: var(--text-main); margin-bottom: 4px;">
+                                            Public Overview</h2>
+                                        <p id="profileStatus"
+                                            style="font-size: 14px; color: var(--text-secondary); font-weight: 500;">
+                                            Manage
+                                            your OriginX identity and expertise</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <form id="profileForm" class="view-mode">
+                                <div class="section-card">
+                                    <h3>
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                                            <circle cx="12" cy="7" r="4"></circle>
+                                        </svg>
+                                        Basic Information
+                                    </h3>
+                                    <div class="input-grid-pro">
+                                        <div class="input-group-pro">
+                                            <label>Full Name</label>
+                                            <input type="text" id="profileFullName" placeholder="Full Name" required
+                                                readonly>
+                                        </div>
+                                        <div class="input-group-pro">
+                                            <label>Official Email</label>
+                                            <input type="email" id="profileEmail" placeholder="Email Address" required
+                                                readonly>
+                                        </div>
+                                        <div class="input-group-pro">
+                                            <label>Contact Number</label>
+                                            <input type="tel" id="profilePhone" placeholder="e.g. 9876543210"
+                                                pattern="\d{10}" title="Please enter a 10-digit phone number"
+                                                maxlength="10" readonly>
+                                        </div>
+                                        <div class="input-group-pro">
+                                            <label>Work Location</label>
+                                            <input type="text" id="profileLocation" placeholder="Not provided" readonly>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="section-card">
+                                    <h3>
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                                            <rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect>
+                                            <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path>
+                                        </svg>
+                                        Professional Profile
+                                    </h3>
+                                    <div class="input-grid-pro">
+                                        <div class="input-group-pro">
+                                            <label>Desired Job Role</label>
+                                            <input type="text" id="profileDesiredJob"
+                                                placeholder="e.g. Senior Backend Dev" readonly>
+                                        </div>
+                                        <div class="input-group-pro">
+                                            <label>Total Experience</label>
+                                            <input type="text" id="profileExperience" placeholder="e.g. 5 Years"
+                                                readonly>
+                                        </div>
+                                    </div>
+                                    <div class="input-group-pro" style="margin-top: 24px;">
+                                        <label>Expertise & Skills</label>
+                                        <textarea id="profileSkills" rows="4"
+                                            placeholder="React, Kubernetes, Strategy..." readonly></textarea>
+                                    </div>
+                                </div>
+
+                                <div class="form-actions-pro">
+                                    <button type="submit" class="save-btn-pro">Synchronize Changes</button>
+                                    <button type="button" id="cancelEditBtn" class="cancel-btn-pro">Discard
+                                        Updates</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+                    <aside class="right-col">
+                        <div class="sidebar-card">
+                            <h4>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
+                                    fill="none" stroke="currentColor" stroke-width="2.5">
+                                    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                                    <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                                </svg>
+                                Account Visibility
+                            </h4>
+                            <div class="progress-bar-container">
+                                <div class="progress-bar" style="width: 85%;"></div>
+                            </div>
+                            <p style="font-size: 13px; color: var(--text-secondary); line-height: 1.5;">Your profile is
+                                <strong>85% complete</strong>. Reaching 100% increases visibility to recruiters by 4x.
+                            </p>
+                        </div>
+
+                        <div class="sidebar-card">
+                            <button type="button" id="deleteAccountBtn" class="btn-delete-account red-theme">Delete
+                                Account</button>
+                        </div>
+
+                        <div class="sidebar-card">
+                            <h4>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
+                                    fill="none" stroke="currentColor" stroke-width="2.5">
+                                    <circle cx="12" cy="12" r="10"></circle>
+                                    <line x1="12" y1="16" x2="12" y2="12"></line>
+                                    <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                                </svg>
+                                Privacy Overview
+                            </h4>
+                            <ul>
+                                <li>🔒 Your phone number is only visible to approved employers.</li>
+                                <li>💼 Public profile link is currently enabled.</li>
+                                <li>📧 Email notifications for matches are ON.</li>
+                            </ul>
+                        </div>
+                    </aside>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <!-- Account Delete Modal -->
+    <div id="deleteAccountModal" class="modal-overlay" style="display: none;">
+        <div class="modal-content-pro">
+            <div class="modal-header">
+                <h2 style="color: #ff4d4f;">Confirm Account Deletion</h2>
+                <button type="button" class="close-modal-btn">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p style="margin-bottom: 20px; color: var(--text-secondary);">This action is irreversible. All your
+                    data, jobs, and applications will be permanently removed. Please enter your password to confirm.</p>
+                <div class="input-group-pro">
+                    <label>Verify Password</label>
+                    <input type="password" id="deleteConfirmPassword" placeholder="Enter your password">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="cancel-btn-pro" id="cancelDeleteBtn">Cancel</button>
+                <button type="button" class="btn-delete-final" id="confirmDeleteBtn">Permanently Delete</button>
             </div>
         </div>
-    </footer>
+    </div>
 
     <script src="../js/config.js"></script>
+    <script src="../js/upload_handler.js"></script>
     <script src="../js/profile.js"></script>
+    <script src="../js/nav-profile.js"></script>
 </body>
 
 </html>

@@ -1,24 +1,23 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard | OriginX</title>
+    <title>Companies | OriginX</title>
     <link rel="stylesheet" href="../css/dashboard.css">
-    <link rel="stylesheet" href="../css/resume_banner.css">
+    <link rel="stylesheet" href="../css/companies.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 </head>
 
 <body>
-
     <div class="app-wrapper">
         <aside class="sidebar">
             <a href="dashboard.html" class="sidebar-logo">Origin<span>X</span></a>
 
             <nav class="nav-menu">
                 <p class="nav-label">General</p>
-                <a href="dashboard.html" class="nav-item active">
+                <a href="dashboard.html" class="nav-item">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
@@ -32,7 +31,7 @@
                     </svg>
                     Search Jobs
                 </a>
-                <a href="companies.html" class="nav-item">
+                <a href="companies.html" class="nav-item active">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
@@ -86,26 +85,38 @@
                     </svg>
                     Log out
                 </a>
+
+                <!-- Sidebar Profile Summary -->
+                <div class="sidebar-profile-card" id="sidebarProfileCard" style="display: none;">
+                    <img src="https://ui-avatars.com/api/?name=User&background=4318ff&color=fff" alt="User"
+                        id="sidebarUserPic">
+                    <div class="profile-info">
+                        <h4 id="sidebarUserName">User Name</h4>
+                        <p id="sidebarUserEmail">user@example.com</p>
+                        <a href="profile.html">View Profile</a>
+                    </div>
+                </div>
             </div>
         </aside>
 
         <main class="main-area">
             <div class="main-container">
-                <div class="user-actions-mobile">
-                    <button class="menu-toggle" onclick="toggleSidebar()">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24"
-                            stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M4 6h16M4 12h16m-7 6h7" />
-                        </svg>
-                    </button>
-                    <a href="dashboard.html" class="mobile-logo-dash">Origin<span>X</span></a>
-                </div>
                 <header class="top-bar">
+                    <div class="user-actions-mobile">
+                        <button class="menu-toggle" onclick="toggleSidebar()">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"
+                                viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M4 6h16M4 12h16m-7 6h7" />
+                            </svg>
+                        </button>
+                        <a href="dashboard.html" class="mobile-logo-dash">Origin<span>X</span></a>
+                    </div>
                     <div class="header-info">
-                        <p style="color: var(--text-secondary); font-size: 14px; font-weight: 500;">Job Seeker Dashboard
+                        <p style="color: var(--text-secondary); font-size: 14px; font-weight: 500;">Network & Ecosystem
                         </p>
-                        <h1 id="welcomeMsg" style="font-size: 34px; font-weight: 700; margin-top: 4px;">Welcome back!
+                        <h1 id="welcomeUser" style="font-size: 34px; font-weight: 700; margin-top: 4px;">Discover
+                            Companies
                         </h1>
                     </div>
 
@@ -116,7 +127,7 @@
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                     d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                             </svg>
-                            <input type="text" placeholder="Search for jobs, companies...">
+                            <input type="text" id="companySearch" placeholder="Search by name, industry...">
                         </div>
                         <button class="icon-btn">
                             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none"
@@ -132,95 +143,30 @@
                     </div>
                 </header>
 
-                <section class="stats-row">
-                    <div class="stat-card">
-                        <div class="stat-icon purple">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
-                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                stroke-linejoin="round">
-                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-                                <polyline points="14 2 14 8 20 8"></polyline>
-                                <line x1="16" y1="13" x2="8" y2="13"></line>
-                                <line x1="16" y1="17" x2="8" y2="17"></line>
-                                <polyline points="10 9 9 9 8 9"></polyline>
-                            </svg>
-                        </div>
-                        <div class="stat-info">
-                            <h3 id="statApps">0</h3>
-                            <p>Total Apps</p>
-                        </div>
+                <div class="content-body">
+                    <div id="companiesGrid" class="companies-grid">
+                        <!-- Companies will be loaded here -->
+                        <p style="color: var(--text-secondary);">Loading top companies...</p>
                     </div>
-
-                    <div class="stat-card">
-                        <div class="stat-icon green">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
-                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                stroke-linejoin="round">
-                                <polyline points="20 6 9 17 4 12"></polyline>
-                            </svg>
-                        </div>
-                        <div class="stat-info">
-                            <h3 id="statSelected">0</h3>
-                            <p>Selected</p>
-                        </div>
-                    </div>
-
-                    <div class="stat-card">
-                        <div class="stat-icon orange">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
-                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                stroke-linejoin="round">
-                                <circle cx="12" cy="12" r="10"></circle>
-                                <polyline points="12 6 12 12 16 14"></polyline>
-                            </svg>
-                        </div>
-                        <div class="stat-info">
-                            <h3 id="statRejected">0</h3>
-                            <p>On Hold</p>
-                        </div>
-                    </div>
-                </section>
-
-                <div class="main-content-grid">
-                    <div class="content-left">
-                        <section class="section-container">
-                            <div class="section-header">
-                                <h2>Recommended for you</h2>
-                                <a href="jobs.html" class="view-all">See all</a>
-                            </div>
-                            <div id="recommendedJobsContainer" class="jobs-grid">
-                                <p style="color:var(--text-secondary); font-size: 0.9rem;">Tailoring jobs for your
-                                    profile...</p>
-                            </div>
-                        </section>
-                    </div>
-
-                    <aside class="content-right">
-                        <section class="section-container">
-                            <div class="section-header">
-                                <h2>My Applications</h2>
-                            </div>
-                            <div id="recentApplicationsList">
-                                <p style="color:var(--text-secondary); font-size: 0.9rem;">Loading history...</p>
-                            </div>
-                        </section>
-
-                        <section class="section-container">
-                            <div class="section-header">
-                                <h2>📰 Daily News</h2>
-                                <span class="live-indicator">LIVE</span>
-                            </div>
-                            <div id="dailyNewsContainer" class="news-list">
-                                <p style="color:var(--text-secondary); font-size: 0.9rem;">Loading latest news...</p>
-                            </div>
-                        </section>
-                    </aside>
                 </div>
-            </div> <!-- End main-container -->
+            </div>
+
         </main>
     </div>
 
+    <!-- Modal for Company Details -->
+    <div id="companyModal" class="modal">
+        <div class="modal-content-modern">
+            <span class="close-modal">&times;</span>
+            <div id="modalBody">
+                <!-- Company details will be loaded here -->
+            </div>
+        </div>
+    </div>
+
     <script src="../js/config.js"></script>
-    <script src="../js/dashboard.js"></script>
+    <script src="../js/companies.js"></script>
     <script src="../js/nav-profile.js"></script>
 </body>
+
+</html>

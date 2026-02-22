@@ -1,0 +1,332 @@
+/* ===========================
+   COMPANY APPLICATIONS PAGE
+   Extends company_dashboard.css
+=========================== */
+
+/* Filter Wrap in header */
+.filter-wrap {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: var(--bg-white);
+    padding: 10px 18px;
+    border-radius: 50px;
+    border: 1.5px solid var(--border-color);
+    color: var(--text-secondary);
+    box-shadow: var(--shadow-card);
+}
+
+.filter-wrap select {
+    border: none;
+    outline: none;
+    background: transparent;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-main);
+    cursor: pointer;
+    font-family: inherit;
+}
+
+/* ===========================
+   APPLICATIONS LIST CONTAINER
+=========================== */
+.apps-list-container {
+    background: var(--bg-white);
+    border-radius: var(--radius-xl);
+    box-shadow: var(--shadow-card);
+    overflow: hidden;
+}
+
+.apps-loading {
+    padding: 60px;
+    text-align: center;
+    color: var(--text-secondary);
+    font-size: 14px;
+}
+
+/* ===========================
+   CANDIDATE ROW CARD
+=========================== */
+.app-row-card {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding: 20px 28px;
+    border-bottom: 1px solid var(--border-color);
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.app-row-card:last-child {
+    border-bottom: none;
+}
+
+.app-row-card:hover {
+    background: #f8faff;
+}
+
+.app-row-card:hover .app-candidate-name {
+    color: var(--primary);
+}
+
+/* Avatar */
+.app-avatar {
+    width: 50px;
+    height: 50px;
+    min-width: 50px;
+    border-radius: 14px;
+    background: linear-gradient(135deg, var(--primary), #7b5cff);
+    color: white;
+    font-size: 18px;
+    font-weight: 800;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.app-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* Candidate Info (center, grows) */
+.app-candidate-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.app-candidate-name {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--text-main);
+    margin-bottom: 4px;
+    transition: var(--transition);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.app-candidate-sub {
+    font-size: 13px;
+    color: var(--text-secondary);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Individual column cells — must match header widths exactly */
+.app-col-role {
+    width: 180px;
+    min-width: 180px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-main);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    flex-shrink: 0;
+}
+
+.app-col-exp {
+    width: 100px;
+    min-width: 100px;
+    font-size: 13px;
+    color: var(--text-secondary);
+    font-weight: 500;
+    flex-shrink: 0;
+}
+
+.app-col-date {
+    width: 110px;
+    min-width: 110px;
+    font-size: 13px;
+    color: var(--text-secondary);
+    font-weight: 500;
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+.app-col-status {
+    width: 100px;
+    min-width: 100px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+}
+
+/* Arrow chevron */
+.app-chevron {
+    color: var(--text-secondary);
+    flex-shrink: 0;
+    transition: var(--transition);
+}
+
+.app-row-card:hover .app-chevron {
+    color: var(--primary);
+    transform: translateX(3px);
+}
+
+/* Empty State */
+.apps-empty-state {
+    padding: 80px 40px;
+    text-align: center;
+    color: var(--text-secondary);
+}
+
+.apps-empty-state p {
+    font-size: 15px;
+    font-weight: 500;
+    line-height: 1.8;
+}
+
+/* ===========================
+   TABLE HEADER (sticky)
+=========================== */
+.apps-table-header {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding: 14px 28px;
+    background: var(--bg-main);
+    border-bottom: 1px solid var(--border-color);
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+}
+
+/* Spacer for avatar column in header */
+.apps-th-avatar {
+    width: 50px;
+    min-width: 50px;
+    flex-shrink: 0;
+}
+
+.apps-th-name {
+    flex: 1;
+}
+
+.apps-th-role {
+    width: 180px;
+}
+
+.apps-th-exp {
+    width: 100px;
+}
+
+.apps-th-date {
+    width: 110px;
+}
+
+.apps-th-status {
+    width: 100px;
+}
+
+.apps-th-action {
+    width: 30px;
+}
+
+/* ===========================
+   STATUS BADGE THEME COLORS
+=========================== */
+.status-applied {
+    background: #e6f0ff;
+    color: #4318ff;
+}
+
+.status-shortlisted {
+    background: #fff8e6;
+    color: #e6a800;
+}
+
+.status-selected {
+    background: #e6f7ed;
+    color: #01b574;
+}
+
+.status-cancelled {
+    background: #f4f7fe;
+    color: #a3aed0;
+}
+
+/* ===========================
+   ACTION BUTTONS IN MODAL
+=========================== */
+.btn-shortlist,
+.btn-select,
+.btn-reject,
+.btn-approve,
+.btn-cancel {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 24px;
+    border-radius: 12px;
+    font-size: 14px;
+    font-weight: 700;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-family: inherit;
+}
+
+.btn-shortlist {
+    background: #fff8e6;
+    color: #e6a800;
+}
+
+.btn-shortlist:hover {
+    background: #e6a800;
+    color: white;
+}
+
+.btn-select {
+    background: #e6f7ed;
+    color: #01b574;
+}
+
+.btn-select:hover {
+    background: #01b574;
+    color: white;
+}
+
+.btn-reject {
+    background: #fff5f5;
+    color: #ff4d4f;
+}
+
+.btn-reject:hover {
+    background: #ff4d4f;
+    color: white;
+}
+
+.btn-cancel {
+    background: #f4f7fe;
+    color: #a3aed0;
+}
+
+.btn-cancel:hover {
+    background: #e0e5f2;
+    color: #1b2559;
+}
+
+@media (max-width: 768px) {
+
+    .app-col-role,
+    .app-col-exp,
+    .app-col-date,
+    .app-col-status {
+        display: none;
+    }
+
+    .app-row-card {
+        padding: 16px 20px;
+    }
+
+    .apps-table-header {
+        display: none;
+    }
+}

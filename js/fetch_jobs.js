@@ -16,7 +16,11 @@ async function fetchJobs(q = '', location = '') {
     const jobsContainer = document.querySelector(".jobs-container");
     if (!jobsContainer) return;
 
-    jobsContainer.innerHTML = "<p class='loading'>Loading jobs...</p>";
+    jobsContainer.innerHTML = `
+        <div class="loading-state" style="padding: 40px; text-align: center;">
+            <p style="color: var(--text-secondary);">Searching for opportunities...</p>
+        </div>
+    `;
 
     try {
         const user = JSON.parse(localStorage.getItem("user"));
@@ -24,7 +28,6 @@ async function fetchJobs(q = '', location = '') {
             await fetchUserApplications(user.id);
         }
 
-        // Fetch both full-time and part-time
         const ftUrl = new URL(`${API_BASE_URL}/jobs/`);
         const ptUrl = new URL(`${API_BASE_URL}/part_time_jobs/`);
 
@@ -50,41 +53,51 @@ async function fetchJobs(q = '', location = '') {
         }
 
         if (allJobs.length === 0) {
-            jobsContainer.innerHTML = "<p class='no-data'>No results found.</p>";
-            const detailPane = document.querySelector(".job-detail-pane");
-            if (detailPane) {
-                detailPane.innerHTML = `
-                    <div class="empty-detail-state" style="text-align: center; padding: 40px; color: #666;">
-                        <h3>No Job Selected</h3>
-                        <p>Search and select a job from the list to view its details.</p>
-                    </div>
-                `;
-            }
+            jobsContainer.innerHTML = `
+                <div class="no-data" style="padding: 40px; text-align: center;">
+                    <p style="color: var(--text-secondary);">No results found matching your search.</p>
+                </div>
+            `;
+            const placeholder = document.querySelector(".detail-placeholder");
+            const content = document.querySelector(".detail-content");
+            if (placeholder) placeholder.style.display = "flex";
+            if (content) content.style.display = "none";
             return;
         }
 
-        // Sort by ID
         allJobs.sort((a, b) => b.id - a.id);
 
         jobsContainer.innerHTML = "";
         allJobs.forEach(job => {
             const jobCard = document.createElement("div");
             jobCard.classList.add("job-item");
-            const badgeClass = job.type === 'Full-time' ? 'blue' : 'part-time';
-            const companyName = job.company ? job.company.company_name : (job.company_name || 'Unknown Company');
-
+            const companyName = job.company ? job.company.company_name : (job.company_name || 'Enterprise Partner');
+            const logoUrl = job.company ? (job.company.logo_url || job.company.logo) : null;
             const initial = companyName.charAt(0);
+
+            let logoHtml = `<div class="job-item-logo">${initial}</div>`;
+            if (logoUrl) {
+                // Determine if logoUrl is absolute or needs BASE_URL prefix
+                const finalLogoUrl = logoUrl.startsWith('http') ? logoUrl : `${API_BASE_URL}${logoUrl}`;
+                logoHtml = `<div class="job-item-logo">
+                    <img src="${finalLogoUrl}" alt="${companyName}" 
+                         style="width:100%; height:100%; object-fit:cover; border-radius:inherit;"
+                         onerror="this.parentElement.innerHTML='${initial}'">
+                </div>`;
+            }
+
             jobCard.innerHTML = `
-                <div class="job-logo">${initial}</div>
-                <div class="job-content">
-                    <h4>${job.title}</h4>
-                    <p class="company">${companyName}</p>
-                    <p class="location-line">${job.location} (Remote)</p>
-                    <div class="job-item-meta">
-                        <span>${job.type}</span>
-                        <span>•</span>
-                        <span>Actively hiring</span>
+                <div class="job-item-header">
+                    ${logoHtml}
+                    <div class="job-item-title">
+                        <h4>${job.title}</h4>
+                        <p>${companyName}</p>
                     </div>
+                </div>
+
+                <div class="job-item-footer">
+                    <span>${job.location}</span>
+                    <span style="color: var(--primary); font-weight: 700;">${job.salary || 'Competitive'}</span>
                 </div>
             `;
             jobCard.onclick = () => {
@@ -107,72 +120,126 @@ async function fetchJobs(q = '', location = '') {
 }
 
 function displayJobDetails(job) {
-    const detailPane = document.querySelector(".job-detail-pane");
-    if (!detailPane) return;
+    const placeholder = document.querySelector(".detail-placeholder");
+    const content = document.querySelector(".detail-content");
+    if (!content) return;
 
-    const badgeClass = job.type === 'Full-time' ? 'blue' : 'part-time';
-    const companyName = job.company ? job.company.company_name : (job.company_name || 'Unknown Company');
+    if (placeholder) placeholder.style.display = "none";
+    content.style.display = "flex";
+
+    const companyName = job.company ? job.company.company_name : (job.company_name || 'Enterprise Partner');
     const applyUrl = job.type === 'Full-time' ? `apply.html?job_id=${job.id}` : `apply.html?pt_job_id=${job.id}`;
 
-    // Check if applied
-    const isApplied = userApplications.some(app =>
-        (job.type === 'Full-time' && app.job_id === job.id) ||
-        (job.type === 'Part-time' && app.pt_job_id === job.id)
-    );
+    // Update fields
+    document.getElementById("detailTitle").textContent = job.title;
+    document.getElementById("detailCompany").textContent = companyName;
+    document.getElementById("detailBadge").textContent = job.type;
+    document.getElementById("detailLocation").innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" /></svg> ${job.location}`;
+    document.getElementById("detailSalary").innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg> ${job.salary || 'Competitive'}`;
+    document.getElementById("detailPosted").innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg> 1 week ago`;
 
-    const applyBtnText = "Apply for this Job";
-    const applyBtnClass = "apply"; // Keep it neutral blue/primary
+    document.getElementById("detailDesc").textContent = job.description || "No description provided.";
 
-    // Skills mapping
     const skills = job.type === 'Full-time' ? (job.skills_required || "") : (job.skills || "");
-    const skillsHtml = skills.split(',').filter(s => s.trim()).map(s => `<span>${s.trim()}</span>`).join('') || "<span>General</span>";
+    const skillsSection = document.getElementById("detailSkillsSection");
+    if (skillsSection) {
+        if (skills) {
+            skillsSection.style.display = "block";
+            document.getElementById("detailSkills").textContent = skills;
+        } else {
+            skillsSection.style.display = "none";
+        }
+    }
 
-    detailPane.innerHTML = `
-        <div class="detail-header">
-            <h2>${job.title}</h2>
-            <div class="detail-company-line">
-                <a href="#">${companyName}</a> · ${job.location} · 1 week ago
-            </div>
-            
-            <div class="detail-meta">
-                <span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path></svg> ${job.type}</span>
-                <span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg> 10,001+ employees</span>
-                <span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg> Skills: ${skills.split(',')[0]} and more</span>
-            </div>
+    const applyBtn = document.getElementById("applyBtn");
+    const footer = document.querySelector(".detail-footer");
 
-            <div class="action-row">
-                <a href="${applyUrl}" class="apply">Apply Now</a>
-                <button class="btn-secondary" onclick="toggleSaveJob(${job.id}, '${job.type}')" id="saveBtn-${job.id}">
-                    ${isJobSaved(job.id, job.type) ? 'Saved' : 'Save'}
-                </button>
-            </div>
-        </div>
+    if (applyBtn && footer) {
+        applyBtn.href = applyUrl;
 
-        <div class="detail-body">
-            <h3>About the job</h3>
-            <p>${job.description || "No description provided."}</p>
+        // Add Save Button if not exists
+        let saveBtn = document.getElementById("saveBtn");
+        if (!saveBtn) {
+            saveBtn = document.createElement("button");
+            saveBtn.id = "saveBtn";
+            saveBtn.className = "save-btn-large";
+            footer.appendChild(saveBtn);
+        }
 
-            <h3>Required Skills</h3>
-            <div class="skills-tags">
-                ${skillsHtml}
-            </div>
-        </div>
-    `;
+        // Update Save Button State
+        const saved = isJobSaved(job.id, job.type);
+        saveBtn.innerHTML = saved
+            ? `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17 3H7c-1.1 0-2 .9-2 2v16l7-3 7 3V5c0-1.1-.9-2-2-2z"/></svg> Saved`
+            : `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z" /></svg> Save`;
+
+        saveBtn.className = `save-btn-large ${saved ? 'saved' : ''}`;
+        saveBtn.onclick = () => toggleSaveJob(job.id, job.type);
+
+        // Check if applied
+        const isApplied = userApplications.some(app =>
+            (job.type === 'Full-time' && app.job_id === job.id) ||
+            (job.type === 'Part-time' && app.pt_job_id === job.id)
+        );
+
+        if (isApplied) {
+            applyBtn.textContent = "Applied Already";
+            applyBtn.style.pointerEvents = "none";
+            applyBtn.style.opacity = "0.6";
+        } else {
+            applyBtn.textContent = "Apply Now";
+            applyBtn.style.pointerEvents = "auto";
+            applyBtn.style.opacity = "1";
+        }
+    }
+}
+
+function toggleSaveJob(jobId, type) {
+    let saved = JSON.parse(localStorage.getItem("saved_jobs") || "[]");
+    const index = saved.findIndex(j => j.id === jobId && j.type === type);
+
+    if (index > -1) {
+        saved.splice(index, 1);
+    } else {
+        if (currentJob) {
+            saved.push({
+                id: currentJob.id,
+                title: currentJob.title,
+                company_name: currentJob.company ? currentJob.company.company_name : (currentJob.company_name || 'Enterprise Partner'),
+                company_logo: currentJob.company ? (currentJob.company.logo_url || currentJob.company.logo) : null,
+                location: currentJob.location,
+                type: currentJob.type,
+                salary: currentJob.salary
+            });
+        }
+    }
+    localStorage.setItem("saved_jobs", JSON.stringify(saved));
+
+    // Refresh the UI to show updated state
+    if (currentJob && currentJob.id === jobId && currentJob.type === type) {
+        displayJobDetails(currentJob);
+    }
 }
 
 // Add listeners for search inputs
 document.addEventListener("DOMContentLoaded", () => {
-    const searchInput = document.querySelector(".search-main input");
-    const locInput = document.querySelector(".location-input input");
+    const mainSearchInput = document.getElementById("mainSearchInput");
+    const locSearchInput = document.getElementById("locationSearchInput");
 
     const handleSearch = () => {
-        const q = searchInput ? searchInput.value : '';
-        const loc = locInput ? locInput.value : '';
+        const q = mainSearchInput ? mainSearchInput.value : '';
+        const loc = locSearchInput ? locSearchInput.value : '';
         fetchJobs(q, loc);
     };
 
-    if (searchInput) searchInput.addEventListener("input", debounce(handleSearch, 500));
-    if (locInput) locInput.addEventListener("input", debounce(handleSearch, 500));
+    if (mainSearchInput) mainSearchInput.addEventListener("input", debounce(handleSearch, 500));
+    if (locSearchInput) locSearchInput.addEventListener("input", debounce(handleSearch, 500));
+
+    // Handle profile pic from logged user
+    const user = JSON.parse(localStorage.getItem("user"));
+    if (user && user.profile_image) {
+        const topPic = document.getElementById("topNavProfilePic");
+        if (topPic) topPic.src = `${API_BASE_URL}${user.profile_image}`;
+    }
 
     fetchJobs();
 });
@@ -182,36 +249,6 @@ function isJobSaved(jobId, type) {
     return saved.some(j => j.id === jobId && j.type === type);
 }
 
-function toggleSaveJob(jobId, type) {
-    let saved = JSON.parse(localStorage.getItem("saved_jobs") || "[]");
-    const index = saved.findIndex(j => j.id === jobId && j.type === type);
-
-    // Find the job object from the list (this requires allJobs to be accessible or passed)
-    // For simplicity, we'll store a minimal job object or we might need to change how this is called
-    // Let's assume we can re-find it or we store the current job in a global variable
-    if (index > -1) {
-        saved.splice(index, 1);
-        alert("Job removed from saved list.");
-    } else {
-        // We need the full job object. In a real app, we'd fetch it or have it in a global state.
-        // For now, let's use a trick: get it from the last job passed to displayJobDetails
-        const job = currentJob;
-        if (job) {
-            saved.push({
-                id: job.id,
-                title: job.title,
-                company_name: job.company ? job.company.company_name : (job.company_name || 'Enterprise Partner'),
-                location: job.location,
-                type: job.type,
-                salary: job.salary
-            });
-            alert("Job saved successfully!");
-        }
-    }
-    localStorage.setItem("saved_jobs", JSON.stringify(saved));
-    const btn = document.getElementById(`saveBtn-${jobId}`);
-    if (btn) btn.textContent = isJobSaved(jobId, type) ? 'Saved' : 'Save';
-}
 
 let currentJob = null;
 

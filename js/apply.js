@@ -3,6 +3,14 @@ document.addEventListener("DOMContentLoaded", async () => {
     const jobId = urlParams.get('job_id');
     const ptJobId = urlParams.get('pt_job_id');
 
+    const topNavPic = document.getElementById("topNavProfilePic");
+    const user = JSON.parse(localStorage.getItem("user"));
+
+    if (user && user.profile_image) {
+        const picPath = user.profile_image.startsWith('http') ? user.profile_image : `${API_BASE_URL}${user.profile_image}`;
+        if (topNavPic) topNavPic.src = picPath;
+    }
+
     let jobData = null;
     let endpoint = "";
 
@@ -28,7 +36,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     applyForm.addEventListener("submit", async (e) => {
         e.preventDefault();
 
-        const user = JSON.parse(localStorage.getItem("user"));
         if (!user) {
             alert("Please login first.");
             window.location.href = "user_login.html";
@@ -50,6 +57,12 @@ document.addEventListener("DOMContentLoaded", async () => {
             status: "Applied"
         };
 
+        const submitBtn = document.getElementById("submitBtn");
+        if (submitBtn) {
+            submitBtn.disabled = true;
+            submitBtn.textContent = "Processing Submission...";
+        }
+
         try {
             const response = await fetch(`${API_BASE_URL}/applications/`, {
                 method: "POST",
@@ -70,10 +83,18 @@ document.addEventListener("DOMContentLoaded", async () => {
             } else {
                 const err = await response.json();
                 alert("Application failed: " + (err.detail || "Unknown error"));
+                if (submitBtn) {
+                    submitBtn.disabled = false;
+                    submitBtn.textContent = "Submit Application";
+                }
             }
         } catch (err) {
             console.error("Error submitting application:", err);
             alert("Something went wrong!");
+            if (submitBtn) {
+                submitBtn.disabled = false;
+                submitBtn.textContent = "Submit Application";
+            }
         }
     });
 });

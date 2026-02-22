@@ -1,20 +1,72 @@
 document.addEventListener("DOMContentLoaded", async () => {
-    const user = JSON.parse(localStorage.getItem("user"));
-    if (!user) {
-        window.location.href = "user_login.html";
-        return;
+    try {
+        const user = JSON.parse(localStorage.getItem("user"));
+        if (!user) {
+            window.location.href = "user_login.html";
+            return;
+        }
+
+        const welcomeMsg = document.getElementById("welcomeMsg");
+        if (welcomeMsg) welcomeMsg.textContent = `Welcome back, ${user.full_name || 'User'}!`;
+
+
+        // 1. Fetch and Display Jobs (Recommended)
+        await fetchRecommendedJobs();
+
+        // 2. Fetch and Display Applications (Recent & Stats)
+        await fetchUserApplications(user.id);
+
+        // 3. Fetch and Display Daily News
+        await fetchDailyNews();
+    } catch (err) {
+        console.error("Dashboard initialization failed:", err);
     }
-
-    const welcomeMsg = document.getElementById("welcomeMsg");
-    if (welcomeMsg) welcomeMsg.textContent = `Welcome back, ${user.full_name || 'User'}!`;
-
-
-    // 1. Fetch and Display Jobs (Recommended)
-    await fetchRecommendedJobs();
-
-    // 2. Fetch and Display Applications (Recent & Stats)
-    await fetchUserApplications(user.id);
 });
+
+async function fetchDailyNews() {
+    const container = document.getElementById("dailyNewsContainer");
+    try {
+        const response = await fetch(`${API_BASE_URL}/daily-news/`);
+        if (response.ok) {
+            const news = await response.json();
+            if (news.length === 0) {
+                container.innerHTML = "<p style='color:var(--text-secondary); font-size: 0.9rem;'>No news available.</p>";
+                return;
+            }
+
+            container.innerHTML = "";
+            news.forEach(item => {
+                const newsEl = document.createElement("a");
+                newsEl.href = item.url;
+                newsEl.target = "_blank";
+                newsEl.classList.add("news-item");
+                newsEl.innerHTML = `
+                    <h4>${item.title}</h4>
+                    <div class="read-more-link">
+                        Read Article 
+                        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M9 5l7 7-7 7" />
+                        </svg>
+                    </div>
+                    <div class="news-meta">
+                        <span class="news-source">${item.source}</span>
+                        <span>${item.date}</span>
+                    </div>
+                `;
+                container.appendChild(newsEl);
+            });
+
+            // Add attribution
+            const attribution = document.createElement("p");
+            attribution.classList.add("news-attribution");
+            attribution.textContent = "News data provided by NewsAPI.org";
+            container.appendChild(attribution);
+        }
+    } catch (err) {
+        console.error("Error fetching news:", err);
+        container.innerHTML = "<p style='color:var(--text-secondary); font-size: 0.9rem;'>No news available</p>";
+    }
+}
 
 async function generateResume(userId, options = {}) {
     const btn = document.getElementById("createResumeBtn");
@@ -86,7 +138,7 @@ async function fetchRecommendedJobs() {
 
         // Sort by ID descending (newest first)
         allJobs.sort((a, b) => b.id - a.id);
-        const topJobs = allJobs.slice(0, 3);
+        const topJobs = allJobs.slice(0, 4);
 
         if (topJobs.length === 0) {
             container.innerHTML = "<p>No jobs available yet.</p>";
@@ -97,31 +149,56 @@ async function fetchRecommendedJobs() {
         topJobs.forEach(job => {
             const card = document.createElement("div");
             card.classList.add("job-card");
-            const badgeClass = job.type === 'Full-time' ? 'full-time' : 'part-time';
             const companyName = job.company ? job.company.company_name : (job.company_name || 'Unknown Company');
+
+            // Better logo resolution
+            const rawLogo = job.company ? (job.company.logo_url || job.company.logo) : null;
+            let companyLogo = `https://ui-avatars.com/api/?name=${companyName}&background=f4f7fe&color=4318ff`;
+
+            if (rawLogo) {
+                companyLogo = rawLogo.startsWith('http') ? rawLogo : `${API_BASE_URL}${rawLogo}`;
+            }
+
             const applyUrl = job.type === 'Full-time' ? `apply.html?job_id=${job.id}` : `apply.html?pt_job_id=${job.id}`;
 
             card.innerHTML = `
-                <div class="job-details">
-                    <div class="job-title-row">
-                        <h3>${job.title}</h3>
-                        <span class="badge ${badgeClass}">${job.type}</span>
+                <div class="job-card-header">
+                    <div style="display:flex; gap:8px; align-items:center;">
+                        <span class="job-type-badge ${job.type === 'Full-time' ? 'badge-full-time' : 'badge-part-time'}">${job.type}</span>
+                        <span class="new-post-badge">New Post</span>
                     </div>
-                    <p class="company-name">${companyName}</p>
-                    <div class="job-meta">
-                        <span style="display:flex; align-items:center; gap:4px;">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none"
-                                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
-                                <circle cx="12" cy="10" r="3"></circle>
-                            </svg>
-                            ${job.location}
-                        </span>
-                        <span>💰 ${job.salary || 'Competitive'}</span>
+                    <div class="meta-tag rating">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+                        5.0
                     </div>
                 </div>
-                <a href="${applyUrl}" class="apply-btn">Apply Now</a>
+                <div class="job-company-info">
+                    <img src="${companyLogo}" alt="${companyName}" class="job-company-logo" onerror="this.src='https://ui-avatars.com/api/?name=${companyName}&background=f4f7fe&color=4318ff'">
+                    <div class="job-title-wrapper">
+                        <h3>${job.title}</h3>
+                        <p>${companyName}</p>
+                    </div>
+                </div>
+                <div class="job-meta-row">
+                    <div class="meta-tag">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
+                        ${job.location}
+                    </div>
+                    <div class="meta-tag">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                        Fixed
+                    </div>
+                </div>
+                <div class="job-details-text">
+                    ${job.description ? job.description : 'Innovative role at leading company. Competitive benefits and growth opportunities included...'}
+                </div>
+                <div class="job-card-footer">
+                    <div class="job-price">${job.salary || 'Comp.'}</div>
+                    <a href="${applyUrl}" class="apply-btn-main">View Details</a>
+                </div>
             `;
+
+
             container.appendChild(card);
         });
     } catch (err) {
@@ -132,8 +209,6 @@ async function fetchRecommendedJobs() {
 
 async function fetchUserApplications(userId) {
     const statsApps = document.getElementById("statApps");
-    const statsShortlisted = document.getElementById("statShortlisted");
-    const statsInterviews = document.getElementById("statInterviews");
     const recentList = document.getElementById("recentApplicationsList");
 
     try {
@@ -149,8 +224,8 @@ async function fetchUserApplications(userId) {
             if (statsSelected) statsSelected.textContent = apps.filter(a => a.status === 'Approved').length;
             if (statsRejected) statsRejected.textContent = apps.filter(a => a.status === 'Rejected').length;
 
-            // Update Recent Applications (top 3)
-            const recent = apps.slice(-3).reverse();
+            // Update Recent Applications (top 5 for the new sidebar height)
+            const recent = apps.slice(-5).reverse();
             if (recent.length === 0) {
                 recentList.innerHTML = "<p>No recent applications.</p>";
                 return;
@@ -159,41 +234,21 @@ async function fetchUserApplications(userId) {
             recentList.innerHTML = "";
             recent.forEach(app => {
                 const item = document.createElement("div");
-                item.classList.add("app-item");
+                item.classList.add("app-item-modern");
                 item.style.cursor = "pointer";
                 item.onclick = () => window.location.href = `my_applications.html?app_id=${app.id}`;
 
                 item.innerHTML = `
-                    <div class="app-info">
+                    <div class="app-details">
                         <h4>${app.job_title || 'Unknown Job'}</h4>
-                        <p style="font-size:12px; margin:2px 0; display:flex; align-items:center; gap:4px;">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none"
-                                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
-                                <circle cx="12" cy="10" r="3"></circle>
-                            </svg>
-                            ${app.job_location || 'N/A'} • 📅 ${app.created_at || 'Recently'}
-                        </p>
-                        <span class="status-badge ${getStatusClass(app.status)}">${app.status}</span>
+                        <p style="font-size:12px; color:var(--text-secondary);">${app.job_location || 'Remote'}</p>
                     </div>
-                    <span class="app-date">View Details</span>
+                    <span class="badge ${getStatusClass(app.status)}">${app.status}</span>
                 `;
                 recentList.appendChild(item);
             });
         }
     } catch (err) {
         console.error("Error fetching applications:", err);
-    }
-}
-
-function getStatusClass(status) {
-    if (!status) return 'gray';
-    switch (status.toLowerCase()) {
-        case 'applied': return 'gray';
-        case 'shortlisted': return 'green';
-        case 'approved': return 'green';
-        case 'interview': return 'purple';
-        case 'rejected': return 'red';
-        default: return 'orange';
     }
 }

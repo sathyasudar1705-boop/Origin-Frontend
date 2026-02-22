@@ -9,6 +9,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     const editBtn = document.getElementById("editToggleBtn");
     const cancelBtn = document.getElementById("cancelEditBtn");
     const statusMsg = document.getElementById("profileStatus");
+    const topNavPic = document.getElementById("topNavProfilePic");
 
     // Initialize with current user data
     loadUserData(user);
@@ -27,16 +28,43 @@ document.addEventListener("DOMContentLoaded", async () => {
     const picInput = document.getElementById("profilePicInput");
     const profilePic = document.getElementById("profilePic");
 
-    picInput.addEventListener("change", function (event) {
+    picInput.addEventListener("change", async function (event) {
         const file = event.target.files[0];
         if (file) {
+            // Preview
             const reader = new FileReader();
             reader.onload = function (e) {
                 profilePic.src = e.target.result;
-                // Here you would typically upload the file to your backend
-                // uploadProfilePicture(file); 
             };
             reader.readAsDataURL(file);
+
+            // Upload
+            try {
+                if (statusMsg) {
+                    statusMsg.textContent = "Uploading new identity image...";
+                    statusMsg.style.color = "var(--primary)";
+                }
+
+                const imageUrl = await uploadImage(file, "user");
+
+                if (statusMsg) {
+                    statusMsg.textContent = "✅ Identity image synchronized successfully!";
+                    statusMsg.style.color = "#01b574";
+                }
+
+                // Update UI and local storage
+                profilePic.src = imageUrl;
+                if (topNavPic) topNavPic.src = imageUrl;
+                user.profile_image = imageUrl;
+                localStorage.setItem("user", JSON.stringify(user));
+            } catch (err) {
+                console.error("Upload failed:", err);
+                alert("Upload failed: " + err.message);
+                if (statusMsg) {
+                    statusMsg.textContent = "❌ Synchronization failed";
+                    statusMsg.style.color = "#ff4d4f";
+                }
+            }
         }
     });
 
@@ -48,20 +76,24 @@ document.addEventListener("DOMContentLoaded", async () => {
             });
             editBtn.style.display = "none";
             statusMsg.textContent = "Updating your professional details...";
-            statusMsg.style.color = "var(--primary-blue)";
+            statusMsg.style.color = "var(--primary)";
         } else {
             form.classList.add("view-mode");
             form.querySelectorAll("input, textarea").forEach(el => el.setAttribute("readonly", true));
             editBtn.style.display = "block";
-            statusMsg.textContent = "View and manage your career presence";
-            statusMsg.style.color = "var(--text-muted)";
+            statusMsg.textContent = "Manage your OriginX identity and expertise";
+            statusMsg.style.color = "var(--text-secondary)";
         }
     }
 
     function loadUserData(data) {
         document.getElementById("profileFullName").value = data.full_name || "";
         document.getElementById("profileEmail").value = data.email || "";
-        // Details from JobSeekerProfile will be loaded by fetchFullProfile
+        if (data.profile_image) {
+            const picPath = data.profile_image.startsWith('http') ? data.profile_image : `${API_BASE_URL}${data.profile_image}`;
+            document.getElementById("profilePic").src = picPath;
+            if (topNavPic) topNavPic.src = picPath;
+        }
     }
 
     async function fetchFullProfile(userId) {
@@ -127,5 +159,54 @@ document.addEventListener("DOMContentLoaded", async () => {
                 alert("Failed to update profile details.");
             }
         } catch (err) { console.error(err); }
+    };
+
+    // Account Deletion Logic
+    const deleteBtn = document.getElementById("deleteAccountBtn");
+    const deleteModal = document.getElementById("deleteAccountModal");
+    const closeBtn = document.querySelector(".close-modal-btn");
+    const cancelDeleteBtn = document.getElementById("cancelDeleteBtn");
+    const confirmDeleteBtn = document.getElementById("confirmDeleteBtn");
+
+    if (deleteBtn) {
+        deleteBtn.onclick = () => deleteModal.style.display = "flex";
+    }
+
+    if (closeBtn) closeBtn.onclick = () => deleteModal.style.display = "none";
+    if (cancelDeleteBtn) cancelDeleteBtn.onclick = () => deleteModal.style.display = "none";
+
+    confirmDeleteBtn.onclick = async () => {
+        const password = document.getElementById("deleteConfirmPassword").value;
+        if (!password) {
+            alert("Please enter your password to confirm.");
+            return;
+        }
+
+        try {
+            confirmDeleteBtn.textContent = "Deleting...";
+            confirmDeleteBtn.disabled = true;
+
+            const res = await fetch(`${API_BASE_URL}/users/${user.id}`, {
+                method: "DELETE",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ password: password })
+            });
+
+            if (res.ok) {
+                alert("Account deleted successfully. We're sorry to see you go!");
+                localStorage.clear();
+                window.location.href = "../index.html";
+            } else {
+                const err = await res.json();
+                alert(err.detail || "Deletion failed. Please check your password.");
+                confirmDeleteBtn.textContent = "Permanently Delete";
+                confirmDeleteBtn.disabled = false;
+            }
+        } catch (err) {
+            console.error(err);
+            alert("An error occurred. Please try again later.");
+            confirmDeleteBtn.textContent = "Permanently Delete";
+            confirmDeleteBtn.disabled = false;
+        }
     };
 });
