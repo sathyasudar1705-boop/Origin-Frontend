@@ -53,6 +53,13 @@
                     </svg>
                     Saved Jobs
                 </a>
+                <a href="my_applications.html" class="nav-item active">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+                    </svg>
+                    My Applications
+                </a>
 
                 <p class="nav-label" style="margin-top: 30px;">Tools</p>
                 <a href="resume_form.html" class="nav-item">
@@ -101,6 +108,14 @@
                     </div>
 
                     <div class="user-actions">
+                        <button class="icon-btn" id="notificationBtn">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none"
+                                viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+                            </svg>
+                            <span class="notification-dot" id="notificationDot"></span>
+                        </button>
                         <a href="profile.html">
                             <img src="https://ui-avatars.com/api/?name=User&background=4318ff&color=fff" alt="Profile"
                                 class="user-avatar" id="topNavProfilePic">
@@ -153,7 +168,7 @@
             </div>
 
             <div id="cancelActionContainer">
-                <button id="cancelAppBtn" class="withdraw-btn-modern">Withdraw Application</button>
+                <button id="deleteAppBtn" class="delete-btn-modern">Delete Application</button>
                 <p
                     style="font-size: 12px; color: var(--text-secondary); margin-top: 15px; text-align: center; font-weight: 500;">
                     Employers will be notified of this update.</p>
@@ -187,7 +202,9 @@
                     if (apps.length === 0) {
                         list.innerHTML = `
                             <div class="empty-state">
-                                <div class="empty-icon">📁</div>
+                                <div class="empty-icon">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path></svg>
+                                </div>
                                 <h2>No Applications Yet</h2>
                                 <p>You haven't initiated any job applications.</p>
                                 <a href="jobs.html" class="browse-link">Find Opportunities →</a>
@@ -269,37 +286,36 @@
                 document.getElementById("modalExp").textContent = app.experience || "Not provided";
                 document.getElementById("modalResume").href = app.resume_url || "#";
 
-                const cancelBtn = document.getElementById("cancelAppBtn");
+                const deleteBtn = document.getElementById("deleteAppBtn");
                 const cancelContainer = document.getElementById("cancelActionContainer");
 
-                // Hide withdraw button when candidate is selected or already cancelled
-                if (app.status === "Selected" || app.status === "Cancelled") {
+                // Hide withdraw button when candidate is selected or already rejected
+                if (app.status === "Selected" || app.status === "Rejected") {
                     cancelContainer.style.display = "none";
                 } else {
                     cancelContainer.style.display = "block";
-                    cancelBtn.onclick = () => cancelApplication(app.id);
+                    deleteBtn.onclick = () => deleteApplication(app.id);
                 }
 
                 modal.style.display = "flex";
             }
 
-            async function cancelApplication(appId) {
-                if (!confirm("Confirm Withdrawal: This action will be visible to recruiters. Proceed?")) return;
+            async function deleteApplication(appId) {
+                if (!confirm("Confirm Deletion: This will permanently remove your application record. Recruiters will no longer see your application. Proceed?")) return;
 
                 try {
                     const res = await fetch(`${API_BASE_URL}/applications/${appId}`, {
-                        method: "PUT",
-                        headers: { "Content-Type": "application/json" },
-                        body: JSON.stringify({ status: "Cancelled" })
+                        method: "DELETE",
+                        headers: { "Content-Type": "application/json" }
                     });
 
                     if (res.ok) {
-                        alert("Application Withdrawn.");
+                        console.log("Application deleted successfully.");
                         location.reload();
                     } else {
-                        alert("Withdrawal failed.");
+                        console.log("Failed to delete application.");
                     }
-                } catch (err) { alert("Server error."); }
+                } catch (err) { console.log("Server error."); }
             }
         });
     </script>

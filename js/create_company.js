@@ -40,10 +40,10 @@ document.addEventListener("DOMContentLoaded", () => {
                 user.company = { ...user.company, ...updatedComp };
                 localStorage.setItem("user", JSON.stringify(user));
 
-                alert("Corporate profile successfully established!");
+                console.log("Corporate profile successfully established!");
                 window.location.href = "company_dashboard.html";
             } else {
-                alert("Failed to synchronize business profile.");
+                console.log("Failed to synchronize business profile.");
                 if (submitBtn) {
                     submitBtn.disabled = false;
                     submitBtn.textContent = "Finalize Corporate Profile";
@@ -51,7 +51,7 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         } catch (err) {
             console.error(err);
-            alert("System error during setup.");
+            console.log("System error during setup.");
             if (submitBtn) {
                 submitBtn.disabled = false;
                 submitBtn.textContent = "Finalize Corporate Profile";

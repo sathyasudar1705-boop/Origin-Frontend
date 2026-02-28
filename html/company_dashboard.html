@@ -40,13 +40,14 @@
                     Brand Profile
                 </a>
 
-                <p class="nav-label" style="margin-top: 30px;">Management</p>
-                <a href="#" class="nav-item" id="postJobNav">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
-                    </svg>
-                    Post a Job
-                </a>
+                <div style="padding: 0 10px;">
+                    <button class="btn-sidebar-post" id="openPostModalSidebar">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                        </svg>
+                        Post a Job
+                    </button>
+                </div>
             </nav>
 
             <div class="sidebar-footer">
@@ -79,19 +80,13 @@
                         <h1 id="welcomeMsg">Welcome back!</h1>
                     </div>
                     <div class="header-actions">
-                        <button class="btn-post-job" id="openPostModal">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none"
-                                viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
-                                    d="M12 4v16m8-8H4" />
-                            </svg>
-                            Post New Job
-                        </button>
-                        <div class="company-avatar-wrap">
-                            <div class="company-initials" id="companyInitialsAvatar"
-                                style="overflow:hidden; display:flex; align-items:center; justify-content:center;">C
+                        <a href="company_profile.html" class="company-avatar-link" title="View Brand Profile">
+                            <div class="company-avatar-wrap">
+                                <div class="company-initials" id="companyInitialsAvatar"
+                                    style="overflow:hidden; display:flex; align-items:center; justify-content:center;">C
+                                </div>
                             </div>
-                        </div>
+                        </a>
                     </div>
                 </header>
 
@@ -205,21 +200,21 @@
                 </div>
                 <div class="form-group">
                     <label>Job Title</label>
-                    <input type="text" id="jobTitle" placeholder="e.g. Senior Product Designer" required>
+                    <input type="text" id="jobTitle" placeholder="Enter Job Title (e.g. Software Engineer)" required>
                 </div>
                 <div class="form-row">
                     <div class="form-group">
                         <label>Location</label>
-                        <input type="text" id="jobLocation" placeholder="e.g. Chennai, TN" required>
+                        <input type="text" id="jobLocation" placeholder="Enter Job Location" required>
                     </div>
                     <div class="form-group">
                         <label>Salary Range</label>
-                        <input type="text" id="jobSalary" placeholder="e.g. 12-18 LPA">
+                        <input type="text" id="jobSalary" placeholder="Enter Salary Range (e.g. 5-10 LPA)">
                     </div>
                 </div>
                 <div class="form-group">
                     <label>Required Skills</label>
-                    <input type="text" id="jobSkills" placeholder="e.g. React, Node.js, SQL">
+                    <input type="text" id="jobSkills" placeholder="Enter Skills (Comma Separated)">
                 </div>
                 <div class="form-group">
                     <label>Job Description</label>

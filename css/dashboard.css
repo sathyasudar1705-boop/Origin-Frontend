@@ -396,7 +396,7 @@ body {
 
 .job-card {
   background: var(--bg-white);
-  border-radius: 20px;
+  border-radius: 24px;
   padding: 24px;
   border: 1px solid #f0f2f9;
   transition: var(--transition);
@@ -407,146 +407,154 @@ body {
   box-shadow: 0 10px 30px rgba(112, 144, 176, 0.04);
 }
 
-.job-card:hover {
-  transform: translateY(-8px);
-  border-color: var(--primary);
-  box-shadow: 0 20px 40px rgba(112, 144, 176, 0.1);
-}
-
 .job-card-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 22px;
-}
-
-.new-post-badge {
-  background: #fffafa;
-  color: #ff4d4f;
-  padding: 4px 10px;
-  border-radius: 8px;
-  font-size: 10px;
-  font-weight: 800;
-  text-transform: uppercase;
-  border: 1px solid #ffe6e6;
-}
-
-
-.job-type-badge {
-  padding: 6px 12px;
-  border-radius: 50px;
-  font-size: 11px;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-}
-
-.badge-full-time {
-  background: #e9edfe;
-  color: var(--primary);
-}
-
-.badge-part-time {
-  background: #e6f7ed;
-  color: #01b574;
+  margin-bottom: 20px;
 }
 
 .job-company-info {
   display: flex;
-  gap: 16px;
-  margin-bottom: 18px;
+  align-items: center;
+  gap: 12px;
 }
 
 .job-company-logo {
-  width: 54px;
-  height: 54px;
-  border-radius: 14px;
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
   object-fit: cover;
-  border: 1px solid var(--border-color);
-  background: #f4f7fe;
-  padding: 2px;
 }
 
-.job-title-wrapper h3 {
-  font-size: 18px;
+.company-name-rating {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.company-name-rating h4 {
+  font-size: 16px;
   font-weight: 700;
   color: var(--text-main);
-  margin-bottom: 2px;
 }
 
-.job-title-wrapper p {
-  font-size: 14px;
-  color: var(--text-secondary);
-  font-weight: 500;
-}
-
-.job-meta-row {
-  display: flex;
-  gap: 10px;
-  margin-bottom: 18px;
-  flex-wrap: wrap;
-}
-
-.meta-tag {
-  background: #f4f7fe;
-  color: var(--text-main);
-  padding: 6px 12px;
-  border-radius: 50px;
-  font-size: 12px;
-  font-weight: 600;
+.rating-stars {
   display: flex;
   align-items: center;
-  gap: 8px;
-}
-
-.meta-tag.rating {
-  background: #fff8e6;
+  gap: 4px;
+  font-size: 13px;
+  font-weight: 700;
   color: #ffa800;
 }
 
-.job-details-text {
-  font-size: 13px;
-  color: var(--text-secondary);
-  line-height: 1.6;
-  margin-bottom: 24px;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-}
-
-.job-card-footer {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-top: auto;
-  padding-top: 15px;
-  border-top: 1px solid #f4f7fe;
-}
-
-.job-price {
-  font-size: 17px;
+.job-main-title {
+  font-size: 20px;
   font-weight: 800;
+  color: var(--text-main);
+  margin-bottom: 20px;
+}
+
+.job-meta-rows {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.meta-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  color: #4b5563;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.meta-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.meta-item svg,
+.posted-time svg {
+  flex-shrink: 0;
+  color: var(--text-secondary);
+}
+
+.rating-stars svg {
+  color: #ffa800;
+}
+
+.meta-divider {
+  color: #d1d5db;
+  font-weight: 400;
+}
+
+.skills-list {
+  margin-bottom: 20px;
+  font-size: 14px;
+  color: #4b5563;
+}
+
+.skills-list span {
+  font-weight: 700;
   color: var(--text-main);
 }
 
-.apply-btn-main {
-  background: var(--primary);
-  color: white;
-  padding: 10px 22px;
-  border-radius: 14px;
-  text-decoration: none;
-  font-weight: 700;
-  font-size: 14px;
-  transition: var(--transition);
-  box-shadow: 0 4px 14px rgba(67, 24, 255, 0.15);
+.posted-time {
+  font-size: 13px;
+  color: var(--text-secondary);
+  font-weight: 500;
+  margin-bottom: 20px;
 }
 
-.apply-btn-main:hover {
-  background: var(--primary-hover);
-  box-shadow: 0 6px 20px rgba(67, 24, 255, 0.25);
+.job-card-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 10px;
+  padding-top: 20px;
+  border-top: 1px solid #f4f7fe;
+}
+
+.card-btn {
+  padding: 10px 5px;
+  border-radius: 12px;
+  font-size: 13px;
+  font-weight: 700;
+  text-align: center;
+  text-decoration: none;
+  transition: var(--transition);
+  border: none;
+  cursor: pointer;
+}
+
+.btn-apply {
+  background: var(--primary);
+  color: white;
+}
+
+.btn-details {
+  background: #f4f7fe;
+  color: var(--text-main);
+}
+
+.btn-save {
+  background: #fffafa;
+  color: #ff4d4f;
+  border: 1px solid #ffe6e6;
+}
+
+.btn-save.saved {
+  background: #ff4d4f;
+  color: white;
+}
+
+.card-btn:hover {
   transform: translateY(-2px);
+  filter: brightness(0.95);
 }
 
 
@@ -613,32 +621,79 @@ body {
   border-radius: 10px;
 }
 
-.news-item {
-  padding: 20px;
-  background: #ffffff;
-  border-radius: 16px;
-  text-decoration: none;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  border: 1px solid #f0f2f9;
+.news-section .section-header h2 {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.news-section .section-header h2 svg {
+  margin-right: 0 !important;
+}
+
+.news-section .news-list {
   display: flex;
   flex-direction: column;
-  gap: 12px;
-  position: relative;
+  gap: 16px;
 }
 
-.news-item:hover {
-  background: #f8faff;
+.news-card-premium {
+  background: #ffffff;
+  border-radius: 16px;
+  border: 1px solid #e0e5f2;
+  overflow: hidden;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 4px 12px rgba(112, 144, 176, 0.05);
+  text-decoration: none;
+  color: inherit;
+}
+
+.news-card-premium:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 24px rgba(67, 24, 255, 0.08);
   border-color: var(--primary);
-  transform: translateY(-3px);
-  box-shadow: 0 10px 25px rgba(0, 97, 255, 0.08);
 }
 
-.news-item h4 {
+.news-card-img {
+  position: relative;
+  height: 140px;
+  width: 100%;
+  background: #f4f7fe;
+}
+
+.news-card-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.news-tag {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  background: var(--primary);
+  color: white;
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  z-index: 2;
+}
+
+.news-card-body {
+  padding: 16px;
+  flex: 1;
+}
+
+.news-title {
   font-size: 15px;
   font-weight: 700;
   color: var(--text-main);
-  line-height: 1.5;
-  margin: 0;
+  line-height: 1.4;
+  margin-bottom: 8px;
   display: -webkit-box;
   -webkit-line-clamp: 2;
   line-clamp: 2;
@@ -646,56 +701,59 @@ body {
   overflow: hidden;
 }
 
-.news-meta {
+.news-desc {
+  font-size: 12px;
+  color: var(--text-secondary);
+  line-height: 1.5;
+  margin-bottom: 16px;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.news-card-footer {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  font-size: 12px;
-  font-weight: 600;
-  color: var(--text-secondary);
-  padding-top: 8px;
+  padding-top: 12px;
   border-top: 1px solid #f4f7fe;
 }
 
-.news-source {
-  color: var(--primary);
-  font-weight: 700;
+.news-source-info {
   display: flex;
   align-items: center;
   gap: 6px;
-}
-
-.news-source::before {
-  content: '';
-  width: 6px;
-  height: 6px;
-  background: var(--primary);
-  border-radius: 50%;
-}
-
-.news-attribution {
-  font-size: 10px;
-  color: var(--text-secondary);
-  text-align: center;
-  margin-top: 15px;
-  opacity: 0.7;
-  font-style: italic;
-}
-
-.read-more-link {
   font-size: 11px;
-  font-weight: 800;
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+
+.news-source-name {
   color: var(--primary);
+}
+
+.news-dot {
+  opacity: 0.5;
+}
+
+.news-read-more {
   display: flex;
   align-items: center;
   gap: 4px;
-  margin-top: 4px;
-  opacity: 0;
-  transition: var(--transition);
+  color: var(--primary);
+  font-size: 11px;
+  font-weight: 700;
+  text-decoration: none;
 }
 
-.news-item:hover .read-more-link {
-  opacity: 1;
+.news-read-more:hover svg {
+  transform: translateX(2px);
+}
+
+.news-read-more svg {
+  transition: transform 0.2s;
 }
 
 /* Utility */

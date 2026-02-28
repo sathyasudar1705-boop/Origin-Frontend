@@ -8,7 +8,7 @@ async function uploadImage(file, type) {
     console.log(`Starting ${type} image upload to Cloudinary...`);
     const token = localStorage.getItem("access_token");
     if (!token) {
-        alert("Session expired. Please login again.");
+        console.log("Session expired. Please login again.");
         window.location.href = "user_login.html";
         return;
     }
@@ -97,7 +97,7 @@ function initUploadUI(containerId, previewId, type) {
 
         try {
             const imageUrl = await uploadImage(file, type);
-            status.textContent = "✅ Upload Successful!";
+            status.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle; margin-right:4px;"><polyline points="20 6 9 17 4 12"></polyline></svg> Upload Successful!`;
             status.style.color = "green";
 
             // Update local storage user object
@@ -111,7 +111,7 @@ function initUploadUI(containerId, previewId, type) {
 
             if (preview) preview.src = imageUrl;
         } catch (err) {
-            status.textContent = "❌ Error: " + err.message;
+            status.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle; margin-right:4px;"><circle cx="12" cy="12" r="10"></circle><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line></svg> Error: ` + err.message;
             status.style.color = "red";
             uploadBtn.disabled = false;
         } finally {

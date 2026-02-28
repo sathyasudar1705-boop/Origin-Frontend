@@ -37,7 +37,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         e.preventDefault();
 
         if (!user) {
-            alert("Please login first.");
+            console.log("Please login first.");
             window.location.href = "user_login.html";
             return;
         }
@@ -82,7 +82,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                 window.location.href = "success.html";
             } else {
                 const err = await response.json();
-                alert("Application failed: " + (err.detail || "Unknown error"));
+                console.log("Application failed: " + (err.detail || "Unknown error"));
                 if (submitBtn) {
                     submitBtn.disabled = false;
                     submitBtn.textContent = "Submit Application";
@@ -90,7 +90,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             }
         } catch (err) {
             console.error("Error submitting application:", err);
-            alert("Something went wrong!");
+            console.log("Something went wrong!");
             if (submitBtn) {
                 submitBtn.disabled = false;
                 submitBtn.textContent = "Submit Application";

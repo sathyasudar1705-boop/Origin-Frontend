@@ -400,7 +400,7 @@ body {
     transform: translateY(-2px);
 }
 
-.withdraw-btn-modern {
+.delete-btn-modern {
     width: 100%;
     padding: 16px;
     border-radius: 16px;
@@ -413,7 +413,7 @@ body {
     transition: var(--transition);
 }
 
-.withdraw-btn-modern:hover {
+.delete-btn-modern:hover {
     background: #ff4d4f;
     color: white;
     box-shadow: 0 8px 20px rgba(255, 77, 79, 0.2);

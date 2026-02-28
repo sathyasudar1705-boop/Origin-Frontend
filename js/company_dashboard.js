@@ -34,7 +34,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         return;
     }
 
-    document.getElementById("welcomeMsg").textContent = `Welcome, ${user.full_name} 👋`;
+    document.getElementById("welcomeMsg").innerHTML = `Welcome, ${user.full_name} <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block; vertical-align:middle; margin-left:8px; color:#f6ad55;"><path d="M18 11V6a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v0"></path><path d="M14 10V4a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v0"></path><path d="M10 10.5V6a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v0"></path><path d="M18 8a2 2 0 1 1 4 0v6a8 8 0 0 1-8 8h-2c-2.8 0-4.5-.86-5.99-2.34l-3.6-3.6a2 2 0 0 1 2.83-2.82L7 15"></path></svg>`;
     const sub = document.getElementById("companySubtitle");
     if (sub) sub.textContent = company.company_name || "Employer Hub";
     // Set initials avatar or logo
@@ -52,8 +52,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     // Modal logic
     const modal = document.getElementById("postJobModal");
-    const openBtn = document.getElementById("openPostModal");
-    const postJobNav = document.getElementById("postJobNav");
+    const openBtn = document.getElementById("openPostModalSidebar") || document.getElementById("openPostModal");
     const closeBtn = document.getElementById("closeModal");
     let editingJobId = null;
 
@@ -64,8 +63,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         modal.style.display = "flex";
     };
 
-    openBtn.onclick = openModal;
-    if (postJobNav) postJobNav.onclick = (e) => { e.preventDefault(); openModal(); };
+    if (openBtn) openBtn.onclick = openModal;
     closeBtn.onclick = () => modal.style.display = "none";
     const cancelPostBtn = document.getElementById("cancelPostBtn");
     if (cancelPostBtn) cancelPostBtn.onclick = () => modal.style.display = "none";
@@ -105,12 +103,12 @@ document.addEventListener("DOMContentLoaded", async () => {
                 body: JSON.stringify(data)
             });
             if (res.ok) {
-                alert(`✅ Success! Job ${editingJobId ? 'updated' : 'posted'}.`);
+                console.log(`Success! Job ${editingJobId ? 'updated' : 'posted'}.`);
                 modal.style.display = "none";
                 location.reload();
             } else {
                 const error = await res.json();
-                alert("Error: " + (error.detail || "Action failed"));
+                console.log("Error: " + (error.detail || "Action failed"));
             }
         } catch (err) { console.error(err); }
     };
@@ -317,24 +315,45 @@ function showAppDetail(app) {
     document.getElementById("detailSkills").textContent = app.skills;
     document.getElementById("detailResume").href = app.resume_url;
 
-    const approveBtn = document.getElementById("approveBtn");
+    const shortlistBtn = document.getElementById("shortlistBtn");
+    const approveBtnFallback = document.getElementById("approveBtn");
     const rejectBtn = document.getElementById("rejectBtn");
 
+    const effectiveShortlistBtn = shortlistBtn || approveBtnFallback;
+
     if (app.status === "Applied") {
-        approveBtn.style.display = "block";
-        rejectBtn.style.display = "block";
-        approveBtn.onclick = () => updateStatus(app.id, "Approved");
-        rejectBtn.onclick = () => updateStatus(app.id, "Rejected");
+        if (effectiveShortlistBtn) {
+            effectiveShortlistBtn.style.display = "block";
+            effectiveShortlistBtn.textContent = "Shortlist";
+            effectiveShortlistBtn.onclick = () => updateStatus(app.id, "Shortlisted");
+        }
+        if (rejectBtn) {
+            rejectBtn.style.display = "block";
+            rejectBtn.onclick = () => updateStatus(app.id, "Rejected");
+        }
+    } else if (app.status === "Shortlisted") {
+        if (effectiveShortlistBtn) {
+            effectiveShortlistBtn.style.display = "block";
+            effectiveShortlistBtn.textContent = "Select";
+            effectiveShortlistBtn.onclick = () => updateStatus(app.id, "Selected");
+        }
+        if (rejectBtn) {
+            rejectBtn.style.display = "block";
+            rejectBtn.onclick = () => updateStatus(app.id, "Rejected");
+        }
     } else {
-        approveBtn.style.display = "none";
-        rejectBtn.style.display = "none";
+        if (effectiveShortlistBtn) effectiveShortlistBtn.style.display = "none";
+        if (rejectBtn) rejectBtn.style.display = "none";
     }
 
     modal.style.display = "flex";
 
     // Close logic
-    const closeAppBtn = document.getElementById("closeAppDetailModal") || document.getElementById("closeCandidateModal");
-    if (closeAppBtn) closeAppBtn.onclick = () => modal.style.display = "none";
+    const topCloseBtn = document.getElementById("closeAppDetailModal");
+    const bottomCloseBtn = document.getElementById("closeCandidateModal");
+
+    if (topCloseBtn) topCloseBtn.onclick = () => modal.style.display = "none";
+    if (bottomCloseBtn) bottomCloseBtn.onclick = () => modal.style.display = "none";
 }
 
 async function updateStatus(appId, newStatus) {
@@ -348,15 +367,15 @@ async function updateStatus(appId, newStatus) {
         });
 
         if (res.ok) {
-            alert(`Application ${newStatus}!`);
+            console.log(`Application ${newStatus}!`);
             document.getElementById("appDetailModal").style.display = "none";
             location.reload();
         } else {
-            alert("Update failed.");
+            console.log("Update failed.");
         }
     } catch (err) {
         console.error(err);
-        alert("Action error.");
+        console.log("Action error.");
     }
 }
 
@@ -371,15 +390,15 @@ async function deleteJob(e, jobId, type) {
         });
 
         if (res.ok) {
-            alert("✅ Job deleted successfully!");
+            console.log("Job deleted successfully!");
             location.reload();
         } else {
             const error = await res.json();
-            alert("Error: " + (error.detail || "Failed to delete job"));
+            console.log("Error: " + (error.detail || "Failed to delete job"));
         }
     } catch (err) {
         console.error(err);
-        alert("Server error. Please try again.");
+        console.log("Server error. Please try again.");
     }
 }
 

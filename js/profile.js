@@ -48,7 +48,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                 const imageUrl = await uploadImage(file, "user");
 
                 if (statusMsg) {
-                    statusMsg.textContent = "✅ Identity image synchronized successfully!";
+                    statusMsg.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle; margin-right:4px;"><polyline points="20 6 9 17 4 12"></polyline></svg> Identity image synchronized successfully!`;
                     statusMsg.style.color = "#01b574";
                 }
 
@@ -59,9 +59,9 @@ document.addEventListener("DOMContentLoaded", async () => {
                 localStorage.setItem("user", JSON.stringify(user));
             } catch (err) {
                 console.error("Upload failed:", err);
-                alert("Upload failed: " + err.message);
+                console.log("Upload failed: " + err.message);
                 if (statusMsg) {
-                    statusMsg.textContent = "❌ Synchronization failed";
+                    statusMsg.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle; margin-right:4px;"><circle cx="12" cy="12" r="10"></circle><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line></svg> Synchronization failed`;
                     statusMsg.style.color = "#ff4d4f";
                 }
             }
@@ -152,11 +152,11 @@ document.addEventListener("DOMContentLoaded", async () => {
             if (userRes.ok && profRes.ok) {
                 const newUser = await userRes.json();
                 localStorage.setItem("user", JSON.stringify(newUser));
-                alert("Profile and details updated successfully!");
+                console.log("Profile and details updated successfully!");
                 enableEdit(false);
                 location.reload();
             } else {
-                alert("Failed to update profile details.");
+                console.log("Failed to update profile details.");
             }
         } catch (err) { console.error(err); }
     };
@@ -178,7 +178,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     confirmDeleteBtn.onclick = async () => {
         const password = document.getElementById("deleteConfirmPassword").value;
         if (!password) {
-            alert("Please enter your password to confirm.");
+            console.log("Please enter your password to confirm.");
             return;
         }
 
@@ -193,18 +193,18 @@ document.addEventListener("DOMContentLoaded", async () => {
             });
 
             if (res.ok) {
-                alert("Account deleted successfully. We're sorry to see you go!");
+                console.log("Account deleted successfully. We're sorry to see you go!");
                 localStorage.clear();
                 window.location.href = "../index.html";
             } else {
                 const err = await res.json();
-                alert(err.detail || "Deletion failed. Please check your password.");
+                console.log(err.detail || "Deletion failed. Please check your password.");
                 confirmDeleteBtn.textContent = "Permanently Delete";
                 confirmDeleteBtn.disabled = false;
             }
         } catch (err) {
             console.error(err);
-            alert("An error occurred. Please try again later.");
+            console.log("An error occurred. Please try again later.");
             confirmDeleteBtn.textContent = "Permanently Delete";
             confirmDeleteBtn.disabled = false;
         }

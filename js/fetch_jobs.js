@@ -12,7 +12,7 @@ async function fetchUserApplications(userId) {
     }
 }
 
-async function fetchJobs(q = '', location = '') {
+async function fetchJobs(q = '', location = '', jobType = '', salaryRange = '') {
     const jobsContainer = document.querySelector(".jobs-container");
     if (!jobsContainer) return;
 
@@ -50,6 +50,26 @@ async function fetchJobs(q = '', location = '') {
         if (ptRes.ok) {
             const ptJobs = await ptRes.json();
             allJobs = [...allJobs, ...ptJobs.map(j => ({ ...j, type: 'Part-time' }))];
+        }
+
+        // --- Frontend Filtering for Type and Salary ---
+        if (jobType) {
+            allJobs = allJobs.filter(j => j.type === jobType);
+        }
+
+        if (salaryRange) {
+            allJobs = allJobs.filter(j => {
+                const salary = (j.salary || '').toString();
+                // Basic numeric extraction for comparison (assuming format like "6-12 LPA" or "₹60,000")
+                const numericMatch = salary.match(/\d+/);
+                const numericVal = numericMatch ? parseInt(numericMatch[0]) : 0;
+
+                if (salaryRange === "0-3") return numericVal < 3 || salary.includes("0-3");
+                if (salaryRange === "3-6") return (numericVal >= 3 && numericVal <= 6) || salary.includes("3-6");
+                if (salaryRange === "6-12") return (numericVal > 6 && numericVal <= 12) || salary.includes("6-12");
+                if (salaryRange === "12+") return numericVal > 12 || salary.includes("12+");
+                return true;
+            });
         }
 
         if (allJobs.length === 0) {
@@ -109,8 +129,26 @@ async function fetchJobs(q = '', location = '') {
         });
 
         if (allJobs.length > 0) {
-            displayJobDetails(allJobs[0]);
-            jobsContainer.firstElementChild.classList.add('active');
+            const urlParams = new URLSearchParams(window.location.search);
+            const jobId = urlParams.get('job_id');
+
+            let targetJob = allJobs[0];
+            let targetIndex = 0;
+
+            if (jobId) {
+                const foundIndex = allJobs.findIndex(j => j.id == jobId && j.type === 'Full-time');
+                if (foundIndex > -1) {
+                    targetJob = allJobs[foundIndex];
+                    targetIndex = foundIndex;
+                }
+            }
+
+            displayJobDetails(targetJob);
+            const jobCards = jobsContainer.querySelectorAll('.job-item');
+            if (jobCards[targetIndex]) {
+                jobCards[targetIndex].classList.add('active');
+                jobCards[targetIndex].scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
         }
 
     } catch (err) {
@@ -222,17 +260,23 @@ function toggleSaveJob(jobId, type) {
 
 // Add listeners for search inputs
 document.addEventListener("DOMContentLoaded", () => {
-    const mainSearchInput = document.getElementById("mainSearchInput");
+    const roleSearchInput = document.getElementById("roleSearchInput");
     const locSearchInput = document.getElementById("locationSearchInput");
+    const typeSearchInput = document.getElementById("typeSearchInput");
+    const salarySearchInput = document.getElementById("salarySearchInput");
 
     const handleSearch = () => {
-        const q = mainSearchInput ? mainSearchInput.value : '';
+        const q = roleSearchInput ? roleSearchInput.value : '';
         const loc = locSearchInput ? locSearchInput.value : '';
-        fetchJobs(q, loc);
+        const type = typeSearchInput ? typeSearchInput.value : '';
+        const sal = salarySearchInput ? salarySearchInput.value : '';
+        fetchJobs(q, loc, type, sal);
     };
 
-    if (mainSearchInput) mainSearchInput.addEventListener("input", debounce(handleSearch, 500));
+    if (roleSearchInput) roleSearchInput.addEventListener("input", debounce(handleSearch, 500));
     if (locSearchInput) locSearchInput.addEventListener("input", debounce(handleSearch, 500));
+    if (typeSearchInput) typeSearchInput.addEventListener("change", handleSearch);
+    if (salarySearchInput) salarySearchInput.addEventListener("change", handleSearch);
 
     // Handle profile pic from logged user
     const user = JSON.parse(localStorage.getItem("user"));

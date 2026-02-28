@@ -215,6 +215,38 @@ body {
     border-top: 1px solid var(--border-color);
 }
 
+/* Prominent Sidebar Post Button */
+.btn-sidebar-post {
+    background: var(--primary);
+    color: white !important;
+    margin: 20px 0;
+    padding: 14px !important;
+    border-radius: 12px !important;
+    justify-content: center !important;
+    box-shadow: 0 4px 12px rgba(67, 24, 255, 0.2);
+    border: none;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 700;
+    text-decoration: none;
+    cursor: pointer;
+    transition: var(--transition);
+    width: 100%;
+}
+
+.btn-sidebar-post:hover {
+    background: var(--primary-hover);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(255, 157, 0, 0.3);
+}
+
+.btn-sidebar-post svg {
+    width: 20px;
+    height: 20px;
+    stroke-width: 2.5;
+}
+
 /* ===========================
    MAIN AREA
 =========================== */
@@ -292,6 +324,17 @@ body {
 .company-avatar-wrap {
     width: 44px;
     height: 44px;
+}
+
+.company-avatar-link {
+    text-decoration: none;
+    display: block;
+    transition: var(--transition);
+}
+
+.company-avatar-link:hover {
+    transform: scale(1.05);
+    opacity: 0.9;
 }
 
 .company-initials {

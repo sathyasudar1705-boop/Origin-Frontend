@@ -60,16 +60,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     let currentStep = 0;
 
     // Template selection
-    const templateCards = document.querySelectorAll(".template-card");
     let selectedTemplate = "professional";
-
-    templateCards.forEach(card => {
-        card.addEventListener("click", () => {
-            templateCards.forEach(c => c.classList.remove("active"));
-            card.classList.add("active");
-            selectedTemplate = card.dataset.template;
-        });
-    });
 
     function updateStepVisibility() {
         steps.forEach((step, idx) => {
@@ -94,7 +85,17 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
 
     nextBtn.addEventListener("click", () => {
-        if (currentStep < steps.length - 1) {
+        // Validate current step before moving forward
+        const currentFields = steps[currentStep].querySelectorAll('input, textarea');
+        let allValid = true;
+        currentFields.forEach(field => {
+            if (!field.checkValidity()) {
+                allValid = false;
+                field.reportValidity();
+            }
+        });
+
+        if (allValid && currentStep < steps.length - 1) {
             currentStep++;
             updateStepVisibility();
         }
@@ -109,6 +110,29 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     form.addEventListener("submit", async (e) => {
         e.preventDefault();
+        console.log("Submit button clicked!");
+
+        // Check if form is valid (handles hidden step validation issues)
+        if (!form.checkValidity()) {
+            const invalidFields = form.querySelectorAll(':invalid');
+            console.warn("Form validation failed for fields:", invalidFields);
+            console.log("Please check your details. Some fields are invalid (maybe on another step).");
+
+            // Try to find the first invalid field and jump to its step
+            for (let field of invalidFields) {
+                const parentStep = field.closest('.form-step');
+                if (parentStep) {
+                    const stepIdx = steps.indexOf(parentStep);
+                    if (stepIdx !== -1) {
+                        currentStep = stepIdx;
+                        updateStepVisibility();
+                        field.focus();
+                        break;
+                    }
+                }
+            }
+            return;
+        }
 
         const formData = {
             full_name: fullNameInput.value,
@@ -124,6 +148,8 @@ document.addEventListener("DOMContentLoaded", async () => {
             projects: projectsInput.value,
             template: selectedTemplate
         };
+
+        console.log("Form data collected:", formData);
 
         submitBtn.innerText = "Processing Profile...";
         submitBtn.disabled = true;
@@ -189,14 +215,14 @@ document.addEventListener("DOMContentLoaded", async () => {
                 document.body.removeChild(a);
                 window.URL.revokeObjectURL(url);
 
-                alert("Professional resume generated successfully!");
+                console.log("Professional resume generated successfully!");
                 window.location.href = "dashboard.html";
             } else {
-                alert("Failed to generate resume PDF. Please check your connection.");
+                console.log("Failed to generate resume PDF. Please check your connection.");
             }
         } catch (error) {
             console.error("Error:", error);
-            alert("An error occurred during resume generation.");
+            console.log("An error occurred during resume generation.");
         } finally {
             submitBtn.innerText = "Generate My Resume";
             submitBtn.disabled = false;

@@ -329,6 +329,15 @@
                     </svg>
                     Brand Profile
                 </a>
+
+                <div style="padding: 0 10px;">
+                    <button class="btn-sidebar-post" id="openPostModalSidebar">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                        </svg>
+                        Post a Job
+                    </button>
+                </div>
             </nav>
 
             <div class="sidebar-footer">
@@ -351,18 +360,13 @@
                     <h1>Brand Profile</h1>
                 </div>
                 <div class="header-actions">
-                    <button type="button" id="editToggleBtn" class="btn-post-job">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24"
-                            stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-                        </svg>
-                        Edit Profile
-                    </button>
-                    <div class="company-avatar-wrap">
-                        <div class="company-initials" id="companyInitialsAvatar"
-                            style="overflow:hidden; display:flex; align-items:center; justify-content:center;">C</div>
-                    </div>
+                    <a href="company_profile.html" class="company-avatar-link" title="View Brand Profile">
+                        <div class="company-avatar-wrap">
+                            <div class="company-initials" id="companyInitialsAvatar"
+                                style="overflow:hidden; display:flex; align-items:center; justify-content:center;">C
+                            </div>
+                        </div>
+                    </a>
                 </div>
             </header>
 
@@ -390,7 +394,15 @@
                             </div>
                             <div class="logo-info">
                                 <h2 id="displayCompName">Company Name</h2>
-                                <p id="displayCompIndustry">Industry</p>
+                                <p id="displayCompIndustry" style="margin-bottom: 12px;">Industry</p>
+                                <button type="button" id="editToggleBtn" class="btn-post-job">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none"
+                                        viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                                    </svg>
+                                    Edit Profile
+                                </button>
                                 <button type="button" id="logoChangeTrigger" class="logo-change-btn"
                                     onclick="document.getElementById('profileUpload').click()">📷 Change Logo</button>
                             </div>
@@ -400,22 +412,22 @@
                         <div class="form-row" style="margin-bottom: 20px;">
                             <div class="form-group">
                                 <label>Company Name</label>
-                                <input type="text" id="compName" placeholder="e.g. Acme Corp" required>
+                                <input type="text" id="compName" placeholder="Enter Company Name" required>
                             </div>
                             <div class="form-group">
                                 <label>Industry</label>
-                                <input type="text" id="compIndustry" placeholder="e.g. Fintech, Healthcare">
+                                <input type="text" id="compIndustry" placeholder="Enter Industry (e.g. Fintech)">
                             </div>
                         </div>
 
                         <div class="form-row" style="margin-bottom: 20px;">
                             <div class="form-group">
                                 <label>Website</label>
-                                <input type="url" id="compWebsite" placeholder="https://yourcompany.com">
+                                <input type="url" id="compWebsite" placeholder="https://www.yourcompany.com">
                             </div>
                             <div class="form-group">
                                 <label>Location</label>
-                                <input type="text" id="compLocation" placeholder="e.g. Chennai, India">
+                                <input type="text" id="compLocation" placeholder="Enter Company Location">
                             </div>
                         </div>
 
@@ -426,7 +438,7 @@
                             </div>
                             <div class="form-group">
                                 <label>Phone</label>
-                                <input type="text" id="compPhone" placeholder="e.g. +91 98765 43210">
+                                <input type="text" id="compPhone" placeholder="Enter Business Phone No.">
                             </div>
                         </div>
 
@@ -459,7 +471,7 @@
 
                     <!-- Tips -->
                     <div class="tips-card" style="margin-bottom: 24px;">
-                        <h3>💡 Profile Tips</h3>
+                        <h3>Tips to Improve Your Company Profile</h3>
                         <div class="tip-item">
                             <div class="tip-dot">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="none"
@@ -468,7 +480,7 @@
                                         d="M5 13l4 4L19 7" />
                                 </svg>
                             </div>
-                            <p>Add a clear logo to build brand recognition with candidates.</p>
+                            <p>Add your logo to make your company recognizable.</p>
                         </div>
                         <div class="tip-item">
                             <div class="tip-dot">
@@ -478,7 +490,7 @@
                                         d="M5 13l4 4L19 7" />
                                 </svg>
                             </div>
-                            <p>A detailed "About" section increases application rates by 60%.</p>
+                            <p>Write a detailed company overview to attract job seekers.</p>
                         </div>
                         <div class="tip-item">
                             <div class="tip-dot">
@@ -488,7 +500,7 @@
                                         d="M5 13l4 4L19 7" />
                                 </svg>
                             </div>
-                            <p>Add your website link so candidates can learn more about you.</p>
+                            <p>Add your company website for credibility.</p>
                         </div>
                         <div class="tip-item">
                             <div class="tip-dot">
@@ -498,7 +510,17 @@
                                         d="M5 13l4 4L19 7" />
                                 </svg>
                             </div>
-                            <p>Keep your location updated for geo-based talent searches.</p>
+                            <p>Update your location for location-based job searches.</p>
+                        </div>
+                        <div class="tip-item">
+                            <div class="tip-dot">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="none"
+                                    viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3"
+                                        d="M5 13l4 4L19 7" />
+                                </svg>
+                            </div>
+                            <p>Post jobs regularly to increase visibility.</p>
                         </div>
                     </div>
 
@@ -536,6 +558,58 @@
                     style="flex:1; background: #ff4d4f; color: white; border: none; padding: 12px; border-radius: 12px; font-weight: 700; cursor: pointer;">Delete
                     Permanently</button>
             </div>
+        </div>
+    </div>
+
+    <!-- ===== POST JOB MODAL ===== -->
+    <div id="postJobModal" class="modal">
+        <div class="modal-card">
+            <div class="modal-top">
+                <h3>Post a New Job</h3>
+                <button id="closeModal" class="modal-close-btn">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24"
+                        stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+                            d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
+            </div>
+            <form id="postJobForm">
+                <div class="form-group">
+                    <label>Job Type</label>
+                    <select id="jobType">
+                        <option value="full-time">Full-time</option>
+                        <option value="part-time">Part-time</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Job Title</label>
+                    <input type="text" id="jobTitle" placeholder="Enter Job Title (e.g. Software Engineer)" required>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Location</label>
+                        <input type="text" id="jobLocation" placeholder="Enter Job Location" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Salary Range</label>
+                        <input type="text" id="jobSalary" placeholder="Enter Salary Range (e.g. 5-10 LPA)">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Required Skills</label>
+                    <input type="text" id="jobSkills" placeholder="Enter Skills (Comma Separated)">
+                </div>
+                <div class="form-group">
+                    <label>Job Description</label>
+                    <textarea id="jobDesc" rows="4"
+                        placeholder="Describe the role, responsibilities, and ideal candidate..."></textarea>
+                </div>
+                <div class="modal-footer-actions">
+                    <button type="button" id="cancelPostBtn" class="btn-cancel">Cancel</button>
+                    <button type="submit" class="btn-submit">Publish Job</button>
+                </div>
+            </form>
         </div>
     </div>
 

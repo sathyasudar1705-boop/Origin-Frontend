@@ -135,7 +135,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         };
 
         if (!company.id) {
-            showToast("❌ Session error: Company ID missing.", true);
+            showToast("Session error: Company ID missing.", true);
             return;
         }
 
@@ -153,7 +153,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                     }
                 } catch (uploadErr) {
                     console.error("Logo upload error:", uploadErr);
-                    showToast("⚠️ Logo upload failed. Saving other changes...", true);
+                    showToast("Logo upload failed. Saving other changes...", true);
                 }
             }
 
@@ -180,16 +180,16 @@ document.addEventListener("DOMContentLoaded", async () => {
                 loadCompanyData(company);
                 if (companyNameDisplay) companyNameDisplay.textContent = company.company_name;
                 enableEdit(false);
-                showToast("✅ Profile updated successfully!");
+                showToast("Profile updated successfully!");
             } else {
                 const err = await res.json().catch(() => ({}));
-                showToast("❌ " + (err.detail || "Update failed. Please try again."), true);
+                showToast((err.detail || "Update failed. Please try again."), true);
                 saveBtn.disabled = false;
                 saveBtn.textContent = "Save Changes";
             }
         } catch (err) {
             console.error(err);
-            showToast("❌ Network error. Please check your connection.", true);
+            showToast("Network error. Please check your connection.", true);
             saveBtn.disabled = false;
             saveBtn.textContent = "Save Changes";
         }
@@ -210,12 +210,64 @@ document.addEventListener("DOMContentLoaded", async () => {
     function showToast(msg, isError = false) {
         const toast = document.getElementById("profileToast");
         const msgEl = document.getElementById("toastMsg");
-        if (!toast || !msgEl) { alert(msg); return; }
+        if (!toast || !msgEl) { console.log(msg); return; }
         msgEl.textContent = msg;
         toast.style.background = isError ? "#ef4444" : "#1b2559";
         toast.classList.add("show");
         setTimeout(() => toast.classList.remove("show"), 3500);
     }
+
+    // ===== POST JOB MODAL LOGIC =====
+    const postModal = document.getElementById("postJobModal");
+    const openPostBtn = document.getElementById("openPostModalSidebar");
+    const closePostBtn = document.getElementById("closeModal");
+    const cancelPostBtn = document.getElementById("cancelPostBtn");
+    const postForm = document.getElementById("postJobForm");
+
+    if (openPostBtn) {
+        openPostBtn.onclick = () => {
+            postForm.reset();
+            postModal.style.display = "flex";
+        };
+    }
+
+    if (closePostBtn) closePostBtn.onclick = () => postModal.style.display = "none";
+    if (cancelPostBtn) cancelPostBtn.onclick = () => postModal.style.display = "none";
+
+    postForm.onsubmit = async (e) => {
+        e.preventDefault();
+        const jobType = document.getElementById("jobType").value;
+        const data = {
+            company_id: company.id,
+            title: document.getElementById("jobTitle").value,
+            location: document.getElementById("jobLocation").value,
+            salary: document.getElementById("jobSalary").value,
+            description: document.getElementById("jobDesc").value
+        };
+
+        if (jobType === "full-time") {
+            data.skills_required = document.getElementById("jobSkills").value;
+        } else {
+            data.skills = document.getElementById("jobSkills").value;
+        }
+
+        const endpoint = jobType === "full-time" ? "/jobs/" : "/part_time_jobs/";
+
+        try {
+            const res = await fetch(`${BASE_URL}${endpoint}`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(data)
+            });
+            if (res.ok) {
+                console.log("Success! Job posted.");
+                postModal.style.display = "none";
+            } else {
+                const error = await res.json();
+                console.log("Error: " + (error.detail || "Action failed"));
+            }
+        } catch (err) { console.error(err); }
+    };
 
     // ---- Account Deletion Logic ----
     const deleteBtn = document.getElementById("deleteCompanyBtn");
@@ -234,7 +286,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     confirmDeleteBtn.onclick = async () => {
         const password = document.getElementById("deleteConfirmPassword").value;
         if (!password) {
-            alert("Please enter your password to confirm.");
+            console.log("Please enter your password to confirm.");
             return;
         }
 
@@ -249,20 +301,25 @@ document.addEventListener("DOMContentLoaded", async () => {
             });
 
             if (res.ok) {
-                alert("Company and associated account deleted successfully.");
+                console.log("Company and associated account deleted successfully.");
                 localStorage.clear();
                 window.location.href = "../index.html";
             } else {
                 const err = await res.json();
-                alert(err.detail || "Deletion failed. Please check your password.");
+                console.log(err.detail || "Deletion failed. Please check your password.");
                 confirmDeleteBtn.textContent = "Delete Permanently";
                 confirmDeleteBtn.disabled = false;
             }
         } catch (err) {
             console.error(err);
-            alert("An error occurred. Please try again.");
+            console.log("An error occurred. Please try again.");
             confirmDeleteBtn.textContent = "Delete Permanently";
             confirmDeleteBtn.disabled = false;
         }
+    };
+
+    window.onclick = (e) => {
+        if (e.target == deleteModal) deleteModal.style.display = "none";
+        if (e.target == postModal) postModal.style.display = "none";
     };
 });

@@ -40,6 +40,15 @@
                     </svg>
                     Brand Profile
                 </a>
+
+                <div style="padding: 0 10px;">
+                    <button class="btn-sidebar-post" id="openPostModalSidebar">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                        </svg>
+                        Post a Job
+                    </button>
+                </div>
             </nav>
 
             <div class="sidebar-footer">
@@ -76,11 +85,13 @@
                                 <option value="Cancelled">Rejected / Withdrawn</option>
                             </select>
                         </div>
-                        <div class="company-avatar-wrap">
-                            <div class="company-initials" id="companyInitialsAvatar"
-                                style="overflow:hidden; display:flex; align-items:center; justify-content:center;">C
+                        <a href="company_profile.html" class="company-avatar-link" title="View Brand Profile">
+                            <div class="company-avatar-wrap">
+                                <div class="company-initials" id="companyInitialsAvatar"
+                                    style="overflow:hidden; display:flex; align-items:center; justify-content:center;">C
+                                </div>
                             </div>
-                        </div>
+                        </a>
                     </div>
                 </header>
 
@@ -157,6 +168,58 @@
                 <button id="rejectBtn" class="btn-reject">✕ Reject</button>
                 <button id="closeAppBtn" class="btn-cancel">Close</button>
             </div>
+        </div>
+    </div>
+
+    <!-- ===== POST JOB MODAL ===== -->
+    <div id="postJobModal" class="modal">
+        <div class="modal-card">
+            <div class="modal-top">
+                <h3>Post a New Job</h3>
+                <button id="closeModal" class="modal-close-btn">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24"
+                        stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+                            d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
+            </div>
+            <form id="postJobForm">
+                <div class="form-group">
+                    <label>Job Type</label>
+                    <select id="jobType">
+                        <option value="full-time">Full-time</option>
+                        <option value="part-time">Part-time</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Job Title</label>
+                    <input type="text" id="jobTitle" placeholder="Enter Job Title (e.g. Software Engineer)" required>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Location</label>
+                        <input type="text" id="jobLocation" placeholder="Enter Job Location" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Salary Range</label>
+                        <input type="text" id="jobSalary" placeholder="Enter Salary Range (e.g. 5-10 LPA)">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Required Skills</label>
+                    <input type="text" id="jobSkills" placeholder="Enter Skills (Comma Separated)">
+                </div>
+                <div class="form-group">
+                    <label>Job Description</label>
+                    <textarea id="jobDesc" rows="4"
+                        placeholder="Describe the role, responsibilities, and ideal candidate..."></textarea>
+                </div>
+                <div class="modal-footer-actions">
+                    <button type="button" id="cancelPostBtn" class="btn-cancel">Cancel</button>
+                    <button type="submit" class="btn-submit">Publish Job</button>
+                </div>
+            </form>
         </div>
     </div>
 

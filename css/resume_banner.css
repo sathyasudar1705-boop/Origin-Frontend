@@ -4,11 +4,8 @@
     padding: 1.25rem 2rem;
     margin: 1rem 0 2.5rem;
     /* Left aligned, not centered */
-    max-width: 800px;
-    /* Further reduced for a compact look */
-    /* Reduced width to make it more card-like */
     width: 100%;
-    /* Take full width up to max-width */
+    /* Take full width of the container */
     display: flex;
     align-items: center;
     justify-content: space-between;

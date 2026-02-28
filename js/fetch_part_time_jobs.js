@@ -12,7 +12,7 @@ async function fetchUserApplications(userId) {
     }
 }
 
-async function fetchPartTimeJobs(q = '', location = '') {
+async function fetchPartTimeJobs(q = '', location = '', jobType = '', salaryRange = '') {
     const jobsContainer = document.querySelector(".jobs-container");
     if (!jobsContainer) return;
 
@@ -34,7 +34,28 @@ async function fetchPartTimeJobs(q = '', location = '') {
 
         const response = await fetch(url);
         if (response.ok) {
-            const jobs = await response.json();
+            let jobs = await response.json();
+
+            // --- Frontend Filtering ---
+            if (jobType && jobType !== "Part-time") {
+                // If they specifically selected Full-time on the Part-time page, show none or redirect?
+                // For now, just filter it out.
+                jobs = jobs.filter(j => false);
+            }
+
+            if (salaryRange) {
+                jobs = jobs.filter(j => {
+                    const salary = (j.salary || '').toString();
+                    const numericMatch = salary.match(/\d+/);
+                    const numericVal = numericMatch ? parseInt(numericMatch[0]) : 0;
+
+                    if (salaryRange === "0-3") return numericVal < 3 || salary.includes("0-3");
+                    if (salaryRange === "3-6") return (numericVal >= 3 && numericVal <= 6) || salary.includes("3-6");
+                    if (salaryRange === "6-12") return (numericVal > 6 && numericVal <= 12) || salary.includes("6-12");
+                    if (salaryRange === "12+") return numericVal > 12 || salary.includes("12+");
+                    return true;
+                });
+            }
 
             if (jobs.length === 0) {
                 jobsContainer.innerHTML = `
@@ -78,7 +99,7 @@ async function fetchPartTimeJobs(q = '', location = '') {
 
                     <div class="job-item-footer">
                         <span>${job.location}</span>
-                        <span style="color: var(--primary); font-weight: 700;">${job.salary ? '₹' + job.salary : 'Competitive'}</span>
+                        <span style="color: var(--primary); font-weight: 700;">${job.salary ? job.salary : 'Competitive'}</span>
                     </div>
                 `;
                 jobCard.onclick = () => {
@@ -90,8 +111,26 @@ async function fetchPartTimeJobs(q = '', location = '') {
             });
 
             if (jobs.length > 0) {
-                displayJobDetails(jobs[0]);
-                jobsContainer.firstElementChild.classList.add('active');
+                const urlParams = new URLSearchParams(window.location.search);
+                const ptJobId = urlParams.get('pt_job_id');
+
+                let targetJob = jobs[0];
+                let targetIndex = 0;
+
+                if (ptJobId) {
+                    const foundIndex = jobs.findIndex(j => j.id == ptJobId);
+                    if (foundIndex > -1) {
+                        targetJob = jobs[foundIndex];
+                        targetIndex = foundIndex;
+                    }
+                }
+
+                displayJobDetails(targetJob);
+                const jobCards = jobsContainer.querySelectorAll('.job-item');
+                if (jobCards[targetIndex]) {
+                    jobCards[targetIndex].classList.add('active');
+                    jobCards[targetIndex].scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }
             }
         }
     } catch (err) {
@@ -108,7 +147,7 @@ function displayJobDetails(job) {
     if (placeholder) placeholder.style.display = "none";
     content.style.display = "flex";
 
-    const salaryDisplay = job.salary || "Competitive";
+    const salaryDisplay = (job.salary && !job.salary.includes('₹')) ? '₹' + job.salary : (job.salary || "Competitive");
     const applyUrl = `apply.html?pt_job_id=${job.id}`;
 
     // Update fields
@@ -155,17 +194,23 @@ function displayJobDetails(job) {
 
 // Add listeners for search inputs
 document.addEventListener("DOMContentLoaded", () => {
-    const mainSearchInput = document.getElementById("mainSearchInput");
+    const roleSearchInput = document.getElementById("roleSearchInput");
     const locSearchInput = document.getElementById("locationSearchInput");
+    const typeSearchInput = document.getElementById("typeSearchInput");
+    const salarySearchInput = document.getElementById("salarySearchInput");
 
     const handleSearch = () => {
-        const q = mainSearchInput ? mainSearchInput.value : '';
+        const q = roleSearchInput ? roleSearchInput.value : '';
         const loc = locSearchInput ? locSearchInput.value : '';
-        fetchPartTimeJobs(q, loc);
+        const type = typeSearchInput ? typeSearchInput.value : '';
+        const sal = salarySearchInput ? salarySearchInput.value : '';
+        fetchPartTimeJobs(q, loc, type, sal);
     };
 
-    if (mainSearchInput) mainSearchInput.addEventListener("input", debounce(handleSearch, 500));
+    if (roleSearchInput) roleSearchInput.addEventListener("input", debounce(handleSearch, 500));
     if (locSearchInput) locSearchInput.addEventListener("input", debounce(handleSearch, 500));
+    if (typeSearchInput) typeSearchInput.addEventListener("change", handleSearch);
+    if (salarySearchInput) salarySearchInput.addEventListener("change", handleSearch);
 
     // Handle profile pic from logged user
     const user = JSON.parse(localStorage.getItem("user"));
@@ -196,7 +241,7 @@ function toggleSaveJob(jobId, type) {
 
     if (index > -1) {
         saved.splice(index, 1);
-        alert("Job removed from saved list.");
+        console.log("Job removed from saved list.");
     } else {
         const job = currentJob;
         if (job) {
@@ -209,7 +254,7 @@ function toggleSaveJob(jobId, type) {
                 type: 'Part-Time',
                 salary: job.salary
             });
-            alert("Job saved successfully!");
+            console.log("Job saved successfully!");
         }
     }
     localStorage.setItem("saved_jobs", JSON.stringify(saved));

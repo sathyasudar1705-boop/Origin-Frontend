@@ -19,15 +19,16 @@ async function registerUser(event) {
         });
 
         if (response.ok) {
-            alert("Registration Successful! Please Login.");
+            console.log("Registration Successful! Please Login.");
             window.location.href = "user_login.html";
         } else {
-            const error = await response.json();
-            alert("Registration Failed: " + (error.detail || "Error occurred"));
+            const error = await response.json().catch(() => ({ detail: "Unknown error" }));
+            console.error("Registration Failed:", error);
+            console.log("Registration Failed: " + (error.detail || "Error occurred"));
         }
     } catch (err) {
         console.error("Error:", err);
-        alert("Server connection error: " + API_BASE_URL);
+        console.log("Server connection error: " + API_BASE_URL + "\nPlease check if the backend is running.");
     }
 }
 
@@ -57,15 +58,16 @@ async function registerCompany(event) {
         });
 
         if (response.ok) {
-            alert("Company Registered Successfully! Please Login.");
-            window.location.href = "user_login.html";
+            console.log("Company Registered Successfully! Please Login.");
+            window.location.href = "company_login.html"; // Fixed redirect
         } else {
-            const error = await response.json();
-            alert("Registration Failed: " + (error.detail || "Error occurred"));
+            const error = await response.json().catch(() => ({ detail: "Unknown error" }));
+            console.error("Company Registration Failed:", error);
+            console.log("Registration Failed: " + (error.detail || "Error occurred"));
         }
     } catch (err) {
         console.error("Error:", err);
-        alert("Server connection error: " + API_BASE_URL);
+        console.log("Server connection error: " + API_BASE_URL + "\nPlease check if the backend is running.");
     }
 }
 
@@ -103,7 +105,7 @@ async function loginUser(event, requiredRole) {
             console.log("Login success, user role:", user.role);
 
             if (requiredRole && user.role !== requiredRole) {
-                alert(`Access Denied: This account is a ${user.role}.`);
+                console.log(`Access Denied: This account is a ${user.role}.`);
                 if (btn) { btn.innerText = originalText; btn.disabled = false; }
                 return;
             }
@@ -112,15 +114,15 @@ async function loginUser(event, requiredRole) {
             if (data.access_token) {
                 localStorage.setItem("access_token", data.access_token);
             }
-            alert("Login Successful!");
+            console.log("Login Successful!");
             window.location.href = user.role === "employer" ? "company_dashboard.html" : "dashboard.html";
         } else {
             const error = await response.json().catch(() => ({ detail: "Invalid email or password" }));
-            alert("Login Failed: " + (error.detail || "Invalid credentials"));
+            console.log("Login Failed: " + (error.detail || "Invalid credentials"));
         }
     } catch (err) {
         console.error("Login Error:", err);
-        alert("Connection Failed: Ensure your backend is running at " + API_BASE_URL);
+        console.log("Connection Failed: Ensure your backend is running at " + API_BASE_URL);
     } finally {
         if (btn) {
             btn.innerText = originalText;

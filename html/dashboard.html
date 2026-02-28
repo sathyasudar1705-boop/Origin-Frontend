@@ -118,12 +118,13 @@
                             </svg>
                             <input type="text" placeholder="Search for jobs, companies...">
                         </div>
-                        <button class="icon-btn">
+                        <button class="icon-btn" id="notificationBtn">
                             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none"
                                 viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                     d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
                             </svg>
+                            <span class="notification-dot" id="notificationDot"></span>
                         </button>
                         <a href="profile.html">
                             <img src="https://ui-avatars.com/api/?name=User&background=4318ff&color=fff" alt="Profile"
@@ -131,6 +132,23 @@
                         </a>
                     </div>
                 </header>
+
+                <!-- Resume Banner Section -->
+                <section class="resume-banner">
+                    <div class="banner-left">
+                        <img src="../assets/resume_home.png" alt="Resume Illustration" class="resume-illustration">
+                        <div class="banner-text">
+                            <h2>Generate Your Resume</h2>
+                            <p
+                                style="color: var(--text-secondary); font-weight: 500; font-size: 0.95rem; margin-top: 4px;">
+                                Enter your details and download your resume instantly.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="banner-right">
+                        <button id="createResumeBtn" class="btn-create-resume">Click here</button>
+                    </div>
+                </section>
 
                 <section class="stats-row">
                     <div class="stat-card">
@@ -205,9 +223,21 @@
                             </div>
                         </section>
 
-                        <section class="section-container">
+                        <section class="section-container news-section">
                             <div class="section-header">
-                                <h2>📰 Daily News</h2>
+                                <h2 id="newsHeading">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
+                                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round" style="vertical-align:middle; margin-right:8px;">
+                                        <path
+                                            d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 1-2 2Zm0 0a2 2 0 0 1-2-2v-9c0-1.1.9-2 2-2h2">
+                                        </path>
+                                        <path d="M18 14h-8"></path>
+                                        <path d="M15 18h-5"></path>
+                                        <path d="M10 6h8v4h-8V6Z"></path>
+                                    </svg>
+                                    Industry News
+                                </h2>
                                 <span class="live-indicator">LIVE</span>
                             </div>
                             <div id="dailyNewsContainer" class="news-list">

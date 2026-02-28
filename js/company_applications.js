@@ -52,13 +52,70 @@ document.addEventListener("DOMContentLoaded", async () => {
     // Initial fetch
     await fetchApplications(company.id);
 
-    // Modal Close Logic
+    // candidate modal Close Logic
     const modal = document.getElementById("appDetailModal");
-    const closeBtn = document.getElementById("closeDetailModal") || document.getElementById("closeAppBtn");
-    if (closeBtn) closeBtn.onclick = () => modal.style.display = "none";
-    const closeAppBtn2 = document.getElementById("closeAppBtn");
-    if (closeAppBtn2) closeAppBtn2.onclick = () => modal.style.display = "none";
-    window.onclick = (e) => { if (e.target == modal) modal.style.display = "none"; };
+    const topCloseBtn = document.getElementById("closeDetailModal");
+    const bottomCloseBtn = document.getElementById("closeAppBtn");
+
+    if (topCloseBtn) topCloseBtn.onclick = () => modal.style.display = "none";
+    if (bottomCloseBtn) bottomCloseBtn.onclick = () => modal.style.display = "none";
+
+    // ===== POST JOB MODAL LOGIC =====
+    const postModal = document.getElementById("postJobModal");
+    const openPostBtn = document.getElementById("openPostModalSidebar");
+    const closePostBtn = document.getElementById("closeModal");
+    const cancelPostBtn = document.getElementById("cancelPostBtn");
+    const postForm = document.getElementById("postJobForm");
+
+    if (openPostBtn) {
+        openPostBtn.onclick = () => {
+            postForm.reset();
+            postModal.style.display = "flex";
+        };
+    }
+
+    if (closePostBtn) closePostBtn.onclick = () => postModal.style.display = "none";
+    if (cancelPostBtn) cancelPostBtn.onclick = () => postModal.style.display = "none";
+
+    postForm.onsubmit = async (e) => {
+        e.preventDefault();
+        const jobType = document.getElementById("jobType").value;
+        const data = {
+            company_id: company.id,
+            title: document.getElementById("jobTitle").value,
+            location: document.getElementById("jobLocation").value,
+            salary: document.getElementById("jobSalary").value,
+            description: document.getElementById("jobDesc").value
+        };
+
+        if (jobType === "full-time") {
+            data.skills_required = document.getElementById("jobSkills").value;
+        } else {
+            data.skills = document.getElementById("jobSkills").value;
+        }
+
+        const endpoint = jobType === "full-time" ? "/jobs/" : "/part_time_jobs/";
+
+        try {
+            const res = await fetch(`${BASE_URL}${endpoint}`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(data)
+            });
+            if (res.ok) {
+                console.log("Success! Job posted.");
+                postModal.style.display = "none";
+            } else {
+                const error = await res.json();
+                console.log("Error: " + (error.detail || "Action failed"));
+            }
+        } catch (err) { console.error(err); }
+    };
+
+    window.onclick = (e) => {
+        if (e.target == modal) modal.style.display = "none";
+        if (e.target == postModal) postModal.style.display = "none";
+    };
 });
 
 let allApps = [];
@@ -199,7 +256,7 @@ function showAppDetail(app) {
         shortlistBtn.style.display = "inline-flex";
         rejectBtn.style.display = "inline-flex";
         shortlistBtn.onclick = () => updateStatus(app.id, "Shortlisted");
-        rejectBtn.onclick = () => updateStatus(app.id, "Cancelled");
+        rejectBtn.onclick = () => updateStatus(app.id, "Rejected");
 
     } else if (app.status === "Shortlisted") {
         // Can select or reject
@@ -207,7 +264,7 @@ function showAppDetail(app) {
         selectBtn.style.display = "inline-flex";
         rejectBtn.style.display = "inline-flex";
         selectBtn.onclick = () => updateStatus(app.id, "Selected");
-        rejectBtn.onclick = () => updateStatus(app.id, "Cancelled");
+        rejectBtn.onclick = () => updateStatus(app.id, "Rejected");
 
     } else {
         // Selected or Cancelled — no further actions
@@ -218,7 +275,7 @@ function showAppDetail(app) {
 }
 
 async function updateStatus(appId, newStatus) {
-    const label = newStatus === "Cancelled" ? "Reject" : newStatus;
+    const label = newStatus === "Rejected" ? "Reject" : newStatus;
     if (!confirm(`Update candidate to "${label}"?`)) return;
 
     try {
@@ -229,14 +286,14 @@ async function updateStatus(appId, newStatus) {
         });
 
         if (res.ok) {
-            alert(`Status updated to ${newStatus === "Cancelled" ? "Rejected" : newStatus} successfully.`);
+            console.log(`Status updated to ${newStatus === "Rejected" ? "Rejected" : newStatus} successfully.`);
             document.getElementById("appDetailModal").style.display = "none";
             location.reload();
         } else {
-            alert("Failed to update status. Please try again.");
+            console.log("Failed to update status. Please try again.");
         }
     } catch (err) {
         console.error(err);
-        alert("System error. Please try again.");
+        console.log("System error. Please try again.");
     }
 }

@@ -60,41 +60,47 @@
 })();
 
 async function checkNotifications() {
-    const bellBtn = document.querySelector(".icon-btn");
+    const bellBtn = document.getElementById("notificationBtn") || document.querySelector(".icon-btn");
     if (!bellBtn) return;
 
-    // Ensure button is relative and has the dot
-    bellBtn.style.position = "relative";
-    let dot = bellBtn.querySelector(".notification-dot");
+    let dot = bellBtn.querySelector(".notification-dot") || document.getElementById("notificationDot");
     if (!dot) {
         dot = document.createElement("span");
         dot.className = "notification-dot";
+        dot.id = "notificationDot";
+        bellBtn.style.position = "relative";
         bellBtn.appendChild(dot);
     }
 
+    bellBtn.addEventListener("click", () => {
+        dot.style.display = "none";
+        localStorage.setItem("notifications_read", "true");
+        // Navigate to applications page
+        if (!window.location.pathname.includes("my_applications.html")) {
+            window.location.href = "my_applications.html";
+        }
+    });
+
     const user = JSON.parse(localStorage.getItem("user") || "{}");
     if (!user.id) return;
+
+    // Check if user already read notifications in this "cycle"
+    if (localStorage.getItem("notifications_read") === "true") {
+        dot.style.display = "none";
+        return;
+    }
 
     try {
         const BASE = window.API_BASE_URL || "http://127.0.0.1:8000";
         const response = await fetch(`${BASE}/applications/user/${user.id}`);
         if (response.ok) {
             const apps = await response.json();
-            // Check for Shortlisted or Approved (Selected)
-            const hasAlert = apps.some(app =>
-                app.status === 'Shortlisted' ||
-                app.status === 'Approved' ||
-                app.status === 'Selected'
-            );
+            // Show badge if ANY status is not 'Applied' (simulating an update)
+            const hasUpdate = apps.some(app => app.status !== 'Applied');
 
-            if (hasAlert) {
+            if (hasUpdate) {
                 dot.style.display = "block";
                 bellBtn.title = "You have updates on your applications!";
-
-                // Simple tooltip logic on click if on dashboard
-                bellBtn.onclick = () => {
-                    window.location.href = "my_applications.html";
-                };
             } else {
                 dot.style.display = "none";
             }
