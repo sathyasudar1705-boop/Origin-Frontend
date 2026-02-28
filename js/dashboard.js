@@ -112,17 +112,10 @@ async function fetchDailyNews() {
                 const imageUrl = article.urlToImage || 'https://images.unsplash.com/photo-1504711432869-efd597cdd042?auto=format&fit=crop&q=80&w=300&h=200';
 
                 newsCard.innerHTML = `
-                    <div class="news-card-img">
-                        <img src="${imageUrl}" alt="${article.title}" onerror="this.src='https://images.unsplash.com/photo-1504711432869-efd597cdd042?auto=format&fit=crop&q=80&w=300&h=200'">
-                        <span class="news-tag">${categoryTag}</span>
-                    </div>
                     <div class="news-card-body">
                         <h4 class="news-title" title="${article.title}">${article.title}</h4>
-                        <p class="news-desc">${article.description || 'Global industry developments including latest trends and professional insights for your role.'}</p>
                         <div class="news-card-footer">
                             <div class="news-source-info">
-                                <span class="news-source-name">${article.source.name}</span>
-                                <span class="news-dot">•</span>
                                 <span class="news-date">${date}</span>
                             </div>
                             <span class="news-read-more">
